@@ -1,5 +1,5 @@
 package controlador;
 
-public class EmisorController {
+public class ControladorEmisor {
 
 }

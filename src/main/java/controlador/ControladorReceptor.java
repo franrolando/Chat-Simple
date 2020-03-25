@@ -1,5 +1,5 @@
 package controlador;
 
-public class ReceptorController {
+public class ControladorReceptor {
 
 }

@@ -14,32 +14,16 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-public class ViewTextoM {
+public class ViewEmisor {
 
 	private JFrame frmMessaje;
 	private JTextField textField;
 	private JTextField textField_1;
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ViewTextoM window = new ViewTextoM();
-					window.frmMessaje.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the application.
 	 */
-	public ViewTextoM() {
+	public ViewEmisor() {
 		initialize();
 	}
 
