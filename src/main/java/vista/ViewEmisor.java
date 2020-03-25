@@ -1,24 +1,61 @@
 package vista;
 
-import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.GridLayout;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
+import java.awt.Color;
 import javax.swing.JPanel;
+import java.awt.BorderLayout;
+import javax.swing.JTextField;
+import javax.swing.JLabel;
+import javax.swing.JButton;
+import java.awt.Font;
+import javax.swing.SwingConstants;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
+import javax.swing.BoxLayout;
+import java.awt.GridLayout;
+import java.awt.FlowLayout;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.CardLayout;
+import javax.swing.JComboBox;
 
 public class ViewEmisor {
 
-	private JFrame frmMessaje;
-	private JTextField textField;
-	private JTextField textField_1;
+	private JFrame frmMensaje;
+	private JTextField textFieldPuerto;
+	private JLabel lblPuerto;
+	private JPanel panel_1;
+	private JButton btnEnviar;
+	private JPanel panel_2;
+	private JPanel panel_3;
+	private JTextField textFieldAsunto;
+	private JLabel lblAsunto;
+	private JPanel panel_4;
+	private JRadioButton rdbtnSimple;
+	private JRadioButton rdbtnAlerta;
+	private JRadioButton rdbtnAvisoDeRecepcion;
+	private JPanel panel_5;
+	private JLabel lblCuerpo;
+	private JTextArea textAreaCuerpo;
+	private JComboBox comboBoxIP;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					ViewEmisor window = new ViewEmisor();
+					window.frmMensaje.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 
 	/**
 	 * Create the application.
@@ -31,71 +68,95 @@ public class ViewEmisor {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frmMessaje = new JFrame();
-		frmMessaje.setTitle("Mensaje");
-		frmMessaje.setBounds(100, 100, 432, 328);
-		frmMessaje.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmMessaje.getContentPane().setLayout(new GridLayout(1, 0, 0, 0));
-
+		frmMensaje = new JFrame();
+		frmMensaje.getContentPane().setBackground(new Color(240, 230, 140));
+		
 		JPanel panel = new JPanel();
+		FlowLayout flowLayout_2 = (FlowLayout) panel.getLayout();
 		panel.setBackground(new Color(240, 230, 140));
-		frmMessaje.getContentPane().add(panel);
-		panel.setLayout(null);
-
-		textField = new JTextField();
-		textField.setFont(new Font("Calibri", Font.PLAIN, 15));
-		textField.setBounds(107, 64, 116, 22);
-		panel.add(textField);
-		textField.setColumns(10);
-
-		JLabel lblAsunto = new JLabel("Asunto");
-		lblAsunto.setFont(new Font("Calibri", Font.BOLD, 16));
-		lblAsunto.setBounds(12, 67, 56, 16);
-		panel.add(lblAsunto);
-
-		JLabel lblCuerpo = new JLabel("Cuerpo");
-		lblCuerpo.setFont(new Font("Calibri", Font.BOLD, 16));
-		lblCuerpo.setBounds(12, 101, 56, 16);
-		panel.add(lblCuerpo);
-
-		textField_1 = new JTextField();
-		textField_1.setFont(new Font("Calibri", Font.PLAIN, 15));
-		textField_1.setBounds(107, 30, 116, 22);
-		panel.add(textField_1);
-		textField_1.setColumns(10);
-
-		JLabel lblDestinatario = new JLabel("Destinatario");
-		lblDestinatario.setFont(new Font("Calibri", Font.BOLD, 16));
-		lblDestinatario.setBounds(12, 32, 94, 19);
-		panel.add(lblDestinatario);
-
-		JTextArea textArea = new JTextArea();
-		textArea.setFont(new Font("Calibri", Font.PLAIN, 14));
-		textArea.setBounds(107, 98, 271, 104);
-		panel.add(textArea);
-
-		JRadioButton rdbtnSimple = new JRadioButton("Simple");
-		rdbtnSimple.setBackground(new Color(240, 230, 140));
-		rdbtnSimple.setFont(new Font("Calibri", Font.PLAIN, 14));
-		rdbtnSimple.setBounds(107, 211, 74, 25);
-		panel.add(rdbtnSimple);
-
-		JRadioButton rdbtnAlerta = new JRadioButton("Alerta");
-		rdbtnAlerta.setBackground(new Color(240, 230, 140));
-		rdbtnAlerta.setFont(new Font("Calibri", Font.PLAIN, 14));
-		rdbtnAlerta.setBounds(185, 211, 63, 25);
-		panel.add(rdbtnAlerta);
-
-		JRadioButton rdbtnAvisoDeRecepcion = new JRadioButton("Aviso de recepcion");
-		rdbtnAvisoDeRecepcion.setBackground(new Color(240, 230, 140));
-		rdbtnAvisoDeRecepcion.setFont(new Font("Calibri", Font.PLAIN, 14));
-		rdbtnAvisoDeRecepcion.setBounds(251, 211, 140, 25);
-		panel.add(rdbtnAvisoDeRecepcion);
-
-		JButton btnEnviar = new JButton("Enviar");
+		frmMensaje.getContentPane().add(panel, BorderLayout.NORTH);
+		
+		JLabel lblIP = new JLabel("IP");
+		lblIP.setFont(new Font("Tahoma", Font.BOLD, 13));
+		panel.add(lblIP);
+		
+		comboBoxIP = new JComboBox();
+		panel.add(comboBoxIP);
+		
+		lblPuerto = new JLabel("Puerto");
+		lblPuerto.setFont(new Font("Tahoma", Font.BOLD, 13));
+		panel.add(lblPuerto);
+		
+		textFieldPuerto = new JTextField();
+		panel.add(textFieldPuerto);
+		textFieldPuerto.setColumns(10);
+		
+		panel_1 = new JPanel();
+		panel_1.setBackground(new Color(240, 230, 140));
+		frmMensaje.getContentPane().add(panel_1, BorderLayout.SOUTH);
+		
+		btnEnviar = new JButton("Enviar");
 		btnEnviar.setFont(new Font("Calibri", Font.BOLD, 18));
-		btnEnviar.setBounds(107, 245, 97, 25);
-		panel.add(btnEnviar);
-		ImageIcon img = new ImageIcon("C:\\Users\\Lautaro\\eclipse-workspace\\tp_ayd1\\img\\flecha2.png");
+		panel_1.add(btnEnviar);
+		
+		panel_2 = new JPanel();
+		panel_2.setBackground(new Color(240, 230, 140));
+		frmMensaje.getContentPane().add(panel_2, BorderLayout.CENTER);
+		panel_2.setLayout(new BorderLayout(0, 0));
+		
+		panel_3 = new JPanel();
+		panel_3.setBackground(new Color(240, 230, 140));
+		panel_2.add(panel_3, BorderLayout.NORTH);
+		panel_3.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+		
+		lblAsunto = new JLabel("Asunto");
+		lblAsunto.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblAsunto.setHorizontalAlignment(SwingConstants.LEFT);
+		panel_3.add(lblAsunto);
+		
+		textFieldAsunto = new JTextField();
+		textFieldAsunto.setHorizontalAlignment(SwingConstants.LEFT);
+		panel_3.add(textFieldAsunto);
+		textFieldAsunto.setColumns(10);
+		
+		panel_4 = new JPanel();
+		FlowLayout flowLayout = (FlowLayout) panel_4.getLayout();
+		flowLayout.setAlignment(FlowLayout.LEFT);
+		panel_4.setBackground(new Color(240, 230, 140));
+		panel_2.add(panel_4, BorderLayout.SOUTH);
+		
+		rdbtnSimple = new JRadioButton("Simple");
+		rdbtnSimple.setFont(new Font("Tahoma", Font.BOLD, 13));
+		rdbtnSimple.setBackground(new Color(240, 230, 140));
+		panel_4.add(rdbtnSimple);
+		
+		rdbtnAlerta = new JRadioButton("Alerta");
+		rdbtnAlerta.setFont(new Font("Tahoma", Font.BOLD, 13));
+		rdbtnAlerta.setBackground(new Color(240, 230, 140));
+		panel_4.add(rdbtnAlerta);
+		
+		rdbtnAvisoDeRecepcion = new JRadioButton("Aviso de recepcion");
+		rdbtnAvisoDeRecepcion.setFont(new Font("Tahoma", Font.BOLD, 13));
+		rdbtnAvisoDeRecepcion.setBackground(new Color(240, 230, 140));
+		panel_4.add(rdbtnAvisoDeRecepcion);
+		
+		panel_5 = new JPanel();
+		FlowLayout flowLayout_1 = (FlowLayout) panel_5.getLayout();
+		flowLayout_1.setAlignment(FlowLayout.LEFT);
+		panel_5.setBackground(new Color(240, 230, 140));
+		panel_2.add(panel_5, BorderLayout.CENTER);
+		
+		lblCuerpo = new JLabel("Cuerpo");
+		lblCuerpo.setFont(new Font("Tahoma", Font.BOLD, 13));
+		panel_5.add(lblCuerpo);
+		
+		textAreaCuerpo = new JTextArea();
+		textAreaCuerpo.setColumns(45);
+		textAreaCuerpo.setRows(5);
+		panel_5.add(textAreaCuerpo);
+		frmMensaje.setTitle("Mensaje Emisor");
+		frmMensaje.setBounds(100, 100, 450, 300);
+		frmMensaje.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
+
 }

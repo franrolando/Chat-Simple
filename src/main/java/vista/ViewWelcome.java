@@ -1,21 +1,23 @@
 package vista;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import java.awt.BorderLayout;
+import javax.swing.JLabel;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import java.awt.FlowLayout;
 
 public class ViewWelcome {
 
-	private JFrame frmSendMessajes;
+	private JFrame frmInicioSm;
 
 	/**
 	 * Launch the application.
@@ -25,7 +27,7 @@ public class ViewWelcome {
 			public void run() {
 				try {
 					ViewWelcome window = new ViewWelcome();
-					window.frmSendMessajes.setVisible(true);
+					window.frmInicioSm.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -44,41 +46,41 @@ public class ViewWelcome {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frmSendMessajes = new JFrame();
-		frmSendMessajes.setBackground(new Color(240, 230, 140));
-		frmSendMessajes.setTitle("Inicio SM");
-		frmSendMessajes.setBounds(100, 100, 329, 195);
-		frmSendMessajes.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmSendMessajes.getContentPane().setLayout(new BorderLayout(0, 0));
-
+		frmInicioSm = new JFrame();
+		frmInicioSm.setTitle("Inicio SM");
+		frmInicioSm.setBounds(100, 100, 440, 168);
+		frmInicioSm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(240, 230, 140));
-		frmSendMessajes.getContentPane().add(panel, BorderLayout.CENTER);
-		panel.setLayout(null);
-
-		JLabel lblBienvenido = new JLabel("Bienvenido a Send Messajes!");
-		lblBienvenido.setBounds(0, 13, 317, 26);
-		lblBienvenido.setFont(new Font("Calibri", Font.BOLD | Font.ITALIC, 20));
+		frmInicioSm.getContentPane().add(panel, BorderLayout.CENTER);
+		panel.setLayout(new BorderLayout(0, 0));
+		
+		JLabel lblBienvenido = new JLabel("Bienvenido a Send Message!");
 		lblBienvenido.setHorizontalAlignment(SwingConstants.CENTER);
-		panel.add(lblBienvenido);
-
-		JButton btnIngresar = new JButton("Ingresar");
-		btnIngresar.setBackground(new Color(143, 188, 143));
-		btnIngresar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-
-			}
-		});
-		btnIngresar.setBounds(60, 90, 100, 31);
-		btnIngresar.setFont(new Font("Calibri", Font.BOLD, 18));
-		panel.add(btnIngresar);
-
+		lblBienvenido.setFont(new Font("Calibri", Font.BOLD | Font.ITALIC, 20));
+		lblBienvenido.setBackground(new Color(240, 230, 140));
+		panel.add(lblBienvenido, BorderLayout.CENTER);
+		
+		JPanel panel_1 = new JPanel();
+		panel_1.setBackground(new Color(240, 230, 140));
+		panel.add(panel_1, BorderLayout.SOUTH);
+		
+		JButton btnEmisor = new JButton("Emisor");
+		btnEmisor.setFont(new Font("Calibri", Font.BOLD, 18));
+		btnEmisor.setBackground(new Color(143, 188, 143));
+		panel_1.add(btnEmisor);
+		
+		JButton btnReceptor = new JButton("Receptor");
+		btnReceptor.setFont(new Font("Calibri", Font.BOLD, 18));
+		btnReceptor.setBackground(new Color(173, 216, 230));
+		panel_1.add(btnReceptor);
+		
 		JButton btnSalir = new JButton("Salir");
-		btnSalir.setBackground(new Color(250, 128, 114));
-		btnSalir.setBounds(172, 90, 80, 31);
 		btnSalir.setFont(new Font("Calibri", Font.BOLD, 18));
-		panel.add(btnSalir);
-		btnSalir.addActionListener(new ActionListener() {
+		btnSalir.setBackground(new Color(255, 160, 122));
+		panel_1.add(btnSalir);
+		btnSalir.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent click) {
 				System.exit(0);
 			}
