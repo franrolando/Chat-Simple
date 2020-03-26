@@ -8,8 +8,6 @@ import java.awt.BorderLayout;
 import javax.swing.JLabel;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
@@ -23,20 +21,19 @@ public class ViewWelcome {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ViewWelcome window = new ViewWelcome();
-					window.frmInicioSm.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+		EventQueue.invokeLater(() -> {
+			try {
+				ViewWelcome window = new ViewWelcome();
+				window.frmInicioSm.setVisible(true);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		});
 	}
 
 	/**
 	 * Create the application.
+	 * @wbp.parser.entryPoint 
 	 */
 	public ViewWelcome() {
 		initialize();
@@ -69,22 +66,26 @@ public class ViewWelcome {
 		JButton btnEmisor = new JButton("Emisor");
 		btnEmisor.setFont(new Font("Calibri", Font.BOLD, 18));
 		btnEmisor.setBackground(new Color(143, 188, 143));
+		btnEmisor.addActionListener( e -> {
+			new ViewEmisor();
+			frmInicioSm.dispose();
+		});
 		panel_1.add(btnEmisor);
 		
 		JButton btnReceptor = new JButton("Receptor");
 		btnReceptor.setFont(new Font("Calibri", Font.BOLD, 18));
 		btnReceptor.setBackground(new Color(173, 216, 230));
+		btnReceptor.addActionListener( e -> {
+			new ViewReceptor();
+			frmInicioSm.dispose();
+		});
 		panel_1.add(btnReceptor);
 		
 		JButton btnSalir = new JButton("Salir");
 		btnSalir.setFont(new Font("Calibri", Font.BOLD, 18));
 		btnSalir.setBackground(new Color(255, 160, 122));
 		panel_1.add(btnSalir);
-		btnSalir.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent click) {
-				System.exit(0);
-			}
-		});
+		btnSalir.addActionListener(click -> System.exit(0));
 	}
 
 }

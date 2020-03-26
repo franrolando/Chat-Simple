@@ -39,23 +39,8 @@ public class ViewEmisor {
 	private JPanel panel_5;
 	private JLabel lblCuerpo;
 	private JTextArea textAreaCuerpo;
-	private JComboBox comboBoxIP;
+	private JComboBox<String> comboBoxIP;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ViewEmisor window = new ViewEmisor();
-					window.frmMensaje.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the application.
@@ -70,17 +55,24 @@ public class ViewEmisor {
 	private void initialize() {
 		frmMensaje = new JFrame();
 		frmMensaje.getContentPane().setBackground(new Color(240, 230, 140));
+		frmMensaje.setVisible(true);
 		
 		JPanel panel = new JPanel();
-		FlowLayout flowLayout_2 = (FlowLayout) panel.getLayout();
 		panel.setBackground(new Color(240, 230, 140));
 		frmMensaje.getContentPane().add(panel, BorderLayout.NORTH);
+
+		JLabel lblContactos = new JLabel("Contactos");
+		lblContactos.setFont(new Font("Tahoma", Font.BOLD, 13));
+		panel.add(lblContactos);
 		
-		JLabel lblIP = new JLabel("IP");
+		JComboBox<String> comboBoxContactos = new JComboBox<>();
+		panel.add(comboBoxContactos);
+		
+		JLabel lblIP = new JLabel("Para");
 		lblIP.setFont(new Font("Tahoma", Font.BOLD, 13));
 		panel.add(lblIP);
 		
-		comboBoxIP = new JComboBox();
+		comboBoxIP = new JComboBox<>();
 		panel.add(comboBoxIP);
 		
 		lblPuerto = new JLabel("Puerto");

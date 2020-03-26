@@ -21,22 +21,6 @@ public class ViewReceptor {
 	private JTextField textFieldAsunto;
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ViewReceptor window = new ViewReceptor();
-					window.frmMensajeReceptor.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the application.
 	 */
 	public ViewReceptor() {
@@ -51,6 +35,7 @@ public class ViewReceptor {
 		frmMensajeReceptor.setTitle("Mensaje Receptor");
 		frmMensajeReceptor.setBounds(100, 100, 450, 300);
 		frmMensajeReceptor.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmMensajeReceptor.setVisible(true);
 		
 		JPanel panel = new JPanel();
 		frmMensajeReceptor.getContentPane().add(panel, BorderLayout.CENTER);
