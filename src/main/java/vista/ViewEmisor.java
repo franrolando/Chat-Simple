@@ -1,25 +1,19 @@
 package vista;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import java.awt.Color;
-import javax.swing.JPanel;
 import java.awt.BorderLayout;
-import javax.swing.JTextField;
-import javax.swing.JLabel;
-import javax.swing.JButton;
+import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Font;
-import javax.swing.SwingConstants;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
-import javax.swing.BoxLayout;
-import java.awt.GridLayout;
-import java.awt.FlowLayout;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.CardLayout;
-import javax.swing.JComboBox;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 public class ViewEmisor {
 
