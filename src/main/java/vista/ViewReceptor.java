@@ -16,12 +16,23 @@ import javax.swing.JTabbedPane;
 
 public class ViewReceptor {
 
-	private JFrame frmMensajeReceptor;
-	private JTextField textFieldPuerto;
+	private JFrame frmReceptor;
 	private JTextField textFieldAsunto;
 
+	public static void main(String[] args) {
+		EventQueue.invokeLater(() -> {
+			try {
+				ViewReceptor window = new ViewReceptor();
+				window.frmReceptor.setVisible(true);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		});
+	}
+		
 	/**
 	 * Create the application.
+	 * @wbp.parser.entryPoint
 	 */
 	public ViewReceptor() {
 		initialize();
@@ -31,31 +42,19 @@ public class ViewReceptor {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frmMensajeReceptor = new JFrame();
-		frmMensajeReceptor.setTitle("Mensaje Receptor");
-		frmMensajeReceptor.setBounds(100, 100, 450, 300);
-		frmMensajeReceptor.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmMensajeReceptor.setVisible(true);
+		frmReceptor = new JFrame();
+		frmReceptor.setResizable(false);
+		frmReceptor.setTitle("Mensaje Receptor");
+		frmReceptor.setBounds(100, 100, 704, 474);
+		frmReceptor.setSize(700,500);
+		frmReceptor.setLocationRelativeTo(null);
+		frmReceptor.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmReceptor.setVisible(true);
 		
 		JPanel panel = new JPanel();
-		frmMensajeReceptor.getContentPane().add(panel, BorderLayout.CENTER);
+		panel.setBackground(new Color(240, 230, 140));
+		frmReceptor.getContentPane().add(panel, BorderLayout.CENTER);
 		panel.setLayout(new BorderLayout(0, 0));
-		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(new Color(240, 230, 140));
-		panel.add(panel_1, BorderLayout.NORTH);
-		
-		JLabel lblPuerto = new JLabel("Puerto");
-		lblPuerto.setFont(new Font("Tahoma", Font.BOLD, 13));
-		panel_1.add(lblPuerto);
-		
-		textFieldPuerto = new JTextField();
-		panel_1.add(textFieldPuerto);
-		textFieldPuerto.setColumns(10);
-		
-		JButton btnEscuchar = new JButton("Escuchar");
-		panel_1.add(btnEscuchar);
-		btnEscuchar.setFont(new Font("Calibri", Font.BOLD, 16));
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -79,9 +78,11 @@ public class ViewReceptor {
 		
 		textFieldAsunto = new JTextField();
 		panel_4.add(textFieldAsunto);
-		textFieldAsunto.setColumns(10);
+		textFieldAsunto.setColumns(55);
 		
 		JPanel panel_2 = new JPanel();
+		FlowLayout flowLayout_3 = (FlowLayout) panel_2.getLayout();
+		flowLayout_3.setAlignment(FlowLayout.LEFT);
 		panel_2.setBackground(new Color(240, 230, 140));
 		panel_3.add(panel_2, BorderLayout.SOUTH);
 		
@@ -90,19 +91,30 @@ public class ViewReceptor {
 		panel_2.add(btnSilenciar);
 		
 		JPanel panel_5 = new JPanel();
-		FlowLayout flowLayout_1 = (FlowLayout) panel_5.getLayout();
-		flowLayout_1.setAlignment(FlowLayout.LEFT);
 		panel_5.setBackground(new Color(240, 230, 140));
 		panel_3.add(panel_5, BorderLayout.CENTER);
+		panel_5.setLayout(new BorderLayout(0, 0));
+		
+		JPanel panel_1 = new JPanel();
+		FlowLayout flowLayout_1 = (FlowLayout) panel_1.getLayout();
+		flowLayout_1.setAlignment(FlowLayout.LEFT);
+		panel_1.setBackground(new Color(240, 230, 140));
+		panel_5.add(panel_1, BorderLayout.NORTH);
 		
 		JLabel lblCuerpo = new JLabel("Cuerpo");
 		lblCuerpo.setFont(new Font("Tahoma", Font.BOLD, 13));
-		panel_5.add(lblCuerpo);
+		panel_1.add(lblCuerpo);
 		
-		JTextArea textAreaCuerpo = new JTextArea();
-		textAreaCuerpo.setColumns(45);
-		textAreaCuerpo.setRows(5);
-		panel_5.add(textAreaCuerpo);
+		JPanel panel_6 = new JPanel();
+		FlowLayout flowLayout_2 = (FlowLayout) panel_6.getLayout();
+		panel_6.setBackground(new Color(240, 230, 140));
+		panel_5.add(panel_6, BorderLayout.CENTER);
+		
+		JTextArea textArea = new JTextArea();
+		textArea.setLineWrap(true);
+		textArea.setRows(21);
+		textArea.setColumns(61);
+		panel_6.add(textArea);
 	}
 
 }

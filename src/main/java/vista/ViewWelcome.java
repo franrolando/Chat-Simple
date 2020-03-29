@@ -45,7 +45,9 @@ public class ViewWelcome {
 	private void initialize() {
 		frmInicioSm = new JFrame();
 		frmInicioSm.setTitle("Inicio SM");
-		frmInicioSm.setBounds(100, 100, 440, 168);
+		frmInicioSm.setBounds(100, 100, 642, 306);
+		frmInicioSm.setSize(500,250);
+		frmInicioSm.setLocationRelativeTo(null);
 		frmInicioSm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JPanel panel = new JPanel();
