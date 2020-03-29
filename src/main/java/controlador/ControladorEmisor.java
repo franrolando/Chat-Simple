@@ -11,8 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import com.sun.org.slf4j.internal.Logger;
-import com.sun.org.slf4j.internal.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import Utils.Utils;
 import modelo.Mensaje;
@@ -22,7 +22,7 @@ import modelo.Receptor;
 
 public class ControladorEmisor {
 
-	private static Logger log = LoggerFactory.getLogger(ControladorEmisor.class);
+	private final static Logger log = LoggerFactory.getLogger(ControladorEmisor.class);
 	private static ControladorEmisor instance;
 	private static Integer PUERTO = 8090;
 
@@ -52,7 +52,7 @@ public class ControladorEmisor {
 			socketUDP = new DatagramSocket();
 			buffer = Utils.toByteArray(mensaje);
 			DatagramPacket pregunta = new DatagramPacket(buffer, buffer.length, direccionServidor, PUERTO);
-			System.out.println("Envio el datagrama");
+			log.info("Envio el datagrama");
 			socketUDP.send(pregunta);
 //	            DatagramPacket peticion = new DatagramPacket(buffer, buffer.length);
 //	            socketUDP.receive(peticion);

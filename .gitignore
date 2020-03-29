@@ -1,3 +1,7 @@
 *.class
 *.properties
 target/
+.gwt/
+.settings/
+.project
+.classpath
