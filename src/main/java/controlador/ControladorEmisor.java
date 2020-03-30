@@ -24,7 +24,7 @@ public class ControladorEmisor {
 
 	private final static Logger log = LoggerFactory.getLogger(ControladorEmisor.class);
 	private static ControladorEmisor instance;
-	private static Integer PUERTO = 8090;
+	private final static Integer PUERTO = 8090;
 
 	private ControladorEmisor() {
 		super();
