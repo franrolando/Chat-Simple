@@ -1,12 +1,11 @@
 import static org.junit.Assert.assertTrue;
 
-import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +13,6 @@ import org.junit.Test;
 
 import Utils.Utils;
 import controlador.ControladorEmisor;
-import controlador.ControladorReceptor;
 import modelo.Mensaje;
 import modelo.MensajeAvisoRecep;
 import modelo.Receptor;
@@ -41,19 +39,18 @@ public class EnvioMensajesTest {
 	public void testMensajeSimple() {
 		DatagramSocket socketUDP = null;
 		ServerSocket socket = null;
-		DataInputStream in = null; 
 		try {
 			socketUDP = new DatagramSocket(8090);
 			socket = new ServerSocket(8090);
-			Socket socket_cli = socket.accept();
-			in = new DataInputStream(socket_cli.getInputStream());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		MensajeAvisoRecep mensaje = new MensajeAvisoRecep();
+		Mensaje mensaje = new MensajeAvisoRecep();
 		MensajeAvisoRecep mensaje2 = new MensajeAvisoRecep();
 		mensaje.setCuerpo("dasdsadas");
 		mensaje.setAsunto("ddd");
+		mensaje2.setCuerpo("aaaaa");
+		mensaje2.setAsunto("bbb");
 		List<Receptor> destinos = new ArrayList<>();
 		Receptor rec = new Receptor();
 		rec.setNombreUsuario("pepe");
@@ -64,11 +61,13 @@ public class EnvioMensajesTest {
 		byte[] buffer = new byte[1024];
 		Mensaje message;
 		try {
-//			String mensaje4 = "";
-//			do {
-//				mensaje4 = in.readUTF();
-//				System.out.println(mensaje4);
-//			} while (mensaje4 == null);
+			Socket socket_cli = socket.accept();
+			ObjectInputStream in = new ObjectInputStream(socket_cli.getInputStream());
+			try {
+				System.out.println(((Mensaje) in.readObject()).getTipo());
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
 			do {
 				DatagramPacket pregunta = new DatagramPacket(buffer, buffer.length);
 
@@ -76,12 +75,11 @@ public class EnvioMensajesTest {
 
 				message = Utils.toObject(pregunta.getData());
 				System.out.println(message.getTipo());
-//           	    DatagramPacket peticion = new DatagramPacket(buffer, buffer.length);
-//                socketUDP.receive(peticion);
-//                System.out.println("Recibo la peticion");
-//                mensaje = new Mensaje(peticion.getData());
-//                System.out.println(mensaje)
-
+				DatagramPacket peticion = new DatagramPacket(buffer, buffer.length);
+				socketUDP.receive(peticion);
+				System.out.println("Recibo la peticion");
+				mensaje = Utils.toObject(peticion.getData());
+				System.out.println(mensaje);
 			} while (message == null);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

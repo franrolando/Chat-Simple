@@ -1,7 +1,7 @@
 package controlador;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -72,9 +72,9 @@ public class ControladorEmisor {
 		Map<String, Boolean> mensajesRecibidos = new HashMap<>();
 		destinos.stream().forEach(destino -> {
 			try {
-				Socket socket = new Socket(destino.getIp(), PUERTO);
-				PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-				out.println(mensaje);
+				Socket socket = new Socket("localhost", PUERTO);
+				ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+				out.writeObject(mensaje);
 				out.close();
 				socket.close();
 				mensajesRecibidos.put(mensaje.getEmisor(), true);
