@@ -4,6 +4,11 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -15,6 +20,7 @@ import javax.swing.JRadioButton;
 import java.awt.FlowLayout;
 import javax.swing.JTextArea;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.border.LineBorder;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -22,21 +28,22 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JList;
-import com.jgoodies.forms.factories.DefaultComponentFactory;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 
-public class ViewEmisor {
+public class ViewEmisor implements ActionListener {
 
 	private JFrame frmMensajeEmisor;
 	private JTextField textFieldAsunto;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 	private JTextField textFieldDestinatarios;
+	private JTextField textFieldReceptor;
 	private JTextField textFieldAsunto2;
-	private JTextField textFieldDestinatarios2;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public static void AbrirEmisor() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -70,46 +77,33 @@ public class ViewEmisor {
 		frmMensajeEmisor.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmMensajeEmisor.getContentPane().setLayout(new GridLayout(1, 0, 0, 0));
 		
-		JPanel panel = new JPanel();
-		panel.setBorder(new LineBorder(Color.GRAY));
-		panel.setBackground(new Color(240, 230, 140));
-		frmMensajeEmisor.getContentPane().add(panel);
-		panel.setLayout(new GridLayout(0, 6, 0, 0));
+		ImageIcon imgEmisor = new ImageIcon("C:\\Users\\Lautaro\\Documents\\Facultad\\4º Año\\Análisis y Diseño de Sistemas II\\AyD2\\src\\main\\img\\email-icon.png");
+		frmMensajeEmisor.setIconImage(imgEmisor.getImage());
 		
-		JLabel lblDestinatarios2 = new JLabel("Destinatarios");
-		lblDestinatarios2.setFont(new Font("Tahoma", Font.BOLD, 13));
-		panel.add(lblDestinatarios2);
+		JScrollPane scrollPane1 = new JScrollPane();
+		frmMensajeEmisor.getContentPane().add(scrollPane1);
 		
-		textFieldDestinatarios2 = new JTextField();
-		panel.add(textFieldDestinatarios2);
-		textFieldDestinatarios2.setColumns(10);
+		JPanel panelM = new JPanel();
+		panelM.setBackground(new Color(240, 230, 140));
+		scrollPane1.setColumnHeaderView(panelM);
 		
-		JLabel lblAsunto2 = new JLabel("Asunto");
-		lblAsunto2.setFont(new Font("Tahoma", Font.BOLD, 13));
-		panel.add(lblAsunto2);
+		JLabel lblMensajesConAviso = new JLabel("Mensajes con aviso de recepci\u00F3n:");
+		lblMensajesConAviso.setFont(new Font("Tahoma", Font.BOLD, 13));
+		panelM.add(lblMensajesConAviso);
 		
-		textFieldAsunto2 = new JTextField();
-		panel.add(textFieldAsunto2);
-		textFieldAsunto2.setColumns(10);
+		JPanel panelMensajesConAviso = new JPanel();
+		panelMensajesConAviso.setBackground(new Color(240, 230, 140));
+		scrollPane1.setViewportView(panelMensajesConAviso);
+		panelMensajesConAviso.setLayout(new GridLayout(0, 1, 0, 0));
 		
-		JCheckBox chckbxRecibido = new JCheckBox("Recibido");
-		chckbxRecibido.setFont(new Font("Tahoma", Font.BOLD, 13));
-		chckbxRecibido.setBackground(new Color(240, 230, 140));
-		panel.add(chckbxRecibido);
-		
-		JButton btnEliminar = new JButton("Eliminar");
-		btnEliminar.setFont(new Font("Tahoma", Font.BOLD, 14));
-		btnEliminar.setBackground(new Color(240, 230, 140));
-		panel.add(btnEliminar);
-		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new LineBorder(Color.GRAY));
-		frmMensajeEmisor.getContentPane().add(panel_1);
-		panel_1.setLayout(new BorderLayout(0, 0));
+		JPanel panelNuevoMensaje = new JPanel();
+		panelNuevoMensaje.setBorder(new LineBorder(Color.GRAY));
+		frmMensajeEmisor.getContentPane().add(panelNuevoMensaje);
+		panelNuevoMensaje.setLayout(new BorderLayout(0, 0));
 		
 		JPanel panel_2 = new JPanel();
 		panel_2.setBackground(new Color(240, 230, 140));
-		panel_1.add(panel_2, BorderLayout.NORTH);
+		panelNuevoMensaje.add(panel_2, BorderLayout.NORTH);
 		panel_2.setLayout(new BorderLayout(0, 0));
 		
 		JPanel panel_10 = new JPanel();
@@ -139,15 +133,11 @@ public class ViewEmisor {
 		
 		JPanel panel_3 = new JPanel();
 		panel_3.setBackground(new Color(240, 230, 140));
-		panel_1.add(panel_3, BorderLayout.SOUTH);
-		
-		JButton btnEnviar = new JButton("Enviar");
-		btnEnviar.setFont(new Font("Tahoma", Font.BOLD, 14));
-		panel_3.add(btnEnviar);
+		panelNuevoMensaje.add(panel_3, BorderLayout.SOUTH);
 		
 		JPanel panel_4 = new JPanel();
 		panel_4.setBackground(new Color(240, 230, 140));
-		panel_1.add(panel_4, BorderLayout.CENTER);
+		panelNuevoMensaje.add(panel_4, BorderLayout.CENTER);
 		panel_4.setLayout(new BorderLayout(0, 0));
 		
 		JPanel panel_5 = new JPanel();
@@ -203,14 +193,97 @@ public class ViewEmisor {
 		
 		JPanel panel_9 = new JPanel();
 		panel_9.setBackground(new Color(240, 230, 140));
-		FlowLayout flowLayout_2 = (FlowLayout) panel_9.getLayout();
 		panel_7.add(panel_9, BorderLayout.CENTER);
+		panel_9.setLayout(new BorderLayout(0, 0));
 		
-		JTextArea textAreaCuerpo = new JTextArea();
-		textAreaCuerpo.setLineWrap(true);
-		textAreaCuerpo.setRows(25);
-		textAreaCuerpo.setColumns(43);
-		panel_9.add(textAreaCuerpo);
+		JScrollPane scrollPane = new JScrollPane();
+		panel_9.add(scrollPane);
+		
+		JTextArea textArea = new JTextArea();
+		textArea.setLineWrap(true);
+		scrollPane.setViewportView(textArea);
+		
+		ImageIcon imgEnviar = new ImageIcon("C:\\Users\\Lautaro\\Documents\\Facultad\\4º Año\\Análisis y Diseño de Sistemas II\\AyD2\\src\\main\\img\\ok.png");
+		JButton btnEnviar = new JButton("Enviar",imgEnviar);
+		btnEnviar.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (rdbtnAvisoDeRecepcion.isSelected()) {
+					creaNuevoMensajeAviso(frmMensajeEmisor,panelMensajesConAviso);
+					
+				}
+			}
+			
+		});
+		btnEnviar.setFont(new Font("Tahoma", Font.BOLD, 14));
+		panel_3.add(btnEnviar);
+	}
+	
+	public void creaNuevoMensajeAviso(JFrame frmMensajeEmisor, JPanel panelMensajesConAviso) {
+		
+		JPanel panel = new JPanel();
+		panel.setBorder(new LineBorder(Color.DARK_GRAY, 1, true));
+		panelMensajesConAviso.add(panel);
+		panel.setLayout(new BorderLayout(0, 0));
+		
+		JPanel panel_13 = new JPanel();
+		panel.add(panel_13, BorderLayout.NORTH);
+		panel_13.setBackground(Color.LIGHT_GRAY);
+		FlowLayout flowLayout_4 = (FlowLayout) panel_13.getLayout();
+		flowLayout_4.setAlignment(FlowLayout.LEFT);
+		
+		JLabel lblReceptor = new JLabel("Receptor");
+		lblReceptor.setFont(new Font("Tahoma", Font.BOLD, 13));
+		panel_13.add(lblReceptor);
+		
+		textFieldReceptor = new JTextField();
+		panel_13.add(textFieldReceptor);
+		textFieldReceptor.setColumns(36);
+		
+		JPanel panel_14 = new JPanel();
+		panel.add(panel_14);
+		panel_14.setBackground(Color.LIGHT_GRAY);
+		FlowLayout flowLayout_5 = (FlowLayout) panel_14.getLayout();
+		flowLayout_5.setAlignment(FlowLayout.LEFT);
+		
+		JLabel lblAsunto2 = new JLabel("Asunto ");
+		lblAsunto2.setFont(new Font("Tahoma", Font.BOLD, 13));
+		panel_14.add(lblAsunto2);
+		
+		textFieldAsunto2 = new JTextField();
+		panel_14.add(textFieldAsunto2);
+		textFieldAsunto2.setColumns(37);
+		
+		JPanel panel_15 = new JPanel();
+		panel.add(panel_15, BorderLayout.SOUTH);
+		panel_15.setBackground(Color.LIGHT_GRAY);
+		
+		JCheckBox chckbxRecibido = new JCheckBox("Recibido");
+		chckbxRecibido.setBackground(Color.LIGHT_GRAY);
+		chckbxRecibido.setFont(new Font("Tahoma", Font.BOLD, 14));
+		chckbxRecibido.setEnabled(false);
+		panel_15.add(chckbxRecibido);
+		JButton buttonEliminar = new JButton("Eliminar",new ImageIcon("C:\\Users\\Lautaro\\Documents\\Facultad\\4\u00BA A\u00F1o\\An\u00E1lisis y Dise\u00F1o de Sistemas II\\AyD2\\src\\main\\img\\cruz-eliminar.png"));
+		buttonEliminar.setFont(new Font("Tahoma", Font.BOLD, 14));
+		panel_15.add(buttonEliminar);
+		buttonEliminar.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				panelMensajesConAviso.remove(panel);
+				panelMensajesConAviso.validate();
+				panelMensajesConAviso.repaint();
+			}
+			
+		});
+		
+		frmMensajeEmisor.validate();
+		frmMensajeEmisor.repaint();
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
 	}
 
 }
