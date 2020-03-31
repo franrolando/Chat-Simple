@@ -1,5 +1,7 @@
 package vista;
 
+import java.applet.Applet;
+import java.applet.AudioClip;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -7,11 +9,21 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
@@ -24,7 +36,7 @@ import modelo.Mensaje;
 
 import javax.swing.JScrollPane;
 
-public class ViewReceptor implements ActionListener{
+public class ViewReceptor implements ActionListener, AudioClip{
 
 	private JFrame frmReceptor;
 	private JTextField textFieldAsunto;
@@ -80,7 +92,7 @@ public class ViewReceptor implements ActionListener{
 		tabbedPane.setVisible(true);
 	}
 	
-	public void creaNuevaTab(JTabbedPane tabbedPane, String emisor, String asunto, String mensaje, ETipoMensaje tipoMensaje) {
+	public void creaNuevaTab(JTabbedPane tabbedPane, String emisor, String asunto, String mensaje, ETipoMensaje tipoMensaje) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(240, 230, 140));
@@ -113,6 +125,23 @@ public class ViewReceptor implements ActionListener{
 			JButton btnSilenciar = new JButton("Silenciar",imgSilenciar);
 			btnSilenciar.setFont(new Font("Tahoma", Font.BOLD, 14));
 			panel2.add(btnSilenciar);
+			
+			String filePath = ("./src/main/audio/Industrial Alarm.wav");
+			AudioInputStream audioAlarma = AudioSystem.getAudioInputStream(new File(filePath).getAbsoluteFile()); 
+			Clip clipAlarma = AudioSystem.getClip();
+			clipAlarma.open(audioAlarma);
+			clipAlarma.start();
+			clipAlarma.loop(clipAlarma.LOOP_CONTINUOUSLY);
+			
+			btnSilenciar.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					clipAlarma.close();
+				}
+				
+			});
+			 
 		}
 		
 		ImageIcon imgEliminarR = new ImageIcon("./src/main/img/cruz-eliminar.png");
@@ -170,7 +199,18 @@ public class ViewReceptor implements ActionListener{
 			public void run() {	
 				while (true) {
 					Mensaje mensajeUDP = ControladorReceptor.getInstance().receptionMessageUDP();
-					creaNuevaTab(tabbedPane, mensajeUDP.getEmisor(), mensajeUDP.getAsunto(), mensajeUDP.getCuerpo(), mensajeUDP.getTipo());
+					try {
+						creaNuevaTab(tabbedPane, mensajeUDP.getEmisor(), mensajeUDP.getAsunto(), mensajeUDP.getCuerpo(), mensajeUDP.getTipo());
+					} catch (UnsupportedAudioFileException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (LineUnavailableException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}
 			
@@ -181,13 +221,42 @@ public class ViewReceptor implements ActionListener{
 			public void run() {
 				while (true) {
 					Mensaje mensajeTCP = ControladorReceptor.getInstance().leerMensajeAvisoRecepcion();
-					creaNuevaTab(tabbedPane, mensajeTCP.getEmisor(), mensajeTCP.getAsunto(), mensajeTCP.getCuerpo(), ETipoMensaje.CONAVISORECEPCION);
+					try {
+						creaNuevaTab(tabbedPane, mensajeTCP.getEmisor(), mensajeTCP.getAsunto(), mensajeTCP.getCuerpo(), ETipoMensaje.CONAVISORECEPCION);
+					} catch (UnsupportedAudioFileException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (LineUnavailableException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}
 
 		};
 		tcpThread.start();
 		udpThread.start();
+	}
+
+	@Override
+	public void play() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void loop() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void stop() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
