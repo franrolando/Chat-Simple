@@ -113,6 +113,7 @@ public class ViewReceptor implements ActionListener, AudioClip{
 		textFieldAsunto.setText(asunto);
 		panel1.add(textFieldAsunto);
 		textFieldAsunto.setColumns(55);
+		textFieldAsunto.setEditable(false);
 		
 		JPanel panel2 = new JPanel();
 		FlowLayout flowLayout_3 = (FlowLayout) panel2.getLayout();
@@ -120,16 +121,17 @@ public class ViewReceptor implements ActionListener, AudioClip{
 		panel2.setBackground(new Color(240, 230, 140));
 		panel.add(panel2, BorderLayout.SOUTH);
 		
+		String filePath = ("./src/main/audio/Industrial Alarm.wav");
+		AudioInputStream audioAlarma = AudioSystem.getAudioInputStream(new File(filePath).getAbsoluteFile()); 
+		Clip clipAlarma = AudioSystem.getClip();
+		clipAlarma.open(audioAlarma);
+		
 		if (tipoMensaje.equals(ETipoMensaje.CONALERTASONIDO)) {
 			ImageIcon imgSilenciar = new ImageIcon("./src/main/img/mute.png");
 			JButton btnSilenciar = new JButton("Silenciar",imgSilenciar);
 			btnSilenciar.setFont(new Font("Tahoma", Font.BOLD, 14));
 			panel2.add(btnSilenciar);
 			
-			String filePath = ("./src/main/audio/Industrial Alarm.wav");
-			AudioInputStream audioAlarma = AudioSystem.getAudioInputStream(new File(filePath).getAbsoluteFile()); 
-			Clip clipAlarma = AudioSystem.getClip();
-			clipAlarma.open(audioAlarma);
 			clipAlarma.start();
 			clipAlarma.loop(clipAlarma.LOOP_CONTINUOUSLY);
 			
@@ -152,6 +154,7 @@ public class ViewReceptor implements ActionListener, AudioClip{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				clipAlarma.close();
 				tabbedPane.remove(tabbedPane.getSelectedIndex());
 			}
 			
@@ -184,6 +187,7 @@ public class ViewReceptor implements ActionListener, AudioClip{
 		textArea.setText(mensaje);
 		textArea.setLineWrap(true);
 		scrollPane.setViewportView(textArea);
+		textArea.setEditable(false);
 	}
 
 	@Override

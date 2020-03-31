@@ -7,6 +7,8 @@ import java.awt.GridLayout;
 import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
@@ -254,6 +256,43 @@ public class ViewEmisor implements ActionListener {
 
 		ImageIcon imgEnviar = new ImageIcon("./src/main/img/ok.png");
 		JButton btnEnviar = new JButton("Enviar", imgEnviar);
+		btnEnviar.setEnabled(false);
+		
+		textArea.addKeyListener(new KeyListener(){
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				if (textArea.getText().isEmpty()) {
+					btnEnviar.setEnabled(false);
+				}  else {
+					btnEnviar.setEnabled(true);
+				}	
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+				if (textArea.getText().isEmpty()) {
+					btnEnviar.setEnabled(false);
+				}  else {
+					btnEnviar.setEnabled(true);
+				}				
+
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				if (textArea.getText().isEmpty()) {
+					btnEnviar.setEnabled(false);
+				}  else {
+					btnEnviar.setEnabled(true);
+				}
+			}
+			
+		});
+		
 		btnEnviar.addActionListener(new ActionListener() {
 
 			@Override
@@ -272,6 +311,8 @@ public class ViewEmisor implements ActionListener {
 					completeDTO(mensaje);
 					ControladorEmisor.getInstance().enviarMensajeSimple(mensaje, destinos);
 				}
+				
+				btnEnviar.setEnabled(false);
 				
 				textArea.setText("");
 				textFieldAsunto.setText("");
