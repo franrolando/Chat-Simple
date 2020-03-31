@@ -18,6 +18,8 @@ public class ControladorReceptor {
 	private final static Logger log = LoggerFactory.getLogger(ControladorReceptor.class);
 	private static ControladorReceptor instance;
 	private final static Integer PUERTO = 8090;
+	private DatagramSocket socketUDP = null;	
+	private ServerSocket socket = null;
 
 	private ControladorReceptor() {
 		super();
@@ -31,44 +33,39 @@ public class ControladorReceptor {
 	}
 
 	public Mensaje receptionMessageUDP() {
-		DatagramSocket socketUDP = null;
 		Mensaje message = null;
 		try {
 			byte[] buffer = new byte[1024];
-			socketUDP = new DatagramSocket(PUERTO);
-			int cont = 0;
-			do {
-				DatagramPacket pregunta = new DatagramPacket(buffer, buffer.length);
-				socketUDP.receive(pregunta);
-				log.info("Recepcion de datagrama");
-				message = Utils.toObject(pregunta.getData());
-				System.out.println(message);
-				cont++;
-			} while (message == null && cont < 3);
+			DatagramPacket pregunta = new DatagramPacket(buffer, buffer.length);
+			socketUDP.receive(pregunta);
+			log.info("Recepcion de datagrama");
+			message = Utils.toObject(pregunta.getData());
+			System.out.println(message);
 		} catch (IOException e) {
 			log.error("ERROR:", e);
-		} finally {
-			if (!Objects.isNull(socketUDP)) {
-				socketUDP.close(); 
-			}
-		}
+		} 
 		return message;
 	}
 
 	public MensajeAvisoRecep leerMensajeAvisoRecepcion() {
-		ServerSocket socket;
 		MensajeAvisoRecep mensaje = null;
 		try {
-			socket = new ServerSocket(8090);
 			ObjectInputStream in = new ObjectInputStream(socket.accept().getInputStream());
-			do {
-				mensaje = (MensajeAvisoRecep) in.readObject();
-				log.info(mensaje.toString());
-			} while (mensaje == null);
+			mensaje = (MensajeAvisoRecep) in.readObject();
+			log.info(mensaje.toString());
 		} catch (Exception e) {
 			log.error("ERROR:", e);
 		}
 		return mensaje;
+	}
+	
+	public void instanciarSocketServer () {
+		try {
+			socketUDP = new DatagramSocket(PUERTO);
+			socket = new ServerSocket(PUERTO);
+		} catch (IOException e) {
+			log.error("ERROR:", e);
+		}
 	}
 
 }

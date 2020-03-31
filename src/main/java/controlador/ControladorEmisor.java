@@ -54,11 +54,6 @@ public class ControladorEmisor {
 			DatagramPacket pregunta = new DatagramPacket(buffer, buffer.length, direccionServidor, PUERTO);
 			log.info("Envio el datagrama");
 			socketUDP.send(pregunta);
-//	            DatagramPacket peticion = new DatagramPacket(buffer, buffer.length);
-//	            socketUDP.receive(peticion);
-//	            System.out.println("Recibo la peticion");
-//	            mensaje = new Mensaje(peticion.getData());
-//	            System.out.println(mensaje);
 		} catch (IOException e) {
 			log.error("ERROR:", e);
 		} finally {
