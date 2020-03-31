@@ -55,6 +55,7 @@ public class ViewEmisor implements ActionListener {
 	private JTextField textFieldAsunto2;
 	private List<Receptor> destinos = new ArrayList<>();
 	private List<Receptor> contactos;
+	private JTextField textFieldEmisor;
 
 	/**
 	 * Launch the application.
@@ -125,29 +126,6 @@ public class ViewEmisor implements ActionListener {
 		panelNuevoMensaje.add(panel_2, BorderLayout.NORTH);
 		panel_2.setLayout(new BorderLayout(0, 0));
 
-		JPanel panel_10 = new JPanel();
-		panel_10.setBackground(new Color(240, 230, 140));
-		panel_2.add(panel_10, BorderLayout.NORTH);
-
-		JLabel lblContactos = new JLabel("Contactos");
-		lblContactos.setFont(new Font("Tahoma", Font.BOLD, 13));
-		panel_10.add(lblContactos);
-
-		JComboBox comboBoxContactos = new JComboBox();
-		contactos.stream().forEach(receptor->{
-			comboBoxContactos.addItem(receptor);	
-		});
-		
-		comboBoxContactos.addActionListener(event -> {
-			Receptor receptor = (Receptor) comboBoxContactos.getSelectedItem();
-			if (!textFieldDestinatarios.getText().contains(receptor.getNombreUsuario().toString())) {
-				destinos.add(receptor);
-				textFieldDestinatarios.setText(textFieldDestinatarios.getText().isEmpty() ? receptor.getNombreUsuario()
-						: textFieldDestinatarios.getText() + "; " + receptor.getNombreUsuario());
-			}
-		});
-		panel_10.add(comboBoxContactos);
-
 		JPanel panel_11 = new JPanel();
 		panel_11.setBackground(new Color(240, 230, 140));
 		FlowLayout flowLayout_3 = (FlowLayout) panel_11.getLayout();
@@ -159,8 +137,48 @@ public class ViewEmisor implements ActionListener {
 		panel_11.add(lblDestinatarios);
 
 		textFieldDestinatarios = new JTextField();
+		textFieldDestinatarios.setEnabled(false);
 		panel_11.add(textFieldDestinatarios);
 		textFieldDestinatarios.setColumns(35);
+		
+				JPanel panel_10 = new JPanel();
+				panel_2.add(panel_10, BorderLayout.NORTH);
+				panel_10.setBackground(new Color(240, 230, 140));
+				panel_10.setLayout(new GridLayout(0, 1, 0, 0));
+				
+				JPanel panel = new JPanel();
+				panel.setBackground(new Color(240, 230, 140));
+				panel_10.add(panel);
+				
+				JLabel lblContactos = new JLabel("Contactos");
+				panel.add(lblContactos);
+				lblContactos.setFont(new Font("Tahoma", Font.BOLD, 13));
+				
+		JComboBox comboBoxContactos = new JComboBox();
+		panel.add(comboBoxContactos);
+		contactos.stream().forEach(receptor->{
+			comboBoxContactos.addItem(receptor);	
+		});
+		
+		comboBoxContactos.addActionListener(event -> {
+		Receptor receptor = (Receptor) comboBoxContactos.getSelectedItem();
+		if (!textFieldDestinatarios.getText().contains(receptor.getNombreUsuario().toString())) {
+		destinos.add(receptor);
+		textFieldDestinatarios.setText(textFieldDestinatarios.getText().isEmpty() ? receptor.getNombreUsuario()	: textFieldDestinatarios.getText() + "; " + receptor.getNombreUsuario());}});
+		
+		JPanel panel_1 = new JPanel();
+		FlowLayout flowLayout_2 = (FlowLayout) panel_1.getLayout();
+		flowLayout_2.setAlignment(FlowLayout.LEFT);
+		panel_1.setBackground(new Color(240, 230, 140));
+		panel_10.add(panel_1);
+		
+		JLabel lblEmisor = new JLabel("Emisor");
+		lblEmisor.setFont(new Font("Tahoma", Font.BOLD, 13));
+		panel_1.add(lblEmisor);
+		
+		textFieldEmisor = new JTextField();
+		panel_1.add(textFieldEmisor);
+		textFieldEmisor.setColumns(39);
 
 		JPanel panel_3 = new JPanel();
 		panel_3.setBackground(new Color(240, 230, 140));
@@ -234,14 +252,14 @@ public class ViewEmisor implements ActionListener {
 		textArea.setLineWrap(true);
 		scrollPane.setViewportView(textArea);
 
-		ImageIcon imgEnviar = new ImageIcon(
-				"./src/main/img/ok.png");
+		ImageIcon imgEnviar = new ImageIcon("./src/main/img/ok.png");
 		JButton btnEnviar = new JButton("Enviar", imgEnviar);
 		btnEnviar.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				final Mensaje mensaje;
+				
 				if (rdbtnAvisoDeRecepcion.isSelected()) {
 					mensaje = new MensajeAvisoRecep();
 					completeDTO(mensaje);
@@ -254,11 +272,18 @@ public class ViewEmisor implements ActionListener {
 					completeDTO(mensaje);
 					ControladorEmisor.getInstance().enviarMensajeSimple(mensaje, destinos);
 				}
+				
+				textArea.setText("");
+				textFieldAsunto.setText("");
+				textFieldDestinatarios.setText("");
+				
+				destinos.removeAll(destinos);
 			}
 
 			private void completeDTO(Mensaje mensaje) {
 				mensaje.setAsunto(textFieldAsunto.getText());
 				mensaje.setCuerpo(textArea.getText());
+				mensaje.setEmisor(textFieldEmisor.getText());
 			}
 			
 		});
@@ -335,8 +360,7 @@ public class ViewEmisor implements ActionListener {
 		chckbxRecibido.setEnabled(false);
 		chckbxRecibido.setSelected(recibido);
 		panel_15.add(chckbxRecibido);
-		JButton buttonEliminar = new JButton("Eliminar", new ImageIcon(
-				"./src/main/img/cruz-eliminar.png"));
+		JButton buttonEliminar = new JButton("Eliminar", new ImageIcon("./src/main/img/cruz-eliminar.png"));
 		buttonEliminar.setFont(new Font("Tahoma", Font.BOLD, 14));
 		panel_15.add(buttonEliminar);
 		buttonEliminar.addActionListener(new ActionListener() {
