@@ -1,7 +1,7 @@
 package controlador;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -24,7 +24,7 @@ public class ControladorEmisor {
 
 	private final static Logger log = LoggerFactory.getLogger(ControladorEmisor.class);
 	private static ControladorEmisor instance;
-	private static Integer PUERTO = 8090;
+	private final static Integer PUERTO = 8090;
 
 	private ControladorEmisor() {
 		super();
@@ -54,11 +54,6 @@ public class ControladorEmisor {
 			DatagramPacket pregunta = new DatagramPacket(buffer, buffer.length, direccionServidor, PUERTO);
 			log.info("Envio el datagrama");
 			socketUDP.send(pregunta);
-//	            DatagramPacket peticion = new DatagramPacket(buffer, buffer.length);
-//	            socketUDP.receive(peticion);
-//	            System.out.println("Recibo la peticion");
-//	            mensaje = new Mensaje(peticion.getData());
-//	            System.out.println(mensaje);
 		} catch (IOException e) {
 			log.error("ERROR:", e);
 		} finally {
@@ -68,18 +63,18 @@ public class ControladorEmisor {
 		}
 	}
 
-	public Map<String, Boolean> enviarMensajeAvisoRecepcion(MensajeAvisoRecep mensaje, List<Receptor> destinos) {
+	public Map<String, Boolean> enviarMensajeAvisoRecepcion(Mensaje mensaje, List<Receptor> destinos) {
 		Map<String, Boolean> mensajesRecibidos = new HashMap<>();
 		destinos.stream().forEach(destino -> {
 			try {
-				Socket socket = new Socket(destino.getIp(), PUERTO);
-				PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-				out.println(mensaje);
+				Socket socket = new Socket("localhost", PUERTO);
+				ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+				out.writeObject(mensaje);
 				out.close();
 				socket.close();
-				mensajesRecibidos.put(mensaje.getEmisor(), true);
+				mensajesRecibidos.put(destino.getNombreUsuario(), true);
 			} catch (Exception e) {
-				mensajesRecibidos.put(mensaje.getEmisor(), false);
+				mensajesRecibidos.put(destino.getNombreUsuario(), false);
 				log.error("ERROR:", e);
 			}
 		});

@@ -13,5 +13,12 @@ public class Receptor extends Usuario implements Serializable {
 	public void setIp(String ip) {
 		this.ip = ip;
 	}
+
+	@Override
+	public String toString() {
+		return getNombreUsuario();
+	}
+	
+	
 	
 }
