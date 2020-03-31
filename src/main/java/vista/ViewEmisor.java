@@ -53,7 +53,8 @@ public class ViewEmisor implements ActionListener {
 	private JTextField textFieldDestinatarios;
 	private JTextField textFieldReceptor;
 	private JTextField textFieldAsunto2;
-	private List<Receptor> destinos;
+	private List<Receptor> destinos = new ArrayList<>();
+	private List<Receptor> contactos;
 
 	/**
 	 * Launch the application.
@@ -75,7 +76,7 @@ public class ViewEmisor implements ActionListener {
 	 * Create the application.
 	 */
 	public ViewEmisor() {
-		destinos = getListaContactos();
+		contactos = getListaContactos();
 		initialize();
 	}
 
@@ -92,6 +93,7 @@ public class ViewEmisor implements ActionListener {
 		frmMensajeEmisor.setLocationRelativeTo(null);
 		frmMensajeEmisor.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmMensajeEmisor.getContentPane().setLayout(new GridLayout(1, 0, 0, 0));
+		frmMensajeEmisor.setVisible(true);
 
 		ImageIcon imgEmisor = new ImageIcon(
 				"./src/main/img/email-icon.png");
@@ -132,10 +134,18 @@ public class ViewEmisor implements ActionListener {
 		panel_10.add(lblContactos);
 
 		JComboBox comboBoxContactos = new JComboBox();
-		destinos.stream().forEach(receptor->{
+		contactos.stream().forEach(receptor->{
 			comboBoxContactos.addItem(receptor);	
 		});
 		
+		comboBoxContactos.addActionListener(event -> {
+			Receptor receptor = (Receptor) comboBoxContactos.getSelectedItem();
+			if (!textFieldDestinatarios.getText().contains(receptor.getNombreUsuario().toString())) {
+				destinos.add(receptor);
+				textFieldDestinatarios.setText(textFieldDestinatarios.getText().isEmpty() ? receptor.getNombreUsuario()
+						: textFieldDestinatarios.getText() + "; " + receptor.getNombreUsuario());
+			}
+		});
 		panel_10.add(comboBoxContactos);
 
 		JPanel panel_11 = new JPanel();
@@ -231,12 +241,14 @@ public class ViewEmisor implements ActionListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Mensaje mensaje = null;
+				final Mensaje mensaje;
 				if (rdbtnAvisoDeRecepcion.isSelected()) {
 					mensaje = new MensajeAvisoRecep();
 					completeDTO(mensaje);
-					creaNuevoMensajeAviso(frmMensajeEmisor, panelMensajesConAviso);
-					ControladorEmisor.getInstance().enviarMensajeAvisoRecepcion(mensaje, destinos);
+					Map<String, Boolean> resp = ControladorEmisor.getInstance().enviarMensajeAvisoRecepcion(mensaje, destinos);
+					resp.forEach( (K,V)-> {
+						creaNuevoMensajeAviso(frmMensajeEmisor, panelMensajesConAviso, mensaje.getAsunto(), K, V);
+					});
 				} else {
 					mensaje = rdbtnAlerta.isSelected() ? new MensajeAlerta() : new Mensaje();
 					completeDTO(mensaje);
@@ -276,7 +288,7 @@ public class ViewEmisor implements ActionListener {
 		}
 	
 
-	public void creaNuevoMensajeAviso(JFrame frmMensajeEmisor, JPanel panelMensajesConAviso) {
+	public void creaNuevoMensajeAviso(JFrame frmMensajeEmisor, JPanel panelMensajesConAviso, String asunto, String receptor, Boolean recibido) {
 
 		JPanel panel = new JPanel();
 		panel.setBorder(new LineBorder(Color.DARK_GRAY, 1, true));
@@ -294,6 +306,7 @@ public class ViewEmisor implements ActionListener {
 		panel_13.add(lblReceptor);
 
 		textFieldReceptor = new JTextField();
+		textFieldReceptor.setText(receptor);
 		panel_13.add(textFieldReceptor);
 		textFieldReceptor.setColumns(36);
 
@@ -308,6 +321,7 @@ public class ViewEmisor implements ActionListener {
 		panel_14.add(lblAsunto2);
 
 		textFieldAsunto2 = new JTextField();
+		textFieldAsunto2.setText(asunto);
 		panel_14.add(textFieldAsunto2);
 		textFieldAsunto2.setColumns(37);
 
@@ -319,6 +333,7 @@ public class ViewEmisor implements ActionListener {
 		chckbxRecibido.setBackground(Color.LIGHT_GRAY);
 		chckbxRecibido.setFont(new Font("Tahoma", Font.BOLD, 14));
 		chckbxRecibido.setEnabled(false);
+		chckbxRecibido.setSelected(recibido);
 		panel_15.add(chckbxRecibido);
 		JButton buttonEliminar = new JButton("Eliminar", new ImageIcon(
 				"./src/main/img/cruz-eliminar.png"));

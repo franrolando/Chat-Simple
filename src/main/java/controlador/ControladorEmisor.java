@@ -72,9 +72,9 @@ public class ControladorEmisor {
 				out.writeObject(mensaje);
 				out.close();
 				socket.close();
-				mensajesRecibidos.put(mensaje.getEmisor(), true);
+				mensajesRecibidos.put(destino.getNombreUsuario(), true);
 			} catch (Exception e) {
-				mensajesRecibidos.put(mensaje.getEmisor(), false);
+				mensajesRecibidos.put(destino.getNombreUsuario(), false);
 				log.error("ERROR:", e);
 			}
 		});

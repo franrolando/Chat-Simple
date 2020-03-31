@@ -17,7 +17,10 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import Enum.ETipoMensaje;
+import controlador.ControladorEmisor;
 import controlador.ControladorReceptor;
+import modelo.Mensaje;
 
 import javax.swing.JScrollPane;
 
@@ -25,7 +28,7 @@ public class ViewReceptor implements ActionListener{
 
 	private JFrame frmReceptor;
 	private JTextField textFieldAsunto;
-	private int i=1;
+	private JTabbedPane tabbedPane;
 	
 	public static void AbrirReceptor() {
 		EventQueue.invokeLater(() -> {
@@ -44,8 +47,7 @@ public class ViewReceptor implements ActionListener{
 	 */
 	public ViewReceptor() {
 		initialize();
-		//ControladorReceptor.getInstance().instanciarSocketServer();
-		
+		ControladorReceptor.getInstance().instanciarSocketServer();
 		escuchaMensaje();
 	}
 
@@ -71,23 +73,18 @@ public class ViewReceptor implements ActionListener{
 		frmReceptor.getContentPane().add(panel, BorderLayout.CENTER);
 		panel.setLayout(new BorderLayout(0, 0));
 		
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setFont(new Font("Tahoma", Font.BOLD, 13));
 		tabbedPane.setBackground(new Color(240, 230, 140));
 		panel.add(tabbedPane, BorderLayout.CENTER);
 		tabbedPane.setVisible(true);
-		
-		this.creaNuevaTab(tabbedPane,i);
-		this.creaNuevaTab(tabbedPane,i);
-		this.creaNuevaTab(tabbedPane,++i);
-		this.creaNuevaTab(tabbedPane,++i);
 	}
 	
-	public void creaNuevaTab(JTabbedPane tabbedPane, int i) {
+	public void creaNuevaTab(JTabbedPane tabbedPane, String emisor, String asunto, String mensaje, ETipoMensaje tipoMensaje) {
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(240, 230, 140));
-		tabbedPane.addTab("Emisor-"+i, panel);
+		tabbedPane.addTab(emisor, panel);
 		panel.setLayout(new BorderLayout(0, 0));
 		
 		JPanel panel1 = new JPanel();
@@ -101,6 +98,7 @@ public class ViewReceptor implements ActionListener{
 		panel1.add(lblAsunto);
 		
 		textFieldAsunto = new JTextField();
+		textFieldAsunto.setText(asunto);
 		panel1.add(textFieldAsunto);
 		textFieldAsunto.setColumns(55);
 		
@@ -110,10 +108,12 @@ public class ViewReceptor implements ActionListener{
 		panel2.setBackground(new Color(240, 230, 140));
 		panel.add(panel2, BorderLayout.SOUTH);
 		
-		ImageIcon imgSilenciar = new ImageIcon("./src/main/img/mute.png");
-		JButton btnSilenciar = new JButton("Silenciar",imgSilenciar);
-		btnSilenciar.setFont(new Font("Tahoma", Font.BOLD, 14));
-		panel2.add(btnSilenciar);
+		if (tipoMensaje.equals(ETipoMensaje.CONALERTASONIDO)) {
+			ImageIcon imgSilenciar = new ImageIcon("./src/main/img/mute.png");
+			JButton btnSilenciar = new JButton("Silenciar",imgSilenciar);
+			btnSilenciar.setFont(new Font("Tahoma", Font.BOLD, 14));
+			panel2.add(btnSilenciar);
+		}
 		
 		ImageIcon imgEliminarR = new ImageIcon("./src/main/img/cruz-eliminar.png");
 		JButton btnEliminar = new JButton("Eliminar",imgEliminarR);
@@ -152,6 +152,7 @@ public class ViewReceptor implements ActionListener{
 		panel_6.add(scrollPane);
 		
 		JTextArea textArea = new JTextArea();
+		textArea.setText(mensaje);
 		textArea.setLineWrap(true);
 		scrollPane.setViewportView(textArea);
 	}
@@ -163,17 +164,30 @@ public class ViewReceptor implements ActionListener{
 	}
 	
 	public void escuchaMensaje() {
-		 Thread n = new Thread() {
+		 Thread udpThread = new Thread() {
 			
 			@Override
 			public void run() {	
 				while (true) {
-					
+					Mensaje mensajeUDP = ControladorReceptor.getInstance().receptionMessageUDP();
+					creaNuevaTab(tabbedPane, mensajeUDP.getEmisor(), mensajeUDP.getAsunto(), mensajeUDP.getCuerpo(), mensajeUDP.getTipo());
 				}
 			}
 			
 		};
-		n.start();
+		Thread tcpThread = new Thread() {
+
+			@Override
+			public void run() {
+				while (true) {
+					Mensaje mensajeTCP = ControladorReceptor.getInstance().leerMensajeAvisoRecepcion();
+					creaNuevaTab(tabbedPane, mensajeTCP.getEmisor(), mensajeTCP.getAsunto(), mensajeTCP.getCuerpo(), ETipoMensaje.CONAVISORECEPCION);
+				}
+			}
+
+		};
+		tcpThread.start();
+		udpThread.start();
 	}
 	
 }
