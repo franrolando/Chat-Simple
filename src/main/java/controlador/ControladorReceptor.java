@@ -43,18 +43,13 @@ public class ControladorReceptor {
 				log.info("Recepcion de datagrama");
 				message = Utils.toObject(pregunta.getData());
 				System.out.println(message);
-//	           	    DatagramPacket peticion = new DatagramPacket(buffer, buffer.length);
-//	                socketUDP.receive(peticion);
-//	                System.out.println("Recibo la peticion");
-//	                mensaje = new Mensaje(peticion.getData());
-//	                System.out.println(mensaje)
 				cont++;
 			} while (message == null && cont < 3);
 		} catch (IOException e) {
 			log.error("ERROR:", e);
 		} finally {
 			if (!Objects.isNull(socketUDP)) {
-				socketUDP.close();
+				socketUDP.close(); 
 			}
 		}
 		return message;
@@ -74,18 +69,6 @@ public class ControladorReceptor {
 			log.error("ERROR:", e);
 		}
 		return mensaje;
-	}
-
-	public Mensaje receptorMensajeSimple() {
-		return null;
-	}
-
-	public Mensaje receptorMensajeAlerta() {
-		return null;
-	}
-
-	public Mensaje receptorMensajeAvisoR() {
-		return null;
 	}
 
 }
