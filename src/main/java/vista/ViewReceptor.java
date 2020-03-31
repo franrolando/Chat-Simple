@@ -16,6 +16,9 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+
+import controlador.ControladorReceptor;
+
 import javax.swing.JScrollPane;
 
 public class ViewReceptor implements ActionListener{
@@ -41,6 +44,9 @@ public class ViewReceptor implements ActionListener{
 	 */
 	public ViewReceptor() {
 		initialize();
+		//ControladorReceptor.getInstance().instanciarSocketServer();
+		
+		escuchaMensaje();
 	}
 
 	/**
@@ -57,7 +63,7 @@ public class ViewReceptor implements ActionListener{
 		frmReceptor.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmReceptor.setVisible(true);
 		
-		ImageIcon imgReceptor = new ImageIcon("C:\\Users\\Lautaro\\Documents\\Facultad\\4º Año\\Análisis y Diseño de Sistemas II\\AyD2\\src\\main\\img\\email-icon.png");
+		ImageIcon imgReceptor = new ImageIcon("./src/main/img/email-icon.png");
 		frmReceptor.setIconImage(imgReceptor.getImage());
 		
 		JPanel panel = new JPanel();
@@ -104,12 +110,12 @@ public class ViewReceptor implements ActionListener{
 		panel2.setBackground(new Color(240, 230, 140));
 		panel.add(panel2, BorderLayout.SOUTH);
 		
-		ImageIcon imgSilenciar = new ImageIcon("C:\\Users\\Lautaro\\Documents\\Facultad\\4º Año\\Análisis y Diseño de Sistemas II\\AyD2\\src\\main\\img\\mute.png");
+		ImageIcon imgSilenciar = new ImageIcon("./src/main/img/mute.png");
 		JButton btnSilenciar = new JButton("Silenciar",imgSilenciar);
 		btnSilenciar.setFont(new Font("Tahoma", Font.BOLD, 14));
 		panel2.add(btnSilenciar);
 		
-		ImageIcon imgEliminarR = new ImageIcon("C:\\Users\\Lautaro\\Documents\\Facultad\\4º Año\\Análisis y Diseño de Sistemas II\\AyD2\\src\\main\\img\\cruz-eliminar.png");
+		ImageIcon imgEliminarR = new ImageIcon("./src/main/img/cruz-eliminar.png");
 		JButton btnEliminar = new JButton("Eliminar",imgEliminarR);
 		btnEliminar.setFont(new Font("Tahoma", Font.BOLD, 14));
 		panel2.add(btnEliminar);
@@ -155,4 +161,19 @@ public class ViewReceptor implements ActionListener{
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public void escuchaMensaje() {
+		 Thread n = new Thread() {
+			
+			@Override
+			public void run() {	
+				while (true) {
+					
+				}
+			}
+			
+		};
+		n.start();
+	}
+	
 }

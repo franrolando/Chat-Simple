@@ -76,7 +76,6 @@ public class ViewWelcome implements ActionListener {
 			public void actionPerformed(ActionEvent e) {
 				// Abre la pantalla de emisor
 				ViewEmisor vEmisor = new ViewEmisor();
-				vEmisor.AbrirEmisor();
 			}
 			
 		});
@@ -91,7 +90,6 @@ public class ViewWelcome implements ActionListener {
 			public void actionPerformed(ActionEvent e) {
 				// Abre la pantalla de receptor
 				ViewReceptor vReceptor = new ViewReceptor();
-				vReceptor.AbrirReceptor();
 			}
 			
 		});

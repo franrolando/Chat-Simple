@@ -63,7 +63,7 @@ public class ControladorEmisor {
 		}
 	}
 
-	public Map<String, Boolean> enviarMensajeAvisoRecepcion(MensajeAvisoRecep mensaje, List<Receptor> destinos) {
+	public Map<String, Boolean> enviarMensajeAvisoRecepcion(Mensaje mensaje, List<Receptor> destinos) {
 		Map<String, Boolean> mensajesRecibidos = new HashMap<>();
 		destinos.stream().forEach(destino -> {
 			try {

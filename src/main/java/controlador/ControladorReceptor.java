@@ -18,8 +18,8 @@ public class ControladorReceptor {
 	private final static Logger log = LoggerFactory.getLogger(ControladorReceptor.class);
 	private static ControladorReceptor instance;
 	private final static Integer PUERTO = 8090;
-	private DatagramSocket socketUDP = null;	
-	private ServerSocket socket = null;
+	private static DatagramSocket socketUDP = null;	
+	private static ServerSocket socket = null;
 
 	private ControladorReceptor() {
 		super();
