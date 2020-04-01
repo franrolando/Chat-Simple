@@ -11,18 +11,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import Utils.Utils;
 import modelo.Mensaje;
 import modelo.MensajeAlerta;
-import modelo.MensajeAvisoRecep;
 import modelo.Receptor;
 
 public class ControladorEmisor {
 
-	private final static Logger log = LoggerFactory.getLogger(ControladorEmisor.class);
 	private static ControladorEmisor instance;
 	private final static Integer PUERTO = 8090;
 
@@ -48,14 +43,13 @@ public class ControladorEmisor {
 		DatagramSocket socketUDP = null;
 		try {
 			byte[] buffer = new byte[1024];
-			InetAddress direccionServidor = InetAddress.getByName("localhost");
+			InetAddress direccionServidor = InetAddress.getByName(mensaje.getIpDestino());
 			socketUDP = new DatagramSocket();
 			buffer = Utils.toByteArray(mensaje);
 			DatagramPacket pregunta = new DatagramPacket(buffer, buffer.length, direccionServidor, PUERTO);
-			log.info("Envio el datagrama");
 			socketUDP.send(pregunta);
 		} catch (IOException e) {
-			log.error("ERROR:", e);
+			e.printStackTrace();
 		} finally {
 			if (!Objects.isNull(socketUDP)) {
 				socketUDP.close();
@@ -67,7 +61,7 @@ public class ControladorEmisor {
 		Map<String, Boolean> mensajesRecibidos = new HashMap<>();
 		destinos.stream().forEach(destino -> {
 			try {
-				Socket socket = new Socket("localhost", PUERTO);
+				Socket socket = new Socket(destino.getIp(), PUERTO);
 				ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
 				out.writeObject(mensaje);
 				out.close();
@@ -75,7 +69,7 @@ public class ControladorEmisor {
 				mensajesRecibidos.put(destino.getNombreUsuario(), true);
 			} catch (Exception e) {
 				mensajesRecibidos.put(destino.getNombreUsuario(), false);
-				log.error("ERROR:", e);
+				e.printStackTrace();
 			}
 		});
 		return mensajesRecibidos;
