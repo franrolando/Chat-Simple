@@ -6,14 +6,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import controlador.ControladorEmisor;
-
 public class Utils {
 
-	private final static Logger log = LoggerFactory.getLogger(ControladorEmisor.class);
 	
 	/**
 	 * Para serializar
@@ -28,7 +22,7 @@ public class Utils {
 			os.writeObject(object);
 			os.close();
 		} catch (IOException e) {
-			log.error("ERROR: ", e);
+			e.printStackTrace();
 		}
 		return bytes.toByteArray();
 	}
@@ -48,7 +42,7 @@ public class Utils {
 			aux = (T) is.readObject();
 			is.close();
 		} catch (IOException | ClassNotFoundException e) {
-			log.error("ERROR: ", e);
+			e.printStackTrace();
 		}
 		return aux;
 	}

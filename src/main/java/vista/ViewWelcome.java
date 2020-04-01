@@ -15,10 +15,9 @@ import javax.swing.SwingConstants;
 import java.awt.CardLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class ViewWelcome implements ActionListener {
+public class ViewWelcome {
 
 	private JFrame frmInicioSm;
 
@@ -55,7 +54,7 @@ public class ViewWelcome implements ActionListener {
 		frmInicioSm.setLocationRelativeTo(null);
 		frmInicioSm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		ImageIcon imgWelcome = new ImageIcon("C:\\Users\\Lautaro\\Documents\\Facultad\\4º Año\\Análisis y Diseño de Sistemas II\\AyD2\\src\\main\\img\\email-icon.png");
+		ImageIcon imgWelcome = new ImageIcon("./src/main/img/email-icon.png");
 		frmInicioSm.setIconImage(imgWelcome.getImage());
 		
 		JPanel panel = new JPanel();
@@ -70,28 +69,18 @@ public class ViewWelcome implements ActionListener {
 		JButton btnEmisor = new JButton("Emisor");
 		btnEmisor.setFont(new Font("Calibri", Font.BOLD, 18));
 		btnEmisor.setBackground(new Color(143, 188, 143));
-		btnEmisor.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// Abre la pantalla de emisor
-				ViewEmisor vEmisor = new ViewEmisor();
-			}
-			
+		btnEmisor.addActionListener(e -> {
+			// Abre la pantalla de emisor
+			ViewEmisor vEmisor = new ViewEmisor();
 		});
 		panel_1.add(btnEmisor);
 		
 		JButton btnReceptor = new JButton("Receptor");
 		btnReceptor.setFont(new Font("Calibri", Font.BOLD, 18));
 		btnReceptor.setBackground(new Color(173, 216, 230));
-		btnReceptor.addActionListener(new ActionListener(){
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// Abre la pantalla de receptor
-				ViewReceptor vReceptor = new ViewReceptor();
-			}
-			
+		btnReceptor.addActionListener(e -> {
+			// Abre la pantalla de receptor
+			ViewReceptor vReceptor = new ViewReceptor();
 		});
 		panel_1.add(btnReceptor);
 		
@@ -112,15 +101,10 @@ public class ViewWelcome implements ActionListener {
 		lblBienvenido.setFont(new Font("Calibri", Font.BOLD | Font.ITALIC, 20));
 		lblBienvenido.setBackground(new Color(240, 230, 140));
 		
-		ImageIcon imgBienvenido = new ImageIcon("C:\\Users\\Lautaro\\Documents\\Facultad\\4º Año\\Análisis y Diseño de Sistemas II\\AyD2\\src\\main\\img\\mail.png");
+		ImageIcon imgBienvenido = new ImageIcon("./src/main/img/mail.png");
 		JLabel lblIcon = new JLabel(imgBienvenido);
 		lblIcon.setVerticalAlignment(SwingConstants.TOP);
 		panel_2.add(lblIcon);		
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
 }
