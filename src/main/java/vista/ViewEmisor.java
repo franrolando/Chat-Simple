@@ -14,6 +14,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Scanner;
 
 import javax.swing.ButtonGroup;
@@ -134,7 +135,7 @@ public class ViewEmisor {
 		panel.add(lblContactos);
 		lblContactos.setFont(new Font("Tahoma", Font.BOLD, 13));
 
-		JComboBox comboBoxContactos = new JComboBox();
+		JComboBox<Receptor> comboBoxContactos = new JComboBox<>();
 		panel.add(comboBoxContactos);
 		getListaContactos().stream().forEach(receptor -> {
 			comboBoxContactos.addItem(receptor);
@@ -146,6 +147,9 @@ public class ViewEmisor {
 				destinos.add(receptor);
 				textFieldDestinatarios.setText(textFieldDestinatarios.getText().isEmpty() ? receptor.getNombreUsuario()
 						: textFieldDestinatarios.getText() + "; " + receptor.getNombreUsuario());
+			} else {
+				destinos.remove(receptor);
+				textFieldDestinatarios.setText(textFieldDestinatarios.getText().isEmpty() ? "" : textFieldDestinatarios.getText().replace(receptor.getNombreUsuario().toString(),""));
 			}
 		});
 
@@ -244,33 +248,17 @@ public class ViewEmisor {
 
 			@Override
 			public void keyTyped(KeyEvent e) {
-				// TODO Auto-generated method stub
-				if (textArea.getText().isEmpty()) {
-					btnEnviar.setEnabled(false);
-				} else {
-					btnEnviar.setEnabled(true);
-				}
+				btnEnviar.setEnabled(!textArea.getText().isEmpty());
 			}
 
 			@Override
 			public void keyPressed(KeyEvent e) {
-				// TODO Auto-generated method stub
-				if (textArea.getText().isEmpty()) {
-					btnEnviar.setEnabled(false);
-				} else {
-					btnEnviar.setEnabled(true);
-				}
-
+				btnEnviar.setEnabled(!textArea.getText().isEmpty());
 			}
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				// TODO Auto-generated method stub
-				if (textArea.getText().isEmpty()) {
-					btnEnviar.setEnabled(false);
-				} else {
-					btnEnviar.setEnabled(true);
-				}
+				btnEnviar.setEnabled(!textArea.getText().isEmpty());
 			}
 
 		});
@@ -280,28 +268,25 @@ public class ViewEmisor {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				final Mensaje mensaje;
-
 				if (rdbtnAvisoDeRecepcion.isSelected()) {
 					mensaje = new MensajeAvisoRecep();
 					completeDTO(mensaje);
 					Map<String, Boolean> resp = ControladorEmisor.getInstance().enviarMensajeAvisoRecepcion(mensaje,
 							destinos);
-					resp.forEach((K, V) -> {
-						creaNuevoMensajeAviso(frmMensajeEmisor, panelMensajesConAviso, mensaje.getAsunto(), K, V);
+					resp.forEach((emisor, recibido) -> {
+						creaNuevoMensajeAviso(frmMensajeEmisor, panelMensajesConAviso, mensaje.getAsunto(), emisor,
+								recibido);
 					});
 				} else {
 					mensaje = rdbtnAlerta.isSelected() ? new MensajeAlerta() : new Mensaje();
 					completeDTO(mensaje);
 					ControladorEmisor.getInstance().enviarMensajeSimple(mensaje, destinos);
 				}
-
 				btnEnviar.setEnabled(false);
-
 				textArea.setText("");
 				textFieldAsunto.setText("");
 				textFieldDestinatarios.setText("");
-
-				destinos.removeAll(destinos);
+				destinos.clear();
 			}
 
 			private void completeDTO(Mensaje mensaje) {
@@ -317,8 +302,9 @@ public class ViewEmisor {
 
 	private List<Receptor> getListaContactos() {
 		List<Receptor> listaContactos = new ArrayList();
+		Scanner input = null;
 		try {
-			Scanner input = new Scanner(new File("./src/main/resources/ListaContactos"));
+			input = new Scanner(new File("./src/main/resources/ListaContactos"));
 			while (input.hasNextLine()) {
 				Receptor receptor = new Receptor();
 				String line = input.nextLine();
@@ -331,6 +317,10 @@ public class ViewEmisor {
 			input.close();
 		} catch (Exception ex) {
 			ex.printStackTrace();
+		} finally {
+			if (!Objects.isNull(input)) {
+				input.close();
+			}
 		}
 		return listaContactos;
 	}
