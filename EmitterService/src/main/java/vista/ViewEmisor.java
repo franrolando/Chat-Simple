@@ -2,7 +2,6 @@ package vista;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -32,6 +31,7 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
 import controlador.ControladorEmisor;
+import modelo.Emisor;
 import modelo.Mensaje;
 import modelo.MensajeAlerta;
 import modelo.MensajeAvisoRecep;
@@ -42,31 +42,16 @@ public class ViewEmisor {
 	private List<Receptor> destinos = new ArrayList<>();
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String args[]) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					new ViewEmisor();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the application.
 	 */
-	public ViewEmisor() {
-		initialize();
+	public ViewEmisor(Emisor emisor) {
+		initialize(emisor);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private void initialize(Emisor emisor) {
 		JFrame frmMensajeEmisor = new JFrame();
 		frmMensajeEmisor.setResizable(false);
 		frmMensajeEmisor.setBackground(new Color(0, 0, 0));
@@ -88,7 +73,7 @@ public class ViewEmisor {
 		panelM.setBackground(new Color(240, 230, 140));
 		scrollPane1.setColumnHeaderView(panelM);
 
-		JLabel lblMensajesConAviso = new JLabel("Mensajes con aviso de recepción:");
+		JLabel lblMensajesConAviso = new JLabel("Mensajes con aviso de recepci�n:");
 		lblMensajesConAviso.setFont(new Font("Tahoma", Font.BOLD, 13));
 		panelM.add(lblMensajesConAviso);
 
@@ -137,19 +122,20 @@ public class ViewEmisor {
 
 		JComboBox<Receptor> comboBoxContactos = new JComboBox<>();
 		panel.add(comboBoxContactos);
-		getListaContactos().stream().forEach(receptor -> {
+		emisor.getListaContactos().stream().forEach(receptor -> {
 			comboBoxContactos.addItem(receptor);
 		});
 
 		comboBoxContactos.addActionListener(event -> {
 			Receptor receptor = (Receptor) comboBoxContactos.getSelectedItem();
-			if (!textFieldDestinatarios.getText().contains(receptor.getNombreUsuario().toString())) {
+			if (!textFieldDestinatarios.getText().contains(receptor.getNombreUsuario())) {
 				destinos.add(receptor);
 				textFieldDestinatarios.setText(textFieldDestinatarios.getText().isEmpty() ? receptor.getNombreUsuario()
 						: textFieldDestinatarios.getText() + "; " + receptor.getNombreUsuario());
 			} else {
 				destinos.remove(receptor);
-				textFieldDestinatarios.setText(textFieldDestinatarios.getText().isEmpty() ? "" : textFieldDestinatarios.getText().replace(receptor.getNombreUsuario().toString(),""));
+				textFieldDestinatarios.setText(textFieldDestinatarios.getText().isEmpty() ? ""
+						: textFieldDestinatarios.getText().replace(receptor.getNombreUsuario(), ""));
 			}
 		});
 
@@ -298,30 +284,6 @@ public class ViewEmisor {
 		});
 		btnEnviar.setFont(new Font("Tahoma", Font.BOLD, 14));
 		panel_3.add(btnEnviar);
-	}
-
-	private List<Receptor> getListaContactos() {
-		List<Receptor> listaContactos = new ArrayList<>();
-		Scanner input = null;
-		try {
-			input = new Scanner(new File("./src/main/resources/ListaContactos"));
-			while (input.hasNextLine()) {
-				Receptor receptor = new Receptor();
-				String line = input.nextLine();
-				String[] datos = line.split(" ");
-				receptor.setNombreUsuario(datos[0]);
-				receptor.setIp(datos[1]);
-				listaContactos.add(receptor);
-			}
-			input.close();
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		} finally {
-			if (!Objects.isNull(input)) {
-				input.close();
-			}
-		}
-		return listaContactos;
 	}
 
 	private void creaNuevoMensajeAviso(JFrame frmMensajeEmisor, JPanel panelMensajesConAviso, String asunto,

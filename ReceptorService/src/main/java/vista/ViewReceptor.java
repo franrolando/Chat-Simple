@@ -32,19 +32,6 @@ public class ViewReceptor {
 	private JTabbedPane tabbedPane;
 	
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String args[]) {
-		EventQueue.invokeLater(() -> {
-			try {
-				new ViewReceptor();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		});
-	}
-
-	/**
 	 * Create the application.
 	 * 
 	 * @wbp.parser.entryPoint

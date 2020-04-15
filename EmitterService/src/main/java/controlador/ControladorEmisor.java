@@ -6,12 +6,14 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 import Utils.Utils;
+import modelo.Emisor;
 import modelo.Mensaje;
 import modelo.MensajeAlerta;
 import modelo.Receptor;
@@ -80,6 +82,11 @@ public class ControladorEmisor {
 			mensaje.setIpDestino(destino.getIp());
 			sendMessage(mensaje);
 		});
+	}
+	
+	public List<Receptor> getContactList() {
+		List<Receptor> contactList = new ArrayList<>();
+		return contactList;
 	}
 
 }

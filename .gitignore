@@ -1,5 +1,6 @@
 *.class
 *.properties
+*/bin
 target/
 .gwt/
 .settings/
