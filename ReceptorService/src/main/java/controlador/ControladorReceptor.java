@@ -14,6 +14,7 @@ import modelo.MensajeAvisoRecep;
 public class ControladorReceptor {
 
 	private static ControladorReceptor instance;
+	private String ipDirectorio;
 	private final static Integer PUERTO = 8090;
 	private static DatagramSocket socketUDP = null;
 	private static ServerSocket socket = null;
@@ -61,6 +62,14 @@ public class ControladorReceptor {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void setIpDirectorio(String ipDirectorio) {
+		this.ipDirectorio = ipDirectorio;
+	}
+	
+	public void sendStatus(Boolean connected) {
+		
 	}
 
 }

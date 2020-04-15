@@ -9,12 +9,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.Scanner;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -73,7 +70,7 @@ public class ViewEmisor {
 		panelM.setBackground(new Color(240, 230, 140));
 		scrollPane1.setColumnHeaderView(panelM);
 
-		JLabel lblMensajesConAviso = new JLabel("Mensajes con aviso de recepci�n:");
+		JLabel lblMensajesConAviso = new JLabel("Mensajes con aviso de recepcion:");
 		lblMensajesConAviso.setFont(new Font("Tahoma", Font.BOLD, 13));
 		panelM.add(lblMensajesConAviso);
 
@@ -138,20 +135,6 @@ public class ViewEmisor {
 						: textFieldDestinatarios.getText().replace(receptor.getNombreUsuario(), ""));
 			}
 		});
-
-		JPanel panel_1 = new JPanel();
-		FlowLayout flowLayout_2 = (FlowLayout) panel_1.getLayout();
-		flowLayout_2.setAlignment(FlowLayout.LEFT);
-		panel_1.setBackground(new Color(240, 230, 140));
-		panel_10.add(panel_1);
-
-		JLabel lblEmisor = new JLabel("Emisor");
-		lblEmisor.setFont(new Font("Tahoma", Font.BOLD, 13));
-		panel_1.add(lblEmisor);
-
-		JTextField textFieldEmisor = new JTextField();
-		panel_1.add(textFieldEmisor);
-		textFieldEmisor.setColumns(39);
 
 		JPanel panel_3 = new JPanel();
 		panel_3.setBackground(new Color(240, 230, 140));
@@ -278,7 +261,7 @@ public class ViewEmisor {
 			private void completeDTO(Mensaje mensaje) {
 				mensaje.setAsunto(textFieldAsunto.getText());
 				mensaje.setCuerpo(textArea.getText());
-				mensaje.setEmisor(textFieldEmisor.getText());
+				mensaje.setEmisor(emisor.getNombreUsuario());
 			}
 
 		});
@@ -334,20 +317,15 @@ public class ViewEmisor {
 		chckbxRecibido.setEnabled(false);
 		chckbxRecibido.setSelected(recibido);
 		panel_15.add(chckbxRecibido);
+
 		JButton buttonEliminar = new JButton("Eliminar", new ImageIcon("./src/main/img/cruz-eliminar.png"));
 		buttonEliminar.setFont(new Font("Tahoma", Font.BOLD, 14));
 		panel_15.add(buttonEliminar);
-		buttonEliminar.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				panelMensajesConAviso.remove(panel);
-				panelMensajesConAviso.validate();
-				panelMensajesConAviso.repaint();
-			}
-
+		buttonEliminar.addActionListener(e -> {
+			panelMensajesConAviso.remove(panel);
+			panelMensajesConAviso.validate();
+			panelMensajesConAviso.repaint();
 		});
-
 		frmMensajeEmisor.validate();
 		frmMensajeEmisor.repaint();
 	}

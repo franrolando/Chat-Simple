@@ -1,7 +1,7 @@
 *.class
 *.properties
 */bin
-target/
+*/target
 .gwt/
 .settings/
 .project

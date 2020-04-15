@@ -2,7 +2,6 @@ package vista;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.io.File;
@@ -111,12 +110,9 @@ public class ViewReceptor {
 			JButton btnSilenciar = new JButton("Silenciar", imgSilenciar);
 			btnSilenciar.setFont(new Font("Tahoma", Font.BOLD, 14));
 			panel2.add(btnSilenciar);
-
 			clipAlarma.start();
 			clipAlarma.loop(Clip.LOOP_CONTINUOUSLY);
-
 			btnSilenciar.addActionListener(e -> clipAlarma.close());
-
 		}
 
 		ImageIcon imgEliminarR = new ImageIcon("./src/main/img/cruz-eliminar.png");
@@ -191,7 +187,6 @@ public class ViewReceptor {
 					}
 				}
 			}
-
 		};
 		tcpThread.start();
 		udpThread.start();

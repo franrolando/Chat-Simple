@@ -1,27 +1,22 @@
 package vista;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import java.awt.Color;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.JPanel;
 import java.awt.BorderLayout;
-import javax.swing.JLabel;
+import java.awt.Color;
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.GridLayout;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import java.awt.Font;
-import java.awt.FlowLayout;
+
+import controlador.ControladorReceptor;
 
 public class ViewWR {
-
-	private JFrame frmInicioReceptor;
-	private JTextField textField;
 
 	/**
 	 * Launch the application.
@@ -30,8 +25,7 @@ public class ViewWR {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ViewWR window = new ViewWR();
-					window.frmInicioReceptor.setVisible(true);
+					new ViewWR();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -50,54 +44,78 @@ public class ViewWR {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frmInicioReceptor = new JFrame();
+		JFrame frmInicioReceptor = new JFrame();
 		frmInicioReceptor.getContentPane().setBackground(new Color(240, 230, 140));
 		frmInicioReceptor.getContentPane().setLayout(new BorderLayout(0, 0));
 		frmInicioReceptor.setBackground(new Color(240, 230, 140));
 		frmInicioReceptor.setTitle("Inicio SM");
 		frmInicioReceptor.setBounds(100, 100, 450, 300);
 		frmInicioReceptor.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmInicioReceptor.setSize(450,250);
+		frmInicioReceptor.setSize(450, 250);
 		frmInicioReceptor.setLocationRelativeTo(null);
-		
-		JPanel panel = new JPanel();
-		panel.setBackground(new Color(240, 230, 140));
-		frmInicioReceptor.getContentPane().add(panel, BorderLayout.CENTER);
-		panel.setLayout(new BorderLayout(0, 0));
-		
+		frmInicioReceptor.setVisible(true);
+
+		JPanel panelLblInicio = new JPanel();
+		panelLblInicio.setBackground(new Color(240, 230, 140));
+		frmInicioReceptor.getContentPane().add(panelLblInicio, BorderLayout.CENTER);
+		panelLblInicio.setLayout(new BorderLayout(0, 0));
+
 		JLabel lblInicioReceptor = new JLabel("Inicio Receptor");
 		lblInicioReceptor.setFont(new Font("Tahoma", Font.BOLD, 22));
 		lblInicioReceptor.setHorizontalAlignment(SwingConstants.CENTER);
-		panel.add(lblInicioReceptor, BorderLayout.CENTER);
-		
-		JPanel panel_2 = new JPanel();
-		frmInicioReceptor.getContentPane().add(panel_2, BorderLayout.SOUTH);
-		panel_2.setBackground(new Color(240, 230, 140));
-		panel_2.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		
-		JLabel lblNombre = new JLabel("Nombre:");
-		lblNombre.setFont(new Font("Tahoma", Font.BOLD, 14));
-		panel_2.add(lblNombre);
-		
-		textField = new JTextField();
-		textField.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		textField.setHorizontalAlignment(SwingConstants.LEFT);
-		panel_2.add(textField);
-		textField.setColumns(10);
-		
-		JButton btnIngresar = new JButton("Ingresar");
-		btnIngresar.setFont(new Font("Tahoma", Font.BOLD, 14));
-		panel_2.add(btnIngresar);
-		
-		btnIngresar.addActionListener(new ActionListener() {
+		panelLblInicio.add(lblInicioReceptor, BorderLayout.CENTER);
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// ABRE PANTALLA RECEPTOR
-				if(!textField.getText().isEmpty()) {
-					ViewReceptor vReceptor = new ViewReceptor();
-				}
-			}	
+		JPanel panelDatos = new JPanel();
+		frmInicioReceptor.getContentPane().add(panelDatos, BorderLayout.SOUTH);
+		panelDatos.setBackground(new Color(240, 230, 140));
+		panelDatos.setLayout(new GridLayout(0, 1, 0, 0));
+
+		JPanel panel_1 = new JPanel();
+		panel_1.setBackground(new Color(240, 230, 140));
+		panelDatos.add(panel_1);
+
+		JLabel lblNombre = new JLabel("        Nombre:");
+		panel_1.add(lblNombre);
+		lblNombre.setFont(new Font("Tahoma", Font.BOLD, 14));
+
+		JTextField textFieldNombre = new JTextField();
+		panel_1.add(textFieldNombre);
+		textFieldNombre.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		textFieldNombre.setHorizontalAlignment(SwingConstants.LEFT);
+		textFieldNombre.setColumns(10);
+
+		JPanel panel_3 = new JPanel();
+		panel_3.setBackground(new Color(240, 230, 140));
+		panelDatos.add(panel_3);
+
+		JLabel lblDirectorio = new JLabel("IP Directorio:");
+		lblDirectorio.setFont(new Font("Tahoma", Font.BOLD, 14));
+		panel_3.add(lblDirectorio);
+
+		JTextField txtDirectorio = new JTextField();
+		txtDirectorio.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		panel_3.add(txtDirectorio);
+		txtDirectorio.setColumns(10);
+
+		JPanel panel_4 = new JPanel();
+		panel_4.setBackground(new Color(240, 230, 140));
+		panelDatos.add(panel_4);
+
+		JButton btnIngresar = new JButton("Ingresar", new ImageIcon("./src/main/img/flecha.png"));
+		panel_4.add(btnIngresar);
+		btnIngresar.setFont(new Font("Tahoma", Font.BOLD, 14));
+
+		JButton btnSalir = new JButton("Salir", new ImageIcon("./src/main/img/exit.png"));
+		btnSalir.setFont(new Font("Tahoma", Font.BOLD, 14));
+		panel_4.add(btnSalir);
+		btnSalir.addActionListener(e -> System.exit(0));
+
+		btnIngresar.addActionListener(e -> {
+			if (!textFieldNombre.getText().isEmpty() && !txtDirectorio.getText().isEmpty()) {
+				ControladorReceptor.getInstance().setIpDirectorio(txtDirectorio.getText());
+				new ViewReceptor();
+				frmInicioReceptor.dispose();
+			}
 		});
 	}
 

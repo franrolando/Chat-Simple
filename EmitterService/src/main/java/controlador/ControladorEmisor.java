@@ -21,6 +21,7 @@ import modelo.Receptor;
 public class ControladorEmisor {
 
 	private static ControladorEmisor instance;
+	private String ipDirectorio;
 	private static final Integer PUERTO = 8090;
 
 	private ControladorEmisor() {
@@ -87,6 +88,10 @@ public class ControladorEmisor {
 	public List<Receptor> getContactList() {
 		List<Receptor> contactList = new ArrayList<>();
 		return contactList;
+	}
+
+	public void setIpDirectorio(String ipDirectorio) {
+		this.ipDirectorio = ipDirectorio;
 	}
 
 }
