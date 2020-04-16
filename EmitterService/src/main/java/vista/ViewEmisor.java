@@ -177,7 +177,7 @@ public class ViewEmisor {
 		rdbtnAlerta.setFont(new Font("Tahoma", Font.BOLD, 13));
 		panel_6.add(rdbtnAlerta);
 
-		JRadioButton rdbtnAvisoDeRecepcion = new JRadioButton("Aviso de Recepción");
+		JRadioButton rdbtnAvisoDeRecepcion = new JRadioButton("Aviso de Recepcion");
 		buttonGroup.add(rdbtnAvisoDeRecepcion);
 		rdbtnAvisoDeRecepcion.setBackground(new Color(240, 230, 140));
 		rdbtnAvisoDeRecepcion.setFont(new Font("Tahoma", Font.BOLD, 13));

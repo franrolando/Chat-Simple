@@ -64,7 +64,7 @@ public class ViewWE {
 		lblInicioEmisor.setFont(new Font("Tahoma", Font.BOLD, 22));
 		lblInicioEmisor.setHorizontalAlignment(SwingConstants.CENTER);
 		panelLblInicio.add(lblInicioEmisor);
-
+		
 		JPanel panelDatos = new JPanel();
 		panelDatos.setBackground(new Color(240, 230, 140));
 		frmInicioEmisor.getContentPane().add(panelDatos, BorderLayout.SOUTH);
