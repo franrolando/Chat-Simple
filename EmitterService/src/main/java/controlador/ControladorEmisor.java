@@ -3,11 +3,13 @@ package controlador;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.ConnectException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -87,16 +89,12 @@ public class ControladorEmisor {
 		});
 	}
 
-	public List<Receptor> getContactList() {
+	public List<Receptor> getContactList() throws IOException {
 		List<Receptor> contactList = new ArrayList<>();
 		Socket echoSocket = null;
 		ObjectInputStream is = null;
-		try {
-			echoSocket = new Socket(ipDirectorio, PUERTOCONTACTOSENVIA);
-			is = new ObjectInputStream(echoSocket.getInputStream());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		echoSocket = new Socket(ipDirectorio, PUERTOCONTACTOSENVIA);
+		is = new ObjectInputStream(echoSocket.getInputStream());
 		if (echoSocket != null && is != null) {
 			try {
 				contactList = (List<Receptor>) is.readObject();

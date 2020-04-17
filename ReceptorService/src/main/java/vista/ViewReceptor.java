@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 
@@ -46,15 +48,17 @@ public class ViewReceptor {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize(Receptor receptor) {
-		JFrame frmReceptor = new JFrame() {
+		JFrame frmReceptor = new JFrame();
+		frmReceptor.addWindowListener(new WindowAdapter() {
 
 			@Override
-			public void setDefaultCloseOperation(int operation) {
+			public void windowClosing(WindowEvent e) {
 				receptor.setConectado(false);
 				ControladorReceptor.getInstance().sendStatus(receptor);
+				System.exit(0);
 			}
 			
-		};
+		});
 		frmReceptor.getContentPane().setBackground(new Color(240, 230, 140));
 		frmReceptor.setResizable(false);
 		frmReceptor.setTitle("Mensaje Receptor");
