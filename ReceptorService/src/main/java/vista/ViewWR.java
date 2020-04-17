@@ -15,6 +15,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import controlador.ControladorReceptor;
+import modelo.Receptor;
 
 public class ViewWR {
 
@@ -113,7 +114,11 @@ public class ViewWR {
 		btnIngresar.addActionListener(e -> {
 			if (!textFieldNombre.getText().isEmpty() && !txtDirectorio.getText().isEmpty()) {
 				ControladorReceptor.getInstance().setIpDirectorio(txtDirectorio.getText());
-				new ViewReceptor();
+				Receptor receptor = new Receptor();
+				receptor.setNombreUsuario(textFieldNombre.getText());
+				receptor.setConectado(true);
+				new ViewReceptor(receptor);
+				ControladorReceptor.getInstance().sendStatus(receptor);
 				frmInicioReceptor.dispose();
 			}
 		});

@@ -120,9 +120,9 @@ public class ViewWE {
 
 		btnIngresar.addActionListener(e -> {
 			if (!txtNombre.getText().isEmpty() && !txtDirectorio.getText().isEmpty()) {
+				ControladorEmisor.getInstance().setIpDirectorio(txtDirectorio.getText());
 				Emisor emisor = new Emisor();
 				emisor.setNombreUsuario(txtNombre.getText());
-				ControladorEmisor.getInstance().setIpDirectorio(txtDirectorio.getText());
 				emisor.setListaContactos(ControladorEmisor.getInstance().getContactList());
 				new ViewEmisor(emisor);
 				frmInicioEmisor.dispose();
