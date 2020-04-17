@@ -25,6 +25,7 @@ import javax.swing.JTextField;
 import Enum.ETipoMensaje;
 import controlador.ControladorReceptor;
 import modelo.Mensaje;
+import modelo.Receptor;
 
 public class ViewReceptor {
 
@@ -35,8 +36,8 @@ public class ViewReceptor {
 	 * 
 	 * @wbp.parser.entryPoint
 	 */
-	public ViewReceptor() {
-		initialize();
+	public ViewReceptor(Receptor receptor) {
+		initialize(receptor);
 		ControladorReceptor.instanciarSocketServer();
 		escuchaMensaje();
 	}
@@ -44,15 +45,22 @@ public class ViewReceptor {
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
-		JFrame frmReceptor = new JFrame();
+	private void initialize(Receptor receptor) {
+		JFrame frmReceptor = new JFrame() {
+
+			@Override
+			public void setDefaultCloseOperation(int operation) {
+				receptor.setConectado(false);
+				ControladorReceptor.getInstance().sendStatus(receptor);
+			}
+			
+		};
 		frmReceptor.getContentPane().setBackground(new Color(240, 230, 140));
 		frmReceptor.setResizable(false);
 		frmReceptor.setTitle("Mensaje Receptor");
 		frmReceptor.setBounds(100, 100, 704, 474);
 		frmReceptor.setSize(700, 500);
 		frmReceptor.setLocationRelativeTo(null);
-		frmReceptor.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmReceptor.setVisible(true);
 
 		ImageIcon imgReceptor = new ImageIcon("./src/main/img/email-icon.png");

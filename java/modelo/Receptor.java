@@ -2,16 +2,12 @@ package modelo;
 
 import java.io.Serializable;
 
-public class Receptor extends Usuario implements Serializable {
+public class Receptor implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
+	private String nombreUsuario;
 	private String ip;
 	private Boolean conectado;
-
+	
 	public String getIp() {
 		return ip;
 	}
@@ -20,17 +16,20 @@ public class Receptor extends Usuario implements Serializable {
 		this.ip = ip;
 	}
 
+	public String getNombreUsuario() {
+		return nombreUsuario;
+	}
+
+	public void setNombreUsuario(String nombreUsuario) {
+		this.nombreUsuario = nombreUsuario;
+	}
+
 	public Boolean getConectado() {
 		return conectado;
 	}
 
 	public void setConectado(Boolean conectado) {
 		this.conectado = conectado;
-	}
-
-	@Override
-	public String toString() {
-		return nombreUsuario.concat("(".concat(conectado ? "Online" : "Offline").concat(")"));
 	}
 
 }
