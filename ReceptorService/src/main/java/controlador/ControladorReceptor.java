@@ -7,7 +7,6 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -75,45 +74,42 @@ public class ControladorReceptor {
 	public void setIpDirectorio(String ipDirectorio) {
 		this.ipDirectorio = ipDirectorio;
 	}
-	
-	public Boolean sendStatus(Receptor receptor) {
-		Boolean valido = true;
+
+	public void sendStatus(Receptor receptor) {
 		try {
-			valido = nombreValido(receptor.getNombreUsuario());
-			if (valido) {
-				Socket socket = new Socket(ipDirectorio, PUERTOESTADO);
-				ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
-				receptor.setIp(socket.getLocalAddress().getHostAddress());
-				os.writeObject(receptor);
-				os.close();
-				socket.close();
-			}
+			Socket socket = new Socket(ipDirectorio, PUERTOESTADO);
+			ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
+			os.writeObject(receptor);
+			os.close();
+			socket.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return valido;
 	}
-	
-	private Boolean nombreValido(String nombre) {
+
+	public Boolean nombreValido(String nombre) {
+		Boolean valido = true;
 		List<Receptor> contactList = new ArrayList<>();
 		Socket echoSocket = null;
-        ObjectInputStream is = null;
-        try {
-            echoSocket = new Socket(ipDirectorio, PUERTORECEPTORES);
-            is = new ObjectInputStream(echoSocket.getInputStream());
-        } catch (IOException e) {
-        	e.printStackTrace();
-        }
-        if (echoSocket != null && is != null) {
-            try {
+		ObjectInputStream is = null;
+		try {
+			echoSocket = new Socket(ipDirectorio, PUERTORECEPTORES);
+			is = new ObjectInputStream(echoSocket.getInputStream());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		if (echoSocket != null && is != null) {
+			try {
 				contactList = (List<Receptor>) is.readObject();
-                is.close();
-                echoSocket.close();
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-		return !contactList.stream().anyMatch(receptor -> receptor.getNombreUsuario().equals(nombre));
+				valido = !contactList.stream().anyMatch(receptor -> receptor.getNombreUsuario().equals(nombre));
+				is.close();
+				echoSocket.close();
+			} catch (IOException | ClassNotFoundException e) {
+				e.printStackTrace();
+				valido = false;
+			}
+		}
+		return valido;
 	}
 
 }

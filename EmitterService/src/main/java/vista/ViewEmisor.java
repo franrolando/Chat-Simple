@@ -119,9 +119,7 @@ public class ViewEmisor {
 
 		JComboBox<Receptor> comboBoxContactos = new JComboBox<>();
 		panel.add(comboBoxContactos);
-		emisor.getListaContactos().stream().forEach(receptor -> {
-			comboBoxContactos.addItem(receptor);
-		});
+		completeComboBox(emisor, comboBoxContactos);
 
 		comboBoxContactos.addActionListener(event -> {
 			Receptor receptor = (Receptor) comboBoxContactos.getSelectedItem();
@@ -268,6 +266,13 @@ public class ViewEmisor {
 		btnEnviar.setFont(new Font("Tahoma", Font.BOLD, 14));
 		panel_3.add(btnEnviar);
 	}
+	
+	private void completeComboBox(Emisor emisor, JComboBox<Receptor> comboBox) {
+		comboBox.removeAllItems();
+		emisor.getListaContactos().stream().forEach(receptor -> {
+			comboBox.addItem(receptor);
+		});
+	}
 
 	private void creaNuevoMensajeAviso(JFrame frmMensajeEmisor, JPanel panelMensajesConAviso, String asunto,
 			String receptor, Boolean recibido) {
@@ -329,5 +334,5 @@ public class ViewEmisor {
 		frmMensajeEmisor.validate();
 		frmMensajeEmisor.repaint();
 	}
-
+	
 }

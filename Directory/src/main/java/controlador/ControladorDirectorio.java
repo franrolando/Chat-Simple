@@ -55,6 +55,7 @@ public class ControladorDirectorio {
 			Socket aux = serverReceptores.accept();
 			ObjectInputStream aux2 = new ObjectInputStream(aux.getInputStream());
 			Receptor recep = (Receptor) aux2.readObject();
+			recep.setIp(aux.getInetAddress().getHostAddress());
 			receptores.add(recep);
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();

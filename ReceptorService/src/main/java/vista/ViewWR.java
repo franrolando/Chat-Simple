@@ -117,9 +117,11 @@ public class ViewWR {
 				Receptor receptor = new Receptor();
 				receptor.setNombreUsuario(textFieldNombre.getText());
 				receptor.setConectado(true);
-				new ViewReceptor(receptor);
-				ControladorReceptor.getInstance().sendStatus(receptor);
-				frmInicioReceptor.dispose();
+				if (ControladorReceptor.getInstance().nombreValido(receptor.getNombreUsuario())) {
+					ControladorReceptor.getInstance().sendStatus(receptor);
+					new ViewReceptor(receptor);
+					frmInicioReceptor.dispose();
+				}
 			}
 		});
 	}

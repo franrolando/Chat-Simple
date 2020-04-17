@@ -1,7 +1,5 @@
 package controlador;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -10,7 +8,6 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +15,6 @@ import java.util.Map;
 import java.util.Objects;
 
 import Utils.Utils;
-import modelo.Emisor;
 import modelo.Mensaje;
 import modelo.MensajeAlerta;
 import modelo.Receptor;
@@ -29,7 +25,6 @@ public class ControladorEmisor {
 	private String ipDirectorio;
 	private static final Integer PUERTO = 8090;
 	private static final Integer PUERTOCONTACTOSENVIA = 9000;
-	private static ServerSocket ssReceptores;
 
 	private ControladorEmisor() {
 		super();
@@ -91,40 +86,27 @@ public class ControladorEmisor {
 			sendMessage(mensaje);
 		});
 	}
-	
+
 	public List<Receptor> getContactList() {
 		List<Receptor> contactList = new ArrayList<>();
 		Socket echoSocket = null;
-        ObjectInputStream is = null;
-        try {
-            echoSocket = new Socket(ipDirectorio, PUERTOCONTACTOSENVIA);
-            is = new ObjectInputStream(echoSocket.getInputStream());
-        } catch (IOException e) {
-        	e.printStackTrace();
-        }
-        if (echoSocket != null && is != null) {
-            try {
-				contactList = (List<Receptor>) is.readObject();
-                is.close();
-                echoSocket.close();
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-		return contactList;
-	}
-	
-	public List<Receptor> refreshConctactList() {
-		List<Receptor> contactList = new ArrayList<>();
+		ObjectInputStream is = null;
 		try {
-			Socket aux = serverReceptores.accept();
-			ObjectInputStream aux2 = new ObjectInputStream(aux.getInputStream());
-			Receptor recep = (Receptor) aux2.readObject();
-			receptores.add(recep);
-		} catch (IOException | ClassNotFoundException e) {
+			echoSocket = new Socket(ipDirectorio, PUERTOCONTACTOSENVIA);
+			is = new ObjectInputStream(echoSocket.getInputStream());
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return
+		if (echoSocket != null && is != null) {
+			try {
+				contactList = (List<Receptor>) is.readObject();
+				is.close();
+				echoSocket.close();
+			} catch (IOException | ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
+		return contactList;
 	}
 
 	public void setIpDirectorio(String ipDirectorio) {
