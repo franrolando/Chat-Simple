@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 
@@ -30,7 +32,7 @@ import modelo.Receptor;
 public class ViewReceptor {
 
 	private JTabbedPane tabbedPane;
-	
+
 	/**
 	 * Create the application.
 	 * 
@@ -46,15 +48,7 @@ public class ViewReceptor {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize(Receptor receptor) {
-		JFrame frmReceptor = new JFrame() {
-
-			@Override
-			public void setDefaultCloseOperation(int operation) {
-				receptor.setConectado(false);
-				ControladorReceptor.getInstance().sendStatus(receptor);
-			}
-			
-		};
+		JFrame frmReceptor = new JFrame();
 		frmReceptor.getContentPane().setBackground(new Color(240, 230, 140));
 		frmReceptor.setResizable(false);
 		frmReceptor.setTitle("Mensaje Receptor");
@@ -62,6 +56,14 @@ public class ViewReceptor {
 		frmReceptor.setSize(700, 500);
 		frmReceptor.setLocationRelativeTo(null);
 		frmReceptor.setVisible(true);
+		frmReceptor.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				receptor.setConectado(false);
+				ControladorReceptor.getInstance().sendStatus(receptor);
+				System.exit(0);
+			}
+		});
 
 		ImageIcon imgReceptor = new ImageIcon("./src/main/img/email-icon.png");
 		frmReceptor.setIconImage(imgReceptor.getImage());
@@ -199,5 +201,4 @@ public class ViewReceptor {
 		tcpThread.start();
 		udpThread.start();
 	}
-
 }

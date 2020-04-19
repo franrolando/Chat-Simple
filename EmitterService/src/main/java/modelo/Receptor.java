@@ -30,7 +30,7 @@ public class Receptor extends Usuario implements Serializable {
 
 	@Override
 	public String toString() {
-		return nombreUsuario.concat("(".concat(conectado ? "Online" : "Offline").concat(")"));
+		return nombreUsuario+"("+(conectado? "online" : "offline")+")";
 	}
 
 }

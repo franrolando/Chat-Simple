@@ -87,21 +87,18 @@ public class ControladorReceptor {
 		}
 	}
 
-	public Boolean nombreValido(String nombre) {
+	public Boolean nombreValido(String nombre) throws IOException {
 		Boolean valido = true;
 		List<Receptor> contactList = new ArrayList<>();
 		Socket echoSocket = null;
 		ObjectInputStream is = null;
-		try {
-			echoSocket = new Socket(ipDirectorio, PUERTORECEPTORES);
-			is = new ObjectInputStream(echoSocket.getInputStream());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		echoSocket = new Socket(ipDirectorio, PUERTORECEPTORES);
+		is = new ObjectInputStream(echoSocket.getInputStream());
 		if (echoSocket != null && is != null) {
 			try {
 				contactList = (List<Receptor>) is.readObject();
-				valido = !contactList.stream().anyMatch(receptor -> receptor.getNombreUsuario().equals(nombre));
+				valido = !contactList.stream()
+						.anyMatch(receptor -> receptor.getNombreUsuario().equals(nombre) && receptor.getConectado());
 				is.close();
 				echoSocket.close();
 			} catch (IOException | ClassNotFoundException e) {

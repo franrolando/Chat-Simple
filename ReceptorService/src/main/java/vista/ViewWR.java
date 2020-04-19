@@ -5,11 +5,13 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.io.IOException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -117,10 +119,19 @@ public class ViewWR {
 				Receptor receptor = new Receptor();
 				receptor.setNombreUsuario(textFieldNombre.getText());
 				receptor.setConectado(true);
-				if (ControladorReceptor.getInstance().nombreValido(receptor.getNombreUsuario())) {
-					ControladorReceptor.getInstance().sendStatus(receptor);
-					new ViewReceptor(receptor);
-					frmInicioReceptor.dispose();
+				try {
+					if (ControladorReceptor.getInstance().nombreValido(receptor.getNombreUsuario())) {
+						ControladorReceptor.getInstance().sendStatus(receptor);
+						new ViewReceptor(receptor);
+						frmInicioReceptor.dispose();
+					} else {
+						JOptionPane.showMessageDialog(frmInicioReceptor,
+								"El nombre ingresado ya esta cargado en el directorio");
+					}
+				} catch (IOException e1) {
+					e1.printStackTrace();
+					JOptionPane.showMessageDialog(frmInicioReceptor,
+							"Ocurrieron problemas al conectar con el servicio del directorio");
 				}
 			}
 		});
