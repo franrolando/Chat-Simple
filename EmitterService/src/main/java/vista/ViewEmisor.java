@@ -9,9 +9,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -20,6 +22,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -37,6 +40,7 @@ import modelo.Receptor;
 public class ViewEmisor {
 
 	private List<Receptor> destinos = new ArrayList<>();
+	private ActionListener alComboBox;
 
 	/**
 	 * Create the application.
@@ -70,7 +74,7 @@ public class ViewEmisor {
 		panelM.setBackground(new Color(240, 230, 140));
 		scrollPane1.setColumnHeaderView(panelM);
 
-		JLabel lblMensajesConAviso = new JLabel("Mensajes con aviso de recepción:");
+		JLabel lblMensajesConAviso = new JLabel("Mensajes con aviso de recepciï¿½n:");
 		lblMensajesConAviso.setFont(new Font("Tahoma", Font.BOLD, 13));
 		panelM.add(lblMensajesConAviso);
 
@@ -113,45 +117,41 @@ public class ViewEmisor {
 		panel.setBackground(new Color(240, 230, 140));
 		panel_10.add(panel);
 		panel.setLayout(new GridLayout(0, 2, 0, 0));
-		
+
 		JPanel panelComboBox = new JPanel();
 		panelComboBox.setBackground(new Color(240, 230, 140));
 		panel.add(panelComboBox);
-		
+
 		JLabel lblContactos = new JLabel("Contactos");
 		panelComboBox.add(lblContactos);
 		lblContactos.setFont(new Font("Tahoma", Font.BOLD, 13));
-		
+
 		JComboBox<Receptor> comboBoxContactos = new JComboBox<>();
 		panelComboBox.add(comboBoxContactos);
 		completeComboBox(emisor, comboBoxContactos);
-		
-		comboBoxContactos.addActionListener(event -> {
-			Receptor receptor = (Receptor) comboBoxContactos.getSelectedItem();
-			if (!textFieldDestinatarios.getText().contains(receptor.getNombreUsuario())) {
-				destinos.add(receptor);
-				textFieldDestinatarios.setText(textFieldDestinatarios.getText().isEmpty() ? receptor.getNombreUsuario()
-						: textFieldDestinatarios.getText() + "; " + receptor.getNombreUsuario());
-			} else {
-				destinos.remove(receptor);
-				textFieldDestinatarios.setText(textFieldDestinatarios.getText().isEmpty() ? ""
-						: textFieldDestinatarios.getText().replace(receptor.getNombreUsuario(), ""));
-			}
-		});
-		
+
+		alComboBox = e -> actionListenerComboBox(textFieldDestinatarios, comboBoxContactos);
+		comboBoxContactos.addActionListener(alComboBox);
+
 		JPanel panelRefresh = new JPanel();
 		panelRefresh.setBackground(new Color(240, 230, 140));
 		panel.add(panelRefresh);
-		
-		JButton buttonActualizar = new JButton("Actualizar",new ImageIcon("./src/main/img/Refresh.png"));
+
+		JButton buttonActualizar = new JButton("Actualizar", new ImageIcon("./src/main/img/Refresh.png"));
 		buttonActualizar.setFont(new Font("Tahoma", Font.BOLD, 14));
 		panelRefresh.add(buttonActualizar);
 		buttonActualizar.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				emisor.setListaContactos(ControladorEmisor.getInstance().getContactList());
-				completeComboBox(emisor, comboBoxContactos);
+				try {
+					emisor.setListaContactos(ControladorEmisor.getInstance().getContactList());
+					completeComboBox(emisor, comboBoxContactos);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+					JOptionPane.showMessageDialog(frmMensajeEmisor,
+							"Ocurrieron problemas al conectar con el servicio del directorio");
+				}
 			}
 		});
 
@@ -196,7 +196,7 @@ public class ViewEmisor {
 		rdbtnAlerta.setFont(new Font("Tahoma", Font.BOLD, 13));
 		panel_6.add(rdbtnAlerta);
 
-		JRadioButton rdbtnAvisoDeRecepcion = new JRadioButton("Aviso de Recepción");
+		JRadioButton rdbtnAvisoDeRecepcion = new JRadioButton("Aviso de Recepciï¿½n");
 		buttonGroup.add(rdbtnAvisoDeRecepcion);
 		rdbtnAvisoDeRecepcion.setBackground(new Color(240, 230, 140));
 		rdbtnAvisoDeRecepcion.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -287,12 +287,29 @@ public class ViewEmisor {
 		btnEnviar.setFont(new Font("Tahoma", Font.BOLD, 14));
 		panel_3.add(btnEnviar);
 	}
-	
+
+	private void actionListenerComboBox(JTextField textFieldDestinatarios, JComboBox<Receptor> comboBoxContactos) {
+		Receptor receptor = (Receptor) comboBoxContactos.getSelectedItem();
+		if (!Objects.isNull(receptor)) {
+			if (!textFieldDestinatarios.getText().contains(receptor.getNombreUsuario())) {
+				destinos.add(receptor);
+				textFieldDestinatarios.setText(textFieldDestinatarios.getText().isEmpty() ? receptor.getNombreUsuario()
+						: textFieldDestinatarios.getText() + "; " + receptor.getNombreUsuario());
+			} else {
+				destinos.remove(receptor);
+				textFieldDestinatarios.setText(textFieldDestinatarios.getText().isEmpty() ? ""
+						: textFieldDestinatarios.getText().replace(receptor.getNombreUsuario(), ""));
+			}
+		}
+	}
+
 	private void completeComboBox(Emisor emisor, JComboBox<Receptor> comboBox) {
 		comboBox.removeAllItems();
+		comboBox.removeActionListener(alComboBox);
 		emisor.getListaContactos().stream().forEach(receptor -> {
 			comboBox.addItem(receptor);
 		});
+		comboBox.addActionListener(alComboBox);
 	}
 
 	private void creaNuevoMensajeAviso(JFrame frmMensajeEmisor, JPanel panelMensajesConAviso, String asunto,
@@ -355,5 +372,5 @@ public class ViewEmisor {
 		frmMensajeEmisor.validate();
 		frmMensajeEmisor.repaint();
 	}
-	
+
 }
