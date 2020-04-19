@@ -56,13 +56,12 @@ public class ViewReceptor{
 		frmReceptor.setSize(700, 500);
 		frmReceptor.setLocationRelativeTo(null);
 		frmReceptor.setVisible(true);
-		System.out.println(receptor.getConectado());
 		frmReceptor.addWindowListener(new WindowAdapter() {
 			@Override
             public void windowClosing(WindowEvent e) {
 				receptor.setConectado(false);
 				ControladorReceptor.getInstance().sendStatus(receptor);
-				System.out.println(receptor.getConectado());
+				System.exit(0);
             }
 		});
 

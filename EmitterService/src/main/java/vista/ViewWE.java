@@ -6,11 +6,14 @@ import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.io.IOException;
+import java.net.ConnectException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -123,10 +126,14 @@ public class ViewWE {
 				ControladorEmisor.getInstance().setIpDirectorio(txtDirectorio.getText());
 				Emisor emisor = new Emisor();
 				emisor.setNombreUsuario(txtNombre.getText());
-				emisor.setListaContactos(ControladorEmisor.getInstance().getContactList());
-				System.out.println(ControladorEmisor.getInstance().getContactList());
-				new ViewEmisor(emisor);
-				frmInicioEmisor.dispose();
+				try {
+					emisor.setListaContactos(ControladorEmisor.getInstance().getContactList());
+					new ViewEmisor(emisor);
+					frmInicioEmisor.dispose();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+					JOptionPane.showMessageDialog(frmInicioEmisor, "Ocurrieron problemas al conectar con el servicio del directorio");
+				}
 			}
 		});
 	}
