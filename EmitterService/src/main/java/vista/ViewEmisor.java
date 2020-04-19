@@ -70,7 +70,7 @@ public class ViewEmisor {
 		panelM.setBackground(new Color(240, 230, 140));
 		scrollPane1.setColumnHeaderView(panelM);
 
-		JLabel lblMensajesConAviso = new JLabel("Mensajes con aviso de recepcion:");
+		JLabel lblMensajesConAviso = new JLabel("Mensajes con aviso de recepción:");
 		lblMensajesConAviso.setFont(new Font("Tahoma", Font.BOLD, 13));
 		panelM.add(lblMensajesConAviso);
 
@@ -112,15 +112,20 @@ public class ViewEmisor {
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(240, 230, 140));
 		panel_10.add(panel);
-
+		panel.setLayout(new GridLayout(0, 2, 0, 0));
+		
+		JPanel panelComboBox = new JPanel();
+		panelComboBox.setBackground(new Color(240, 230, 140));
+		panel.add(panelComboBox);
+		
 		JLabel lblContactos = new JLabel("Contactos");
-		panel.add(lblContactos);
+		panelComboBox.add(lblContactos);
 		lblContactos.setFont(new Font("Tahoma", Font.BOLD, 13));
-
+		
 		JComboBox<Receptor> comboBoxContactos = new JComboBox<>();
-		panel.add(comboBoxContactos);
+		panelComboBox.add(comboBoxContactos);
 		completeComboBox(emisor, comboBoxContactos);
-
+		
 		comboBoxContactos.addActionListener(event -> {
 			Receptor receptor = (Receptor) comboBoxContactos.getSelectedItem();
 			if (!textFieldDestinatarios.getText().contains(receptor.getNombreUsuario())) {
@@ -131,6 +136,22 @@ public class ViewEmisor {
 				destinos.remove(receptor);
 				textFieldDestinatarios.setText(textFieldDestinatarios.getText().isEmpty() ? ""
 						: textFieldDestinatarios.getText().replace(receptor.getNombreUsuario(), ""));
+			}
+		});
+		
+		JPanel panelRefresh = new JPanel();
+		panelRefresh.setBackground(new Color(240, 230, 140));
+		panel.add(panelRefresh);
+		
+		JButton buttonActualizar = new JButton("Actualizar",new ImageIcon("./src/main/img/Refresh.png"));
+		buttonActualizar.setFont(new Font("Tahoma", Font.BOLD, 14));
+		panelRefresh.add(buttonActualizar);
+		buttonActualizar.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				emisor.setListaContactos(ControladorEmisor.getInstance().getContactList());
+				completeComboBox(emisor, comboBoxContactos);
 			}
 		});
 
@@ -175,7 +196,7 @@ public class ViewEmisor {
 		rdbtnAlerta.setFont(new Font("Tahoma", Font.BOLD, 13));
 		panel_6.add(rdbtnAlerta);
 
-		JRadioButton rdbtnAvisoDeRecepcion = new JRadioButton("Aviso de Recepcion");
+		JRadioButton rdbtnAvisoDeRecepcion = new JRadioButton("Aviso de Recepción");
 		buttonGroup.add(rdbtnAvisoDeRecepcion);
 		rdbtnAvisoDeRecepcion.setBackground(new Color(240, 230, 140));
 		rdbtnAvisoDeRecepcion.setFont(new Font("Tahoma", Font.BOLD, 13));

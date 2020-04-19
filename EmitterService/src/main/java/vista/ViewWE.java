@@ -124,6 +124,7 @@ public class ViewWE {
 				Emisor emisor = new Emisor();
 				emisor.setNombreUsuario(txtNombre.getText());
 				emisor.setListaContactos(ControladorEmisor.getInstance().getContactList());
+				System.out.println(ControladorEmisor.getInstance().getContactList());
 				new ViewEmisor(emisor);
 				frmInicioEmisor.dispose();
 			}
