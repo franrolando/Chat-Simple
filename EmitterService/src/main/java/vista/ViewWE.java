@@ -7,7 +7,6 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.io.IOException;
-import java.net.ConnectException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -67,7 +66,7 @@ public class ViewWE {
 		lblInicioEmisor.setFont(new Font("Tahoma", Font.BOLD, 22));
 		lblInicioEmisor.setHorizontalAlignment(SwingConstants.CENTER);
 		panelLblInicio.add(lblInicioEmisor);
-		
+
 		JPanel panelDatos = new JPanel();
 		panelDatos.setBackground(new Color(240, 230, 140));
 		frmInicioEmisor.getContentPane().add(panelDatos, BorderLayout.SOUTH);
@@ -132,7 +131,8 @@ public class ViewWE {
 					frmInicioEmisor.dispose();
 				} catch (IOException e1) {
 					e1.printStackTrace();
-					JOptionPane.showMessageDialog(frmInicioEmisor, "Ocurrieron problemas al conectar con el servicio del directorio");
+					JOptionPane.showMessageDialog(frmInicioEmisor,
+							"Ocurrieron problemas al conectar con el servicio del directorio");
 				}
 			}
 		});

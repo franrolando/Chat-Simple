@@ -74,7 +74,7 @@ public class ViewEmisor {
 		panelM.setBackground(new Color(240, 230, 140));
 		scrollPane1.setColumnHeaderView(panelM);
 
-		JLabel lblMensajesConAviso = new JLabel("Mensajes con aviso de recepci�n:");
+		JLabel lblMensajesConAviso = new JLabel("Mensajes con aviso de recepción:");
 		lblMensajesConAviso.setFont(new Font("Tahoma", Font.BOLD, 13));
 		panelM.add(lblMensajesConAviso);
 
@@ -104,7 +104,7 @@ public class ViewEmisor {
 		panel_11.add(lblDestinatarios);
 
 		JTextField textFieldDestinatarios = new JTextField();
-		textFieldDestinatarios.setEnabled(false);
+		textFieldDestinatarios.setEditable(false);
 		panel_11.add(textFieldDestinatarios);
 		textFieldDestinatarios.setColumns(35);
 
@@ -147,6 +147,8 @@ public class ViewEmisor {
 				try {
 					emisor.setListaContactos(ControladorEmisor.getInstance().getContactList());
 					completeComboBox(emisor, comboBoxContactos);
+					textFieldDestinatarios.setText("");
+					destinos.clear();
 				} catch (IOException e1) {
 					e1.printStackTrace();
 					JOptionPane.showMessageDialog(frmMensajeEmisor,
@@ -196,7 +198,7 @@ public class ViewEmisor {
 		rdbtnAlerta.setFont(new Font("Tahoma", Font.BOLD, 13));
 		panel_6.add(rdbtnAlerta);
 
-		JRadioButton rdbtnAvisoDeRecepcion = new JRadioButton("Aviso de Recepci�n");
+		JRadioButton rdbtnAvisoDeRecepcion = new JRadioButton("Aviso de Recepción");
 		buttonGroup.add(rdbtnAvisoDeRecepcion);
 		rdbtnAvisoDeRecepcion.setBackground(new Color(240, 230, 140));
 		rdbtnAvisoDeRecepcion.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -291,14 +293,20 @@ public class ViewEmisor {
 	private void actionListenerComboBox(JTextField textFieldDestinatarios, JComboBox<Receptor> comboBoxContactos) {
 		Receptor receptor = (Receptor) comboBoxContactos.getSelectedItem();
 		if (!Objects.isNull(receptor)) {
-			if (!textFieldDestinatarios.getText().contains(receptor.getNombreUsuario())) {
-				destinos.add(receptor);
-				textFieldDestinatarios.setText(textFieldDestinatarios.getText().isEmpty() ? receptor.getNombreUsuario()
-						: textFieldDestinatarios.getText() + "; " + receptor.getNombreUsuario());
+			if (receptor.getConectado()) {
+				if (!textFieldDestinatarios.getText().contains(receptor.getNombreUsuario())) {
+					destinos.add(receptor);
+					textFieldDestinatarios
+							.setText(textFieldDestinatarios.getText().isEmpty() ? receptor.getNombreUsuario()
+									: textFieldDestinatarios.getText() + "; " + receptor.getNombreUsuario());
+				} else {
+					destinos.remove(receptor);
+					textFieldDestinatarios.setText(textFieldDestinatarios.getText().isEmpty() ? ""
+							: textFieldDestinatarios.getText().replace("; " + receptor.getNombreUsuario(), ""));
+				}
 			} else {
-				destinos.remove(receptor);
-				textFieldDestinatarios.setText(textFieldDestinatarios.getText().isEmpty() ? ""
-						: textFieldDestinatarios.getText().replace(receptor.getNombreUsuario(), ""));
+				JOptionPane.showMessageDialog(textFieldDestinatarios.getParent(),
+						"No se pueden enviar mensajes a usuarios offline");
 			}
 		}
 	}

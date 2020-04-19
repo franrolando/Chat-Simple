@@ -29,10 +29,10 @@ import controlador.ControladorReceptor;
 import modelo.Mensaje;
 import modelo.Receptor;
 
-public class ViewReceptor{
+public class ViewReceptor {
 
 	private JTabbedPane tabbedPane;
-	
+
 	/**
 	 * Create the application.
 	 * 
@@ -58,11 +58,11 @@ public class ViewReceptor{
 		frmReceptor.setVisible(true);
 		frmReceptor.addWindowListener(new WindowAdapter() {
 			@Override
-            public void windowClosing(WindowEvent e) {
+			public void windowClosing(WindowEvent e) {
 				receptor.setConectado(false);
 				ControladorReceptor.getInstance().sendStatus(receptor);
 				System.exit(0);
-            }
+			}
 		});
 
 		ImageIcon imgReceptor = new ImageIcon("./src/main/img/email-icon.png");

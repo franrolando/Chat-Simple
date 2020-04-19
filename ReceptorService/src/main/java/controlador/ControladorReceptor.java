@@ -7,7 +7,6 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -98,7 +97,8 @@ public class ControladorReceptor {
 		if (echoSocket != null && is != null) {
 			try {
 				contactList = (List<Receptor>) is.readObject();
-				valido = !contactList.stream().anyMatch(receptor -> receptor.getNombreUsuario().equals(nombre) && receptor.getConectado());
+				valido = !contactList.stream()
+						.anyMatch(receptor -> receptor.getNombreUsuario().equals(nombre) && receptor.getConectado());
 				is.close();
 				echoSocket.close();
 			} catch (IOException | ClassNotFoundException e) {

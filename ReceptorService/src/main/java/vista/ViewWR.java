@@ -125,11 +125,13 @@ public class ViewWR {
 						new ViewReceptor(receptor);
 						frmInicioReceptor.dispose();
 					} else {
-						JOptionPane.showMessageDialog(frmInicioReceptor, "El nombre ingresado ya esta cargado en el directorio");
+						JOptionPane.showMessageDialog(frmInicioReceptor,
+								"El nombre ingresado ya esta cargado en el directorio");
 					}
 				} catch (IOException e1) {
 					e1.printStackTrace();
-					JOptionPane.showMessageDialog(frmInicioReceptor, "Ocurrieron problemas al conectar con el servicio del directorio");
+					JOptionPane.showMessageDialog(frmInicioReceptor,
+							"Ocurrieron problemas al conectar con el servicio del directorio");
 				}
 			}
 		});
