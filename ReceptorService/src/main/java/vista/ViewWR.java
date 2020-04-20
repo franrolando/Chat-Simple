@@ -58,7 +58,7 @@ public class ViewWR {
 		frmInicioReceptor.setSize(500, 250);
 		frmInicioReceptor.setLocationRelativeTo(null);
 		frmInicioReceptor.setVisible(true);
-		
+
 		ImageIcon imgReceptor = new ImageIcon("./src/main/img/email-icon.png");
 		frmInicioReceptor.setIconImage(imgReceptor.getImage());
 
@@ -123,23 +123,25 @@ public class ViewWR {
 				Receptor receptor = new Receptor();
 				receptor.setNombreUsuario(textFieldNombre.getText());
 				receptor.setConectado(true);
-				UIManager.put("OptionPane.background",new Color(205,122,122));
-				UIManager.put("OptionPane.messageFont",new Font("Tahoma", Font.BOLD, 13));
-				UIManager.put("Panel.background",new Color(205,122,122));
-				UIManager.put("Button.font",new Font("Tahoma", Font.BOLD, 13));
+				UIManager.put("OptionPane.background", new Color(205, 122, 122));
+				UIManager.put("OptionPane.messageFont", new Font("Tahoma", Font.BOLD, 13));
+				UIManager.put("Panel.background", new Color(205, 122, 122));
+				UIManager.put("Button.font", new Font("Tahoma", Font.BOLD, 13));
 				try {
 					if (ControladorReceptor.getInstance().nombreValido(receptor.getNombreUsuario())) {
 						ControladorReceptor.getInstance().sendStatus(receptor);
 						new ViewReceptor(receptor);
 						frmInicioReceptor.dispose();
 					} else {
-						JOptionPane.showMessageDialog(frmInicioReceptor,"El nombre ingresado ya esta cargado en el directorio."
-								,"SERVER ERROR",JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(frmInicioReceptor,
+								"El nombre ingresado ya esta cargado en el directorio.", "SERVER ERROR",
+								JOptionPane.ERROR_MESSAGE);
 					}
 				} catch (IOException e1) {
 					e1.printStackTrace();
-					JOptionPane.showMessageDialog(frmInicioReceptor,"Ocurrieron problemas al conectarse con el servicio del directorio."
-							,"SERVER ERROR",JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(frmInicioReceptor,
+							"Ocurrieron problemas al conectarse con el servicio del directorio.", "SERVER ERROR",
+							JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});

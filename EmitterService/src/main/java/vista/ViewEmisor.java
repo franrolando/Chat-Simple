@@ -131,18 +131,18 @@ public class ViewEmisor {
 		panelComboBox.add(comboBoxContactos);
 		completeComboBox(emisor, comboBoxContactos);
 
-		alComboBox = e -> actionListenerComboBox(textFieldDestinatarios, comboBoxContactos,frmMensajeEmisor);
+		alComboBox = e -> actionListenerComboBox(textFieldDestinatarios, comboBoxContactos, frmMensajeEmisor);
 		comboBoxContactos.addActionListener(alComboBox);
 
 		JPanel panelRefresh = new JPanel();
 		panelRefresh.setBackground(new Color(240, 230, 140));
 		panel.add(panelRefresh);
-		
-		UIManager.put("OptionPane.background",new Color(205,122,122));
-		UIManager.put("OptionPane.messageFont",new Font("Tahoma", Font.BOLD, 13));
-		UIManager.put("Panel.background",new Color(205,122,122));
-		UIManager.put("Button.font",new Font("Tahoma", Font.BOLD, 13));
-		
+
+		UIManager.put("OptionPane.background", new Color(205, 122, 122));
+		UIManager.put("OptionPane.messageFont", new Font("Tahoma", Font.BOLD, 13));
+		UIManager.put("Panel.background", new Color(205, 122, 122));
+		UIManager.put("Button.font", new Font("Tahoma", Font.BOLD, 13));
+
 		JButton buttonActualizar = new JButton("Actualizar contactos", new ImageIcon("./src/main/img/Refresh.png"));
 		buttonActualizar.setFont(new Font("Tahoma", Font.BOLD, 14));
 		panelRefresh.add(buttonActualizar);
@@ -157,8 +157,9 @@ public class ViewEmisor {
 					destinos.clear();
 				} catch (IOException e1) {
 					e1.printStackTrace();
-					JOptionPane.showMessageDialog(frmMensajeEmisor,"Ocurrieron problemas al conectarse con el servicio del directorio."
-							,"SERVER ERROR",JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(frmMensajeEmisor,
+							"Ocurrieron problemas al conectarse con el servicio del directorio.", "SERVER ERROR",
+							JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
@@ -296,23 +297,23 @@ public class ViewEmisor {
 		panel_3.add(btnEnviar);
 	}
 
-	private void actionListenerComboBox(JTextField textFieldDestinatarios, JComboBox<Receptor> comboBoxContactos,JFrame frmMensajeEmisor) {
+	private void actionListenerComboBox(JTextField textFieldDestinatarios, JComboBox<Receptor> comboBoxContactos,
+			JFrame frmMensajeEmisor) {
 		Receptor receptor = (Receptor) comboBoxContactos.getSelectedItem();
 		if (!Objects.isNull(receptor)) {
 			if (receptor.getConectado()) {
 				if (!textFieldDestinatarios.getText().contains(receptor.getNombreUsuario())) {
 					destinos.add(receptor);
 					textFieldDestinatarios
-							.setText(textFieldDestinatarios.getText().isEmpty() ? receptor.getNombreUsuario()
-									: textFieldDestinatarios.getText() + "; " + receptor.getNombreUsuario());
+							.setText(textFieldDestinatarios.getText().concat(receptor.getNombreUsuario() + "; "));
 				} else {
 					destinos.remove(receptor);
-					textFieldDestinatarios.setText(textFieldDestinatarios.getText().isEmpty() ? ""
-							: textFieldDestinatarios.getText().replace("; " + receptor.getNombreUsuario(), ""));
+					textFieldDestinatarios
+							.setText(textFieldDestinatarios.getText().replace(receptor.getNombreUsuario() + "; ", ""));
 				}
 			} else {
-				JOptionPane.showMessageDialog(frmMensajeEmisor,"No se pueden enviar mensajes a usuarios offline."
-						,"RECEPTOR ERROR",JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(frmMensajeEmisor, "No se pueden enviar mensajes a usuarios offline.",
+						"RECEPTOR ERROR", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}

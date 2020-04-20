@@ -17,7 +17,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 import controlador.ControladorEmisor;
 import modelo.Emisor;
@@ -58,7 +57,7 @@ public class ViewWE {
 		frmInicioEmisor.setSize(500, 250);
 		frmInicioEmisor.setLocationRelativeTo(null);
 		frmInicioEmisor.setVisible(true);
-		
+
 		ImageIcon imgEmisor = new ImageIcon("./src/main/img/email-icon.png");
 		frmInicioEmisor.setIconImage(imgEmisor.getImage());
 
@@ -136,12 +135,13 @@ public class ViewWE {
 					frmInicioEmisor.dispose();
 				} catch (IOException e1) {
 					e1.printStackTrace();
-					UIManager.put("OptionPane.background",new Color(205,122,122));
-					UIManager.put("OptionPane.messageFont",new Font("Tahoma", Font.BOLD, 13));
-					UIManager.put("Panel.background",new Color(205,122,122));
-					UIManager.put("Button.font",new Font("Tahoma", Font.BOLD, 13));
-					JOptionPane.showMessageDialog(frmInicioEmisor,"Ocurrieron problemas al conectarse con el servicio del directorio."
-							,"SERVER ERROR",JOptionPane.ERROR_MESSAGE);
+					UIManager.put("OptionPane.background", new Color(205, 122, 122));
+					UIManager.put("OptionPane.messageFont", new Font("Tahoma", Font.BOLD, 13));
+					UIManager.put("Panel.background", new Color(205, 122, 122));
+					UIManager.put("Button.font", new Font("Tahoma", Font.BOLD, 13));
+					JOptionPane.showMessageDialog(frmInicioEmisor,
+							"Ocurrieron problemas al conectarse con el servicio del directorio.", "SERVER ERROR",
+							JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
