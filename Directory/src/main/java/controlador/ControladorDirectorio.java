@@ -5,7 +5,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -62,5 +64,8 @@ public class ControladorDirectorio {
 			e.printStackTrace();
 		}
 	}
-
+	
+	public List<Receptor> listaReceptores(){
+		return receptores.values().stream().collect(Collectors.toList());
+	}
 }
