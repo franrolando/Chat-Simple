@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 
 import controlador.ControladorEmisor;
 import modelo.Emisor;
@@ -53,9 +54,12 @@ public class ViewWE {
 		frmInicioEmisor.setTitle("Inicio SM");
 		frmInicioEmisor.setBounds(100, 100, 450, 300);
 		frmInicioEmisor.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmInicioEmisor.setSize(450, 250);
+		frmInicioEmisor.setSize(500, 250);
 		frmInicioEmisor.setLocationRelativeTo(null);
 		frmInicioEmisor.setVisible(true);
+
+		ImageIcon imgEmisor = new ImageIcon("./src/main/img/email-icon.png");
+		frmInicioEmisor.setIconImage(imgEmisor.getImage());
 
 		JPanel panelLblInicio = new JPanel();
 		panelLblInicio.setBackground(new Color(240, 230, 140));
@@ -131,8 +135,13 @@ public class ViewWE {
 					frmInicioEmisor.dispose();
 				} catch (IOException e1) {
 					e1.printStackTrace();
+					UIManager.put("OptionPane.background", new Color(205, 122, 122));
+					UIManager.put("OptionPane.messageFont", new Font("Tahoma", Font.BOLD, 13));
+					UIManager.put("Panel.background", new Color(205, 122, 122));
+					UIManager.put("Button.font", new Font("Tahoma", Font.BOLD, 13));
 					JOptionPane.showMessageDialog(frmInicioEmisor,
-							"Ocurrieron problemas al conectar con el servicio del directorio");
+							"Ocurrieron problemas al conectarse con el servicio del directorio.", "SERVER ERROR",
+							JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});

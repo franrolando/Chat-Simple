@@ -5,9 +5,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import modelo.Receptor;
@@ -17,7 +18,7 @@ public class ControladorDirectorio {
 	private static ControladorDirectorio instance = null;
 	private static Integer PUERTOSEMISORES = 9000;
 	private static Integer PUERTORECEPTORES = 9010;
-	private Map<String, Receptor> receptores = new HashMap<>();
+	private Map<String, Receptor> receptores = new TreeMap<>();
 	private static ServerSocket serverEmisores;
 	private static ServerSocket serverReceptores;
 
@@ -57,10 +58,13 @@ public class ControladorDirectorio {
 			ObjectInputStream aux2 = new ObjectInputStream(aux.getInputStream());
 			Receptor recep = (Receptor) aux2.readObject();
 			recep.setIp(aux.getInetAddress().getHostAddress());
-			receptores.put(recep.getNombreUsuario(), recep);
+			receptores.put(recep.getNombreUsuario().toLowerCase(), recep);
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
 
+	public List<Receptor> listaReceptores() {
+		return receptores.values().stream().collect(Collectors.toList());
+	}
 }

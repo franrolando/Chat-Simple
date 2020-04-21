@@ -28,6 +28,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 
 import controlador.ControladorEmisor;
@@ -74,7 +75,7 @@ public class ViewEmisor {
 		panelM.setBackground(new Color(240, 230, 140));
 		scrollPane1.setColumnHeaderView(panelM);
 
-		JLabel lblMensajesConAviso = new JLabel("Mensajes con aviso de recepción:");
+		JLabel lblMensajesConAviso = new JLabel("Mensajes con aviso de recepcion:");
 		lblMensajesConAviso.setFont(new Font("Tahoma", Font.BOLD, 13));
 		panelM.add(lblMensajesConAviso);
 
@@ -130,14 +131,19 @@ public class ViewEmisor {
 		panelComboBox.add(comboBoxContactos);
 		completeComboBox(emisor, comboBoxContactos);
 
-		alComboBox = e -> actionListenerComboBox(textFieldDestinatarios, comboBoxContactos);
+		alComboBox = e -> actionListenerComboBox(textFieldDestinatarios, comboBoxContactos, frmMensajeEmisor);
 		comboBoxContactos.addActionListener(alComboBox);
 
 		JPanel panelRefresh = new JPanel();
 		panelRefresh.setBackground(new Color(240, 230, 140));
 		panel.add(panelRefresh);
 
-		JButton buttonActualizar = new JButton("Actualizar", new ImageIcon("./src/main/img/Refresh.png"));
+		UIManager.put("OptionPane.background", new Color(205, 122, 122));
+		UIManager.put("OptionPane.messageFont", new Font("Tahoma", Font.BOLD, 13));
+		UIManager.put("Panel.background", new Color(205, 122, 122));
+		UIManager.put("Button.font", new Font("Tahoma", Font.BOLD, 13));
+
+		JButton buttonActualizar = new JButton("Actualizar contactos", new ImageIcon("./src/main/img/Refresh.png"));
 		buttonActualizar.setFont(new Font("Tahoma", Font.BOLD, 14));
 		panelRefresh.add(buttonActualizar);
 		buttonActualizar.addActionListener(new ActionListener() {
@@ -152,7 +158,8 @@ public class ViewEmisor {
 				} catch (IOException e1) {
 					e1.printStackTrace();
 					JOptionPane.showMessageDialog(frmMensajeEmisor,
-							"Ocurrieron problemas al conectar con el servicio del directorio");
+							"Ocurrieron problemas al conectarse con el servicio del directorio.", "SERVER ERROR",
+							JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
@@ -198,7 +205,7 @@ public class ViewEmisor {
 		rdbtnAlerta.setFont(new Font("Tahoma", Font.BOLD, 13));
 		panel_6.add(rdbtnAlerta);
 
-		JRadioButton rdbtnAvisoDeRecepcion = new JRadioButton("Aviso de Recepción");
+		JRadioButton rdbtnAvisoDeRecepcion = new JRadioButton("Aviso de Recepcion");
 		buttonGroup.add(rdbtnAvisoDeRecepcion);
 		rdbtnAvisoDeRecepcion.setBackground(new Color(240, 230, 140));
 		rdbtnAvisoDeRecepcion.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -290,23 +297,23 @@ public class ViewEmisor {
 		panel_3.add(btnEnviar);
 	}
 
-	private void actionListenerComboBox(JTextField textFieldDestinatarios, JComboBox<Receptor> comboBoxContactos) {
+	private void actionListenerComboBox(JTextField textFieldDestinatarios, JComboBox<Receptor> comboBoxContactos,
+			JFrame frmMensajeEmisor) {
 		Receptor receptor = (Receptor) comboBoxContactos.getSelectedItem();
 		if (!Objects.isNull(receptor)) {
 			if (receptor.getConectado()) {
 				if (!textFieldDestinatarios.getText().contains(receptor.getNombreUsuario())) {
 					destinos.add(receptor);
 					textFieldDestinatarios
-							.setText(textFieldDestinatarios.getText().isEmpty() ? receptor.getNombreUsuario()
-									: textFieldDestinatarios.getText() + "; " + receptor.getNombreUsuario());
+							.setText(textFieldDestinatarios.getText().concat(receptor.getNombreUsuario() + "; "));
 				} else {
 					destinos.remove(receptor);
-					textFieldDestinatarios.setText(textFieldDestinatarios.getText().isEmpty() ? ""
-							: textFieldDestinatarios.getText().replace("; " + receptor.getNombreUsuario(), ""));
+					textFieldDestinatarios
+							.setText(textFieldDestinatarios.getText().replace(receptor.getNombreUsuario() + "; ", ""));
 				}
 			} else {
-				JOptionPane.showMessageDialog(textFieldDestinatarios.getParent(),
-						"No se pueden enviar mensajes a usuarios offline");
+				JOptionPane.showMessageDialog(frmMensajeEmisor, "No se pueden enviar mensajes a usuarios offline.",
+						"RECEPTOR ERROR", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}
@@ -314,9 +321,11 @@ public class ViewEmisor {
 	private void completeComboBox(Emisor emisor, JComboBox<Receptor> comboBox) {
 		comboBox.removeAllItems();
 		comboBox.removeActionListener(alComboBox);
+		RenderCombo rc = new RenderCombo(emisor);
 		emisor.getListaContactos().stream().forEach(receptor -> {
 			comboBox.addItem(receptor);
 		});
+		comboBox.setRenderer(rc);
 		comboBox.addActionListener(alComboBox);
 	}
 
