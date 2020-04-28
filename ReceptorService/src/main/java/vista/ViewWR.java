@@ -130,7 +130,7 @@ public class ViewWR {
 				try {
 					if (ControladorReceptor.getInstance().nombreValido(receptor.getNombreUsuario())) {
 						ControladorReceptor.getInstance().sendStatus(receptor);
-						new ViewReceptor(receptor);
+						new ViewReceptor2(receptor);
 						frmInicioReceptor.dispose();
 					} else {
 						JOptionPane.showMessageDialog(frmInicioReceptor,
