@@ -54,22 +54,22 @@ public class ViewEmisor {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize(Emisor emisor) {
-		JFrame frmMensajeEmisor = new JFrame();
-		frmMensajeEmisor.setResizable(false);
-		frmMensajeEmisor.setBackground(new Color(0, 0, 0));
-		frmMensajeEmisor.setTitle("Mensaje Emisor");
-		frmMensajeEmisor.setBounds(100, 100, 653, 462);
-		frmMensajeEmisor.setSize(1000, 600);
-		frmMensajeEmisor.setLocationRelativeTo(null);
-		frmMensajeEmisor.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmMensajeEmisor.getContentPane().setLayout(new GridLayout(1, 0, 0, 0));
-		frmMensajeEmisor.setVisible(true);
+		JFrame frmInterfazEmisor = new JFrame();
+		frmInterfazEmisor.setResizable(false);
+		frmInterfazEmisor.setBackground(new Color(0, 0, 0));
+		frmInterfazEmisor.setTitle("Interfaz Emisor");
+		frmInterfazEmisor.setBounds(100, 100, 653, 462);
+		frmInterfazEmisor.setSize(1000, 600);
+		frmInterfazEmisor.setLocationRelativeTo(null);
+		frmInterfazEmisor.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmInterfazEmisor.getContentPane().setLayout(new GridLayout(1, 0, 0, 0));
+		frmInterfazEmisor.setVisible(true);
 
 		ImageIcon imgEmisor = new ImageIcon("./src/main/img/email-icon.png");
-		frmMensajeEmisor.setIconImage(imgEmisor.getImage());
+		frmInterfazEmisor.setIconImage(imgEmisor.getImage());
 
 		JScrollPane scrollPane1 = new JScrollPane();
-		frmMensajeEmisor.getContentPane().add(scrollPane1);
+		frmInterfazEmisor.getContentPane().add(scrollPane1);
 
 		JPanel panelM = new JPanel();
 		panelM.setBackground(new Color(240, 230, 140));
@@ -86,7 +86,7 @@ public class ViewEmisor {
 
 		JPanel panelNuevoMensaje = new JPanel();
 		panelNuevoMensaje.setBorder(new LineBorder(Color.GRAY));
-		frmMensajeEmisor.getContentPane().add(panelNuevoMensaje);
+		frmInterfazEmisor.getContentPane().add(panelNuevoMensaje);
 		panelNuevoMensaje.setLayout(new BorderLayout(0, 0));
 
 		JPanel panel_2 = new JPanel();
@@ -131,7 +131,7 @@ public class ViewEmisor {
 		panelComboBox.add(comboBoxContactos);
 		completeComboBox(emisor, comboBoxContactos);
 
-		alComboBox = e -> actionListenerComboBox(textFieldDestinatarios, comboBoxContactos, frmMensajeEmisor);
+		alComboBox = e -> actionListenerComboBox(textFieldDestinatarios, comboBoxContactos, frmInterfazEmisor);
 		comboBoxContactos.addActionListener(alComboBox);
 
 		JPanel panelRefresh = new JPanel();
@@ -157,7 +157,7 @@ public class ViewEmisor {
 					destinos.clear();
 				} catch (IOException e1) {
 					e1.printStackTrace();
-					JOptionPane.showMessageDialog(frmMensajeEmisor,
+					JOptionPane.showMessageDialog(frmInterfazEmisor,
 							"Ocurrieron problemas al conectarse con el servicio del directorio.", "SERVER ERROR",
 							JOptionPane.ERROR_MESSAGE);
 				}
@@ -271,7 +271,7 @@ public class ViewEmisor {
 					Map<String, Boolean> resp = ControladorEmisor.getInstance().enviarMensajeAvisoRecepcion(mensaje,
 							destinos);
 					resp.forEach((emisor, recibido) -> {
-						creaNuevoMensajeAviso(frmMensajeEmisor, panelMensajesConAviso, mensaje.getAsunto(), emisor,
+						creaNuevoMensajeAviso(frmInterfazEmisor, panelMensajesConAviso, mensaje.getAsunto(), emisor,
 								recibido);
 					});
 				} else {

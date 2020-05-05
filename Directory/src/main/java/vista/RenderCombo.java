@@ -14,7 +14,7 @@ import modelo.Receptor;
 
 public class RenderCombo extends JLabel implements ListCellRenderer<Receptor> {
 
-	Hashtable<Receptor, ImageIcon> elementos = null;
+	private Hashtable<Receptor, ImageIcon> elementos = null;
 
 	public RenderCombo(List<Receptor> listaContactos) {
 		elementos = new Hashtable<Receptor, ImageIcon>();
