@@ -24,6 +24,7 @@ import javax.swing.UIManager;
 
 import Enum.ETipoMensaje;
 import controlador.ControladorReceptor;
+import factory.ViewMensajeFactory;
 import modelo.Mensaje;
 import modelo.Receptor;
 
@@ -153,7 +154,7 @@ public class ViewReceptor {
 		btnVerMensaje.setFont(new Font("Tahoma", Font.BOLD, 13));
 		panel_2.add(btnVerMensaje);
 		btnVerMensaje.addActionListener(e -> {
-			new ViewMensaje(emisor, asunto, mensaje, tipoMensaje);
+			ViewMensajeFactory.getViewMensaje(emisor, asunto, mensaje, tipoMensaje);
 		});
 
 		JButton btnEliminar = new JButton("Eliminar", new ImageIcon("./src/main/img/cruz-eliminar.png"));
@@ -181,36 +182,20 @@ public class ViewReceptor {
 	}
 
 	private void escuchaMensaje() {
-		Thread udpThread = new Thread() {
+		Thread thread = new Thread() {
 
 			@Override
 			public void run() {
 				while (true) {
-					Mensaje mensajeUDP = ControladorReceptor.getInstance().receptionMessageUDP();
-					creaNuevoMensaje(panelMensajes, mensajeUDP.getEmisor(), mensajeUDP.getAsunto(),
-							mensajeUDP.getCuerpo(), mensajeUDP.getTipo());
-					panelMensajes.validate();
-					panelMensajes.repaint();
-
-				}
-			}
-
-		};
-		Thread tcpThread = new Thread() {
-
-			@Override
-			public void run() {
-				while (true) {
-					Mensaje mensajeTCP = ControladorReceptor.getInstance().leerMensajeAvisoRecepcion();
-					creaNuevoMensaje(panelMensajes, mensajeTCP.getEmisor(), mensajeTCP.getAsunto(),
-							mensajeTCP.getCuerpo(), ETipoMensaje.CONAVISORECEPCION);
+					Mensaje mensaje = ControladorReceptor.getInstance().leerMensaje();
+					creaNuevoMensaje(panelMensajes, mensaje.getEmisor(), mensaje.getAsunto(),
+							mensaje.getCuerpo(), mensaje.getTipo());
 					panelMensajes.validate();
 					panelMensajes.repaint();
 				}
 			}
 		};
-		tcpThread.start();
-		udpThread.start();
+		thread.start();
 	}
 
 }
