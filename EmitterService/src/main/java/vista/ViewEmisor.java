@@ -131,7 +131,7 @@ public class ViewEmisor {
 		panelComboBox.add(comboBoxContactos);
 		completeComboBox(emisor, comboBoxContactos);
 
-		alComboBox = e -> actionListenerComboBox(textFieldDestinatarios, comboBoxContactos,frmInterfazEmisor);
+		alComboBox = e -> actionListenerComboBox(textFieldDestinatarios, comboBoxContactos, frmInterfazEmisor);
 		comboBoxContactos.addActionListener(alComboBox);
 
 		JPanel panelRefresh = new JPanel();
@@ -157,8 +157,9 @@ public class ViewEmisor {
 					destinos.clear();
 				} catch (IOException e1) {
 					e1.printStackTrace();
-					JOptionPane.showMessageDialog(frmInterfazEmisor,"Ocurrieron problemas al conectarse con el servicio del directorio."
-							,"SERVER ERROR",JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(frmInterfazEmisor,
+							"Ocurrieron problemas al conectarse con el servicio del directorio.", "SERVER ERROR",
+							JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
@@ -263,7 +264,7 @@ public class ViewEmisor {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				final Mensaje mensaje;
+				Mensaje mensaje;
 				if (rdbtnAvisoDeRecepcion.isSelected()) {
 					mensaje = new MensajeAvisoRecep();
 					completeDTO(mensaje);
@@ -276,7 +277,7 @@ public class ViewEmisor {
 				} else {
 					mensaje = rdbtnAlerta.isSelected() ? new MensajeAlerta() : new Mensaje();
 					completeDTO(mensaje);
-					ControladorEmisor.getInstance().enviarMensajeSimple(mensaje, destinos);
+					ControladorEmisor.getInstance().enviarMensaje(mensaje, destinos);
 				}
 				btnEnviar.setEnabled(false);
 				textArea.setText("");
@@ -300,19 +301,14 @@ public class ViewEmisor {
 			JFrame frmMensajeEmisor) {
 		Receptor receptor = (Receptor) comboBoxContactos.getSelectedItem();
 		if (!Objects.isNull(receptor)) {
-			if (receptor.getConectado()) {
-				if (!textFieldDestinatarios.getText().contains(receptor.getNombreUsuario())) {
-					destinos.add(receptor);
-					textFieldDestinatarios
-							.setText(textFieldDestinatarios.getText().concat(receptor.getNombreUsuario() + "; "));
-				} else {
-					destinos.remove(receptor);
-					textFieldDestinatarios
-							.setText(textFieldDestinatarios.getText().replace(receptor.getNombreUsuario() + "; ", ""));
-				}
+			if (!textFieldDestinatarios.getText().contains(receptor.getNombreUsuario())) {
+				destinos.add(receptor);
+				textFieldDestinatarios
+						.setText(textFieldDestinatarios.getText().concat(receptor.getNombreUsuario() + "; "));
 			} else {
-				JOptionPane.showMessageDialog(frmMensajeEmisor, "No se pueden enviar mensajes a usuarios offline.",
-						"RECEPTOR ERROR", JOptionPane.ERROR_MESSAGE);
+				destinos.remove(receptor);
+				textFieldDestinatarios
+						.setText(textFieldDestinatarios.getText().replace(receptor.getNombreUsuario() + "; ", ""));
 			}
 		}
 	}

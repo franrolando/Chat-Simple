@@ -109,7 +109,6 @@ public class ViewWE {
 		txtDirectorio.setColumns(10);
 
 		JPanel panel_2 = new JPanel();
-		FlowLayout flowLayout = (FlowLayout) panel_2.getLayout();
 		panel_2.setBackground(new Color(240, 230, 140));
 		panelDatos.add(panel_2);
 

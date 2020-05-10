@@ -44,9 +44,8 @@ public class ControladorDirectorio {
 
 	public void getReceptores() {
 		try {
-			Socket aux = serverEmisores.accept();
-			ObjectOutputStream aux2 = new ObjectOutputStream(aux.getOutputStream());
-			aux2.writeObject(receptores.values().stream().collect(Collectors.toList()));
+			new ObjectOutputStream(serverEmisores.accept().getOutputStream())
+					.writeObject(receptores.values().stream().collect(Collectors.toList()));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -54,10 +53,9 @@ public class ControladorDirectorio {
 
 	public void actualizarEstado() {
 		try {
-			Socket aux = serverReceptores.accept();
-			ObjectInputStream aux2 = new ObjectInputStream(aux.getInputStream());
-			Receptor recep = (Receptor) aux2.readObject();
-			recep.setIp(aux.getInetAddress().getHostAddress());
+			Socket socket = serverReceptores.accept();
+			Receptor recep = (Receptor) new ObjectInputStream(socket.getInputStream()).readObject();
+			recep.setIp(socket.getInetAddress().getHostAddress());
 			receptores.put(recep.getNombreUsuario().toLowerCase(), recep);
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();

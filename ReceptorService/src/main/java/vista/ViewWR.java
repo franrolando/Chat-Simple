@@ -26,13 +26,11 @@ public class ViewWR {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					new ViewWR();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+		EventQueue.invokeLater(() -> {
+			try {
+				new ViewWR();
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		});
 	}
@@ -130,7 +128,7 @@ public class ViewWR {
 				try {
 					if (ControladorReceptor.getInstance().nombreValido(receptor.getNombreUsuario())) {
 						ControladorReceptor.getInstance().sendStatus(receptor);
-						new ViewReceptor2(receptor);
+						new ViewReceptor(receptor);
 						frmInicioReceptor.dispose();
 					} else {
 						JOptionPane.showMessageDialog(frmInicioReceptor,
