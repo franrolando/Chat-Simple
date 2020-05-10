@@ -10,6 +10,7 @@ public class Mensaje implements Serializable {
 	private String ipDestino;
 	private String asunto;
 	private String cuerpo;
+	private String receptor;
 
 	public Mensaje() {
 		super();
@@ -49,6 +50,14 @@ public class Mensaje implements Serializable {
 
 	public ETipoMensaje getTipo() {
 		return ETipoMensaje.SIMPLE;
+	}
+
+	public String getReceptor() {
+		return receptor;
+	}
+
+	public void setReceptor(String receptor) {
+		this.receptor = receptor;
 	}
 
 }
