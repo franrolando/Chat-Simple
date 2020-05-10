@@ -34,6 +34,7 @@ public class ControladorEmisor {
 	public void enviarMensaje(Mensaje mensaje, List<Receptor> destinos) {
 		destinos.stream().forEach(destino -> {
 			mensaje.setIpDestino(destino.getIp());
+			mensaje.setReceptor(destino.getNombreUsuario());
 			try {
 				sendMessage(mensaje);
 			} catch (IOException e) {
@@ -45,6 +46,8 @@ public class ControladorEmisor {
 	public Map<String, Boolean> enviarMensajeAvisoRecepcion(Mensaje mensaje, List<Receptor> destinos) {
 		Map<String, Boolean> mensajesRecibidos = new HashMap<>();
 		destinos.stream().forEach(destino -> {
+			mensaje.setIpDestino(destino.getIp());
+			mensaje.setReceptor(destino.getNombreUsuario());
 			try {
 				sendMessage(mensaje);
 				mensajesRecibidos.put(destino.getNombreUsuario(), true);
