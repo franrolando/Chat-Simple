@@ -48,46 +48,40 @@ public class ViewMensaje {
 		frmMensajeReceptor.setLocationRelativeTo(null);
 		frmMensajeReceptor.setIconImage(new ImageIcon("./src/main/img/email-icon.png").getImage());
 
-		JPanel panel = new JPanel();
-		panel.setBackground(new Color(240, 230, 140));
-		frmMensajeReceptor.getContentPane().add(panel, BorderLayout.NORTH);
-		panel.setLayout(new GridLayout(0, 1, 0, 0));
+		JPanel panelHeader = new JPanel();
+		panelHeader.setBackground(new Color(240, 230, 140));
+		frmMensajeReceptor.getContentPane().add(panelHeader, BorderLayout.NORTH);
+		panelHeader.setLayout(new GridLayout(0, 1, 0, 0));
 
-		JPanel panel_3 = new JPanel();
-		FlowLayout flowLayout = (FlowLayout) panel_3.getLayout();
-		flowLayout.setAlignment(FlowLayout.LEFT);
-		panel_3.setBackground(new Color(240, 230, 140));
-		panel.add(panel_3);
+		JPanel panelEmisor = new JPanel();
+		FlowLayout fl_panelEmisor = (FlowLayout) panelEmisor.getLayout();
+		fl_panelEmisor.setAlignment(FlowLayout.LEFT);
+		panelEmisor.setBackground(new Color(240, 230, 140));
+		panelHeader.add(panelEmisor);
 
 		JLabel lblEmisor = new JLabel("Emisor: ");
 		lblEmisor.setFont(new Font("Tahoma", Font.BOLD, 13));
-		panel_3.add(lblEmisor);
+		panelEmisor.add(lblEmisor);
 
 		JTextField textFieldEmisor = new JTextField(emisor);
 		textFieldEmisor.setEditable(false);
-		panel_3.add(textFieldEmisor);
+		panelEmisor.add(textFieldEmisor);
 		textFieldEmisor.setColumns(38);
 
-		JPanel panel_4 = new JPanel();
-		FlowLayout flowLayout_1 = (FlowLayout) panel_4.getLayout();
-		flowLayout_1.setAlignment(FlowLayout.LEFT);
-		panel_4.setBackground(new Color(240, 230, 140));
-		panel.add(panel_4);
+		JPanel panelAsunto = new JPanel();
+		FlowLayout fl_panelAsunto = (FlowLayout) panelAsunto.getLayout();
+		fl_panelAsunto.setAlignment(FlowLayout.LEFT);
+		panelAsunto.setBackground(new Color(240, 230, 140));
+		panelHeader.add(panelAsunto);
 
 		JLabel lblAsunto = new JLabel("Asunto:");
 		lblAsunto.setFont(new Font("Tahoma", Font.BOLD, 13));
-		panel_4.add(lblAsunto);
+		panelAsunto.add(lblAsunto);
 
 		JTextField textFieldAsunto = new JTextField(asunto);
 		textFieldAsunto.setEditable(false);
-		panel_4.add(textFieldAsunto);
+		panelAsunto.add(textFieldAsunto);
 		textFieldAsunto.setColumns(38);
-
-		JPanel panel_2 = new JPanel();
-		panel_2.setBackground(new Color(240, 230, 140));
-		frmMensajeReceptor.getContentPane().add(panel_2, BorderLayout.SOUTH);
-
-		botonesFooter(panel_2);
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setViewportBorder(null);
@@ -99,33 +93,38 @@ public class ViewMensaje {
 		scrollPane.setViewportView(panel_1);
 		panel_1.setLayout(new BorderLayout(0, 0));
 
-		JPanel panel_5 = new JPanel();
-		FlowLayout flowLayout_2 = (FlowLayout) panel_5.getLayout();
-		flowLayout_2.setAlignment(FlowLayout.LEFT);
-		panel_5.setBackground(new Color(240, 230, 140));
-		panel_1.add(panel_5, BorderLayout.NORTH);
+		JPanel panelCuerpo = new JPanel();
+		FlowLayout fl_panelCuerpo = (FlowLayout) panelCuerpo.getLayout();
+		fl_panelCuerpo.setAlignment(FlowLayout.LEFT);
+		panelCuerpo.setBackground(new Color(240, 230, 140));
+		panel_1.add(panelCuerpo, BorderLayout.NORTH);
 
 		JLabel lblCuerpo = new JLabel("Cuerpo:");
 		lblCuerpo.setFont(new Font("Tahoma", Font.BOLD, 13));
-		panel_5.add(lblCuerpo);
+		panelCuerpo.add(lblCuerpo);
 
-		JPanel panel_6 = new JPanel();
-		panel_6.setBorder(null);
-		panel_6.setBackground(new Color(240, 230, 140));
-		panel_1.add(panel_6, BorderLayout.CENTER);
-		panel_6.setLayout(new BorderLayout(0, 0));
+		JPanel panelTextArea = new JPanel();
+		panelTextArea.setBorder(null);
+		panelTextArea.setBackground(new Color(240, 230, 140));
+		panel_1.add(panelTextArea, BorderLayout.CENTER);
+		panelTextArea.setLayout(new BorderLayout(0, 0));
 
 		JTextArea textArea = new JTextArea(mensaje);
 		textArea.setEditable(false);
 		textArea.setLineWrap(true);
-		panel_6.add(textArea);
+		panelTextArea.add(textArea);
 
+		JPanel panelFooter = new JPanel();
+		panelFooter.setBackground(new Color(240, 230, 140));
+		frmMensajeReceptor.getContentPane().add(panelFooter, BorderLayout.SOUTH);
+
+		botonesFooter(panelFooter);
 	}
 
-	protected void botonesFooter(JPanel panel_2) {
+	protected void botonesFooter(JPanel panelFooter) {
 		JButton btnCerrar = new JButton("Cerrar", new ImageIcon("./src/main/img/Close-icon.png"));
-		btnCerrar.setFont(new Font("Tahoma", Font.BOLD, 13));
-		panel_2.add(btnCerrar);
+		btnCerrar.setFont(new Font("Tahoma", Font.BOLD, 14));
+		panelFooter.add(btnCerrar);
 		btnCerrar.addActionListener(e -> closeMessageAction());
 	}
 

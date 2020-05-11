@@ -53,7 +53,7 @@ public class ViewReceptor {
 		frmInterfazReceptor.getContentPane().setBackground(new Color(240, 230, 140));
 		frmInterfazReceptor.setTitle("Interfaz Receptor");
 		frmInterfazReceptor.setBounds(100, 100, 704, 474);
-		frmInterfazReceptor.setSize(700, 500);
+		frmInterfazReceptor.setSize(700, 200);
 		frmInterfazReceptor.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmInterfazReceptor.setLocationRelativeTo(null);
 		frmInterfazReceptor.setVisible(true);
