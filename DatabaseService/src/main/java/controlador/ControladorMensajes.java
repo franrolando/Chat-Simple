@@ -6,7 +6,7 @@ public class ControladorMensajes {
 	
 	private static ControladorMensajes instance = null;
 	
-	public synchronized ControladorMensajes getInstance() {
+	public static synchronized ControladorMensajes getInstance() {
 		if (Objects.isNull(instance)) {
 			instance = new ControladorMensajes();
 		}

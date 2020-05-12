@@ -20,7 +20,7 @@ public class Conexion {
             System.out.println("Error al cargar el controlador");
             e.printStackTrace();
         } catch (SQLException e) {
-            System.out.println("Error en la conexión");
+            System.out.println("Error en la conexion");
             e.printStackTrace();
         }
         return conexion;

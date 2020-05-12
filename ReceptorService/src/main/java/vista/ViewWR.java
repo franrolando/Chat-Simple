@@ -37,6 +37,8 @@ public class ViewWR {
 
 	/**
 	 * Create the application.
+	 * 
+	 * @wbp.parser.entryPoint
 	 */
 	public ViewWR() {
 		initialize();
