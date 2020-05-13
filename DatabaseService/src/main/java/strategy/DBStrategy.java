@@ -8,8 +8,8 @@ import modelo.Mensaje;
 public class DBStrategy implements IPersistenciaStrategy {
 
 	@Override
-	public Mensaje persistirMensaje(Mensaje mensaje) {
-		return null;
+	public void persistirMensaje(Mensaje mensaje) {
+		
 	}
 
 	@Override

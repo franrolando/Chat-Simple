@@ -6,12 +6,18 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 import DAO.MensajesDAO;
+import modelo.Mensaje;
+import strategy.FileSystemStrategy;
+
 import java.awt.Color;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+
+import Configuration.Config;
+
 import java.awt.Font;
 
 public class ViewAdminMensajes {
@@ -57,8 +63,6 @@ public class ViewAdminMensajes {
 		ImageIcon imgDatabase = new ImageIcon("./src/main/img/email-icon.png");
 		frmDatabase.setIconImage(imgDatabase.getImage());
 		
-		new MensajesDAO().insertarMensaje(null);
-		
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(240, 230, 140));
 		panel.setLayout(new GridLayout(0, 1, 0, 0));
@@ -69,11 +73,21 @@ public class ViewAdminMensajes {
 		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
 		panel.add(lblTitulo);
 		
-		JLabel lblAviso = new JLabel("El programa dejará de funcionar al cerrarse la ventana.",new ImageIcon("./src/main/img/exit.png"),0);
+		JLabel lblAviso = new JLabel("El programa dejarï¿½ de funcionar al cerrarse la ventana.",new ImageIcon("./src/main/img/exit.png"),0);
 		lblAviso.setForeground(new Color(204, 0, 0));
 		lblAviso.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblAviso.setHorizontalAlignment(SwingConstants.CENTER);
 		panel.add(lblAviso);
+		Mensaje a = new Mensaje();
+		a.setReceptor("Franco Receptor");
+		a.setAsunto("Asunto");
+		a.setCuerpo("Cuerpo");
+		a.setIpDestino("Ip destino");
+		a.setEmisor("Emisor");
+		MensajesDAO.getInstance().insertarMensaje(a);
+		MensajesDAO.getInstance().eliminarMensajes("Franco Receptor").forEach(e ->  {
+			System.out.println(e.getIpDestino());
+		});;
 	}
 
 }
