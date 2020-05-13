@@ -1,6 +1,6 @@
-Strategy = fileSystem
+STRATEGY = fileSystem
 CONTROLADOR = com.mysql.jdbc.Driver
-URL = jdbc:mysql://localhost:3306/bd_ejemplo
+URL = jdbc:mysql://localhost:3306/db-ayd2
 USUARIO = root
 CLAVE = mysql
 PUERTORECEPTORES = 9090

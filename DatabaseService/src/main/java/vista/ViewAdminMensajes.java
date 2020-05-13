@@ -73,11 +73,14 @@ public class ViewAdminMensajes {
 		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
 		panel.add(lblTitulo);
 		
-		JLabel lblAviso = new JLabel("El programa dejar� de funcionar al cerrarse la ventana.",new ImageIcon("./src/main/img/exit.png"),0);
+		JLabel lblAviso = new JLabel("El programa dejara de funcionar al cerrarse la ventana.",new ImageIcon("./src/main/img/exit.png"),0);
 		lblAviso.setForeground(new Color(204, 0, 0));
 		lblAviso.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblAviso.setHorizontalAlignment(SwingConstants.CENTER);
 		panel.add(lblAviso);
+		
+		// Mensaje de prueba
+		
 		Mensaje a = new Mensaje();
 		a.setReceptor("Franco Receptor");
 		a.setAsunto("Asunto");
@@ -87,7 +90,7 @@ public class ViewAdminMensajes {
 		MensajesDAO.getInstance().insertarMensaje(a);
 		MensajesDAO.getInstance().eliminarMensajes("Franco Receptor").forEach(e ->  {
 			System.out.println(e.getIpDestino());
-		});;
+		});
 	}
 
 }
