@@ -57,8 +57,6 @@ public class ViewAdminMensajes {
 		ImageIcon imgDatabase = new ImageIcon("./src/main/img/email-icon.png");
 		frmDatabase.setIconImage(imgDatabase.getImage());
 		
-		new MensajesDAO().insertarMensaje(null);
-		
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(240, 230, 140));
 		panel.setLayout(new GridLayout(0, 1, 0, 0));
@@ -74,6 +72,8 @@ public class ViewAdminMensajes {
 		lblAviso.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblAviso.setHorizontalAlignment(SwingConstants.CENTER);
 		panel.add(lblAviso);
+
+		new MensajesDAO().insertarMensaje(null);
 	}
 
 }

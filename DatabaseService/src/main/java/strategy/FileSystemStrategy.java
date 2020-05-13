@@ -8,14 +8,17 @@ import modelo.Mensaje;
 public class FileSystemStrategy implements IPersistenciaStrategy {
 
 	@Override
-	public Mensaje persistirMensaje(Mensaje mensaje) {
+	public void persistirMensaje(Mensaje mensaje) {
+	}
+
+	@Override
+	public List<Mensaje> getMensajes(String nombreReceptor) {
 		return null;
 	}
 
 	@Override
-	public List<Mensaje> eliminarMensajes(String nombreReceptor) {
-		List<Mensaje> mensajesPendientes = new ArrayList<>();
-		return mensajesPendientes;
+	public void eliminaMensajes(String nombreReceptor) {
 	}
+
 
 }

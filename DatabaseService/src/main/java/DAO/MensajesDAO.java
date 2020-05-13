@@ -26,7 +26,7 @@ public class MensajesDAO {
 
 	public synchronized List<Mensaje> eliminarMensajes(String nombreReceptor) {
 		List<Mensaje> mensajesPendientes = new ArrayList<>();
-		mensajesPendientes = persistidor.eliminarMensajes(nombreReceptor);
+		//mensajesPendientes = persistidor.eliminaMensajes(nombreReceptor);
 		return mensajesPendientes;
 	}
 
