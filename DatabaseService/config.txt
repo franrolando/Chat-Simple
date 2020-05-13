@@ -1,0 +1,7 @@
+Strategy = fileSystem
+CONTROLADOR = com.mysql.jdbc.Driver
+URL = jdbc:mysql://localhost:3306/bd_ejemplo
+USUARIO = root
+CLAVE = mysql
+PUERTORECEPTORES = 9090
+PUERTOEMISORES = 9100

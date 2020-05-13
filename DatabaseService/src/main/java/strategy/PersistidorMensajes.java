@@ -2,6 +2,7 @@ package strategy;
 
 import java.util.List;
 
+import Configuration.Config;
 import modelo.Mensaje;
 
 public class PersistidorMensajes {
