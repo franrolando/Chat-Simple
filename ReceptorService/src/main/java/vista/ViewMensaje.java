@@ -123,7 +123,7 @@ public class ViewMensaje {
 
 	protected void botonesFooter(JPanel panelFooter) {
 		JButton btnCerrar = new JButton("Cerrar", new ImageIcon("./src/main/img/Close-icon.png"));
-		btnCerrar.setFont(new Font("Tahoma", Font.BOLD, 13));
+		btnCerrar.setFont(new Font("Tahoma", Font.BOLD, 14));
 		panelFooter.add(btnCerrar);
 		btnCerrar.addActionListener(e -> closeMessageAction());
 	}

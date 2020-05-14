@@ -2,6 +2,7 @@ package strategy;
 
 import java.util.List;
 
+import Configuration.Config;
 import modelo.Mensaje;
 
 public class PersistidorMensajes {
@@ -12,8 +13,7 @@ public class PersistidorMensajes {
 		persistidor.persistirMensaje(mensaje);
 	}
 	
-	public List<Mensaje> eliminarMensajes(String nombreReceptor){
-		return persistidor.eliminarMensajes(nombreReceptor);
+	public void eliminarMensajes(String nombreReceptor){
 	}
 	
 	public void establecerDBStrategy() {
