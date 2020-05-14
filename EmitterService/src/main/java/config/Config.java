@@ -7,12 +7,10 @@ import java.io.IOException;
 
 public class Config {
 
-	public void getIpBaseDatos() {
+	public void solicitaDatos() {
 		
 		File archivo = new File ("./resources/config.txt");
 		String leido;
-		String dato;
-		
 		try {
 			if (archivo.exists()) {
 				BufferedReader leeArchivo = new BufferedReader(new FileReader(archivo));
@@ -36,6 +34,8 @@ public class Config {
 			e.printStackTrace();
 		}
 		
+		
+	
 	}
 		
 		
