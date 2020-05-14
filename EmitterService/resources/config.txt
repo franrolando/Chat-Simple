@@ -1,3 +1,4 @@
-ipBaseDatos=localhost
+ipBaseDatos=192.168.0.1
 PUERTO=8090
 PUERTOCONTACTOSENVIA=9000
+IPDIRECTORIO = localhost
