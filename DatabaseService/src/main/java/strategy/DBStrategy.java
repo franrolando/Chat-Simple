@@ -32,12 +32,17 @@ public class DBStrategy implements IPersistenciaStrategy {
 				if (rpta) {
 					System.out.println("Se persistio mensaje.");
 				}
-				ps.close();
-				c.conectar().close();
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} 
+		} finally {
+			try {
+				ps.close();
+				c.conectar().close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	@Override
@@ -77,12 +82,17 @@ public class DBStrategy implements IPersistenciaStrategy {
 						listaMensajes.add(mensaje);
 					}
 				}
-				ps.close();
-				c.conectar().close();
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} 
+		} finally {
+			try {
+				ps.close();
+				c.conectar().close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		return null;
 	}
 
@@ -100,12 +110,17 @@ public class DBStrategy implements IPersistenciaStrategy {
 				if (rpta) {
 					System.out.println("Se eliminaron los mensajes.");
 				}
-				ps.close();
-				c.conectar().close();
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} 
+		} finally {
+			try {
+				ps.close();
+				c.conectar().close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 }
