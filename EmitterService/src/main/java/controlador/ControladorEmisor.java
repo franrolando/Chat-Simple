@@ -10,15 +10,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import config.Config;
 import modelo.Mensaje;
 import modelo.Receptor;
 
 public class ControladorEmisor {
 
 	private static ControladorEmisor instance;
-	private String ipDirectorio;
-	private static final Integer PUERTO = 8090;
-	private static final Integer PUERTOCONTACTOSENVIA = 9000;
 
 	private ControladorEmisor() {
 		super();
@@ -60,7 +58,8 @@ public class ControladorEmisor {
 	}
 
 	private void sendMessage(Mensaje mensaje) throws IOException {
-		Socket socket = new Socket(mensaje.getIpDestino(), PUERTO);
+		Socket socket = new Socket(Config.getInstance().getIpServicioComunicacion(),
+				Config.getInstance().getPuertoDestino());
 		ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
 		out.writeObject(mensaje);
 		out.close();
@@ -71,7 +70,7 @@ public class ControladorEmisor {
 		List<Receptor> contactList = new ArrayList<>();
 		Socket echoSocket = null;
 		ObjectInputStream is = null;
-		echoSocket = new Socket(ipDirectorio, PUERTOCONTACTOSENVIA);
+		echoSocket = new Socket(Config.getInstance().getIpDirectorio(), Config.getInstance().getPuertoContacto());
 		is = new ObjectInputStream(echoSocket.getInputStream());
 		if (echoSocket != null && is != null) {
 			try {
@@ -83,10 +82,6 @@ public class ControladorEmisor {
 			}
 		}
 		return contactList;
-	}
-
-	public void setIpDirectorio(String ipDirectorio) {
-		this.ipDirectorio = ipDirectorio;
 	}
 
 }
