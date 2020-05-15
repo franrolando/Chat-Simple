@@ -5,7 +5,7 @@ import java.util.List;
 import Configuration.Config;
 import modelo.Mensaje;
 
-public class PersistidorMensajes {
+public class PersistidorMensajes implements IPersistenciaStrategy {
 
 	private IPersistenciaStrategy persistidor;
 	
@@ -13,7 +13,14 @@ public class PersistidorMensajes {
 		persistidor.persistirMensaje(mensaje);
 	}
 	
-	public void eliminarMensajes(String nombreReceptor){
+	@Override
+	public List<Mensaje> getMensajes(String nombreReceptor) {
+		return persistidor.getMensajes(nombreReceptor);
+	}
+	
+	@Override
+	public void eliminaMensajes(String nombreReceptor) {
+		persistidor.eliminaMensajes(nombreReceptor);
 	}
 	
 	public void establecerDBStrategy() {
@@ -23,5 +30,5 @@ public class PersistidorMensajes {
 	public void establecerFSStrategy() {
 		this.persistidor = new FileSystemStrategy();
 	}
-	
+
 }

@@ -40,6 +40,13 @@ public class ViewReceptor {
 		initialize(receptor);
 		listSeleccionados = new ArrayList<>();
 		ControladorReceptor.instanciarSocketServer();
+		List<Mensaje> mensajesOffline = ControladorReceptor.getInstance().getMensajesOffline(receptor.getNombreUsuario());
+		mensajesOffline.stream().forEach(mensaje -> {
+			creaNuevoMensaje(panelMensajes, mensaje.getEmisor(), mensaje.getAsunto(),
+					mensaje.getCuerpo(), mensaje.getTipo());
+			panelMensajes.validate();
+			panelMensajes.repaint();
+		});
 		escuchaMensaje();
 	}
 
@@ -182,7 +189,7 @@ public class ViewReceptor {
 	}
 
 	private void escuchaMensaje() {
-		Thread thread = new Thread() {
+		Thread tMensajes = new Thread() {
 
 			@Override
 			public void run() {
@@ -195,7 +202,7 @@ public class ViewReceptor {
 				}
 			}
 		};
-		thread.start();
+		tMensajes.start();
 	}
 
 }

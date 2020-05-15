@@ -62,16 +62,16 @@ public class DBStrategy implements IPersistenciaStrategy {
 					System.out.println("Se recibieron los mensajes.");
 					rs = ps.executeQuery();
 					while (rs.next()) {
-						int tipo = rs.getInt("tipo");
+						String tipo = rs.getString("tipo");
 						Mensaje mensaje = null;
 						switch (tipo) {
-						case 1:
+						case "SIMPLE":
 							mensaje = new Mensaje();
 							break;
-						case 2:
+						case "CONAVISORECEPCION":
 							mensaje = new MensajeAvisoRecep();
 							break;
-						case 3:
+						case "CONALERTASONIDO":
 							mensaje = new MensajeAlerta();
 							break;
 						}

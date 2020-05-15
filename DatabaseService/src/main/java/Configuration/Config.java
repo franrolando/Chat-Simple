@@ -43,6 +43,10 @@ public class Config {
 	public String getPuertoReceptores() {
 		return getProperty("PUERTORECEPTORES");
 	}
+	
+	public String getPuertoMsjOffline() {
+		return getProperty("PUERTOMSJOFFLINE");
+	}
 
 	private String getProperty(String property) {
 		File archivo = null;

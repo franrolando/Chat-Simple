@@ -6,6 +6,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 import DAO.MensajesDAO;
+import controlador.ControladorMensajes;
 import modelo.Mensaje;
 import strategy.FileSystemStrategy;
 
@@ -44,6 +45,8 @@ public class ViewAdminMensajes {
 	 * Create the application.
 	 */
 	public ViewAdminMensajes() {
+		ControladorMensajes.iniciaServidor();
+		instanciaThreads();
 		initialize();
 	}
 
@@ -82,15 +85,42 @@ public class ViewAdminMensajes {
 		// Mensaje de prueba
 		
 		Mensaje a = new Mensaje();
-		a.setReceptor("Franco Receptor");
+		a.setReceptor("ASD");
 		a.setAsunto("Asunto");
 		a.setCuerpo("Cuerpo");
 		a.setIpDestino("Ip destino");
 		a.setEmisor("Emisor");
 		MensajesDAO.getInstance().insertarMensaje(a);
-		MensajesDAO.getInstance().eliminarMensajes("Franco Receptor").forEach(e ->  {
-			System.out.println(e.getIpDestino());
-		});
+		a.setCuerpo("AAAAAAAAAAAAA");
+		MensajesDAO.getInstance().insertarMensaje(a);
+//		MensajesDAO.getInstance().eliminarMensajes("Franco Receptor").forEach(e ->  {
+//			System.out.println(e.getIpDestino());
+//		});
 	}
 
+	
+	private void instanciaThreads() {
+		Thread tEnvioMensajes = new Thread() {
+
+			@Override
+			public void run() {
+				while (true) {
+					ControladorMensajes.getInstance().enviaMensaje();
+				}
+			}
+			
+		};
+		Thread tMensajesOffline = new Thread() {
+
+			@Override
+			public void run() {
+				while (true) {
+					ControladorMensajes.getInstance().getMensajes();
+				}
+			}
+			
+		};
+		tEnvioMensajes.start();
+		tMensajesOffline.start();
+	}
 }

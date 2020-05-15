@@ -1,6 +1,7 @@
 package controlador;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -9,6 +10,7 @@ import java.util.stream.Collectors;
 
 import Configuration.Config;
 import DAO.MensajesDAO;
+import modelo.Mensaje;
 
 public class ControladorMensajes {
 
@@ -27,22 +29,54 @@ public class ControladorMensajes {
 	public static void iniciaServidor() {
 		try {
 			serverEmisores = new ServerSocket(Integer.parseInt(Config.getInstance().getPuertoEmisores()));
-			serverReceptores = new ServerSocket(Integer.parseInt(Config.getInstance().getPuertoReceptores()));
+			serverReceptores = new ServerSocket(Integer.parseInt(Config.getInstance().getPuertoMsjOffline()));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public synchronized void enviaMensaje() {
-
+	public void enviaMensaje() {
+		Socket socketRecibeMsj = null;
+		ObjectOutputStream out = null;
+		Mensaje mensaje = null;
+		try {
+			socketRecibeMsj = serverEmisores.accept();
+			ObjectInputStream is = new ObjectInputStream(socketRecibeMsj.getInputStream());
+			try {
+				mensaje = (Mensaje) is.readObject();
+				Socket socketEnvioMsj = new Socket(mensaje.getIpDestino(), Integer.parseInt(Config.getInstance().getPuertoReceptores()));
+				out = new ObjectOutputStream(socketEnvioMsj.getOutputStream());
+				out.writeObject(mensaje);
+				socketEnvioMsj.close();
+				out = new ObjectOutputStream(socketRecibeMsj.getOutputStream());
+				out.writeObject(true);
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			try {
+				out = new ObjectOutputStream(socketRecibeMsj.getOutputStream());
+				out.writeObject(false);
+				out.close();
+				if (!Objects.isNull(mensaje)) {
+					MensajesDAO.getInstance().insertarMensaje(mensaje);
+				}
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		}
 	}
 
-	public synchronized void getMensajes() {
+	public void getMensajes() {
 		try {
 			Socket socket = serverReceptores.accept();
-			new ObjectOutputStream(serverReceptores.accept().getOutputStream())
-					.writeObject(MensajesDAO.getInstance().eliminarMensajes("asd"));
-		} catch (IOException e) {
+			ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+			String nombreReceptor = (String) in.readObject();
+			ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+			out.writeObject(MensajesDAO.getInstance().getMensajes(nombreReceptor));
+			socket.close();
+		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 	}

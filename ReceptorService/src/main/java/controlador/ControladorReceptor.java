@@ -16,7 +16,7 @@ public class ControladorReceptor {
 
 	private static ControladorReceptor instance;
 	private String ipDirectorio;
-	private static final Integer PUERTO = 8090;
+	private static final Integer PUERTO = 9090;
 	private static final Integer PUERTORECEPTORES = 9000;
 	private static final Integer PUERTOESTADO = 9010;
 	private static ServerSocket socket = null;
@@ -40,6 +40,23 @@ public class ControladorReceptor {
 			e.printStackTrace();
 		}
 		return mensaje;
+	}
+	
+	public List<Mensaje> getMensajesOffline(String nombreReceptor){
+		List<Mensaje> mensajesOffline = new ArrayList<>();
+		ObjectOutputStream out;
+		ObjectInputStream in;
+		try {
+			Socket socket = new Socket("localhost", 9150);
+			out = new ObjectOutputStream(socket.getOutputStream());
+			out.writeObject(nombreReceptor);
+			in = new ObjectInputStream(socket.getInputStream());
+			mensajesOffline = (List<Mensaje>) in.readObject();
+			socket.close();
+		} catch (IOException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return mensajesOffline;
 	}
 
 	public static void instanciarSocketServer() {

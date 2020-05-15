@@ -41,11 +41,6 @@ public class FileSystemStrategy implements IPersistenciaStrategy {
 
 	@Override
 	public List<Mensaje> getMensajes(String nombreReceptor) {
-		return null;
-	}
-	
-	@Override
-	public void eliminaMensajes(String nombreReceptor) {
 		List<Mensaje> mensajesPendientes = new ArrayList<>();
 		File mensajes = new File("mensajes//".concat(nombreReceptor).concat(".txt"));
 		FileReader fr = null;
@@ -85,6 +80,12 @@ public class FileSystemStrategy implements IPersistenciaStrategy {
 				e2.printStackTrace();
 			}
 		}
+		return mensajesPendientes;
+	}
+	
+	@Override
+	public void eliminaMensajes(String nombreReceptor) {
+		
 	}
 
 }

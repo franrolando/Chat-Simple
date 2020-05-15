@@ -1,7 +1,8 @@
-STRATEGY = fileSystem
+STRATEGY = database
 CONTROLADOR = com.mysql.jdbc.Driver
-URL = jdbc:mysql://localhost:3306/db-ayd2
+URL = jdbc:mysql://152.171.112.235:3306/db-ayd2
 USUARIO = root
-CLAVE = mysql
+CLAVE = Lauti6981.
 PUERTORECEPTORES = 9090
+PUERTOMSJOFFLINE = 9150
 PUERTOEMISORES = 9100

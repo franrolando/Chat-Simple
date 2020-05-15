@@ -62,8 +62,18 @@ public class ControladorEmisor {
 				Config.getInstance().getPuertoDestino());
 		ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
 		out.writeObject(mensaje);
+		ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+		Boolean resp = null;
+		try {
+			resp = (Boolean) in.readObject();
+		} catch (ClassNotFoundException | IOException e) {
+			e.printStackTrace();
+		}
 		out.close();
 		socket.close();
+		if (!resp) {
+			throw new IOException();
+		}
 	}
 
 	public List<Receptor> getContactList() throws IOException {
