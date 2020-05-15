@@ -23,8 +23,8 @@ public class ViewMensajeAlerta extends ViewMensaje {
 	 * @wbp.parser.entryPoint
 	 */
 	
-	public ViewMensajeAlerta(String emisor, String asunto, String mensaje) {
-		super(emisor, asunto, mensaje);
+	public ViewMensajeAlerta(String emisor, String asunto, String mensaje, String hora) {
+		super(emisor, asunto, mensaje, hora);
 	}
 
 	@Override

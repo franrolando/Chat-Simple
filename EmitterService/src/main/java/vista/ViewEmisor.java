@@ -10,6 +10,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -290,6 +292,7 @@ public class ViewEmisor {
 				mensaje.setAsunto(textFieldAsunto.getText());
 				mensaje.setCuerpo(textArea.getText());
 				mensaje.setEmisor(emisor.getNombreUsuario());
+				mensaje.setHora(DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()));
 			}
 
 		});

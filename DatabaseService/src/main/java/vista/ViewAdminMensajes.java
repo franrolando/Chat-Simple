@@ -55,6 +55,7 @@ public class ViewAdminMensajes {
 	 */
 	private void initialize() {
 		frmDatabase = new JFrame();
+		frmDatabase.setResizable(false);
 		frmDatabase.setTitle("Database");
 		frmDatabase.getContentPane().setBackground(new Color(240, 230, 140));
 		frmDatabase.setBounds(100, 100, 450, 300);
@@ -84,6 +85,7 @@ public class ViewAdminMensajes {
 		
 		// Mensaje de prueba
 		
+		/*
 		Mensaje a = new Mensaje();
 		a.setReceptor("ASD");
 		a.setAsunto("Asunto");
@@ -93,9 +95,11 @@ public class ViewAdminMensajes {
 		MensajesDAO.getInstance().insertarMensaje(a);
 		a.setCuerpo("AAAAAAAAAAAAA");
 		MensajesDAO.getInstance().insertarMensaje(a);
-//		MensajesDAO.getInstance().eliminarMensajes("Franco Receptor").forEach(e ->  {
-//			System.out.println(e.getIpDestino());
-//		});
+		MensajesDAO.getInstance().eliminarMensajes("Franco Receptor").forEach(e ->  {
+			System.out.println(e.getIpDestino());
+		});
+		*/
+		
 	}
 
 	

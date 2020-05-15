@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 public class ViewMensaje {
 
@@ -25,8 +26,8 @@ public class ViewMensaje {
 	/**
 	 * Create the application.
 	 */
-	public ViewMensaje(String emisor, String asunto, String mensaje) {
-		initialize(emisor, asunto, mensaje);
+	public ViewMensaje(String emisor, String asunto, String mensaje, String hora) {
+		initialize(emisor, asunto, mensaje, hora);
 	}
 
 	/**
@@ -36,7 +37,7 @@ public class ViewMensaje {
 	 * @throws UnsupportedAudioFileException
 	 * @throws LineUnavailableException
 	 */
-	protected void initialize(String emisor, String asunto, String mensaje) {
+	protected void initialize(String emisor, String asunto, String mensaje, String hora) {
 		frmMensajeReceptor = new JFrame();
 		frmMensajeReceptor.setTitle("Mensaje Receptor");
 		frmMensajeReceptor.getContentPane().setBackground(new Color(240, 230, 140));
@@ -93,15 +94,31 @@ public class ViewMensaje {
 		scrollPane.setViewportView(panel_1);
 		panel_1.setLayout(new BorderLayout(0, 0));
 
+		JPanel panel = new JPanel();
+		panel.setBackground(new Color(240, 230, 140));
+		panel_1.add(panel, BorderLayout.NORTH);
+		panel.setLayout(new GridLayout(0, 2, 0, 0));
+		
 		JPanel panelCuerpo = new JPanel();
+		panelCuerpo.setBackground(new Color(240, 230, 140));
 		FlowLayout fl_panelCuerpo = (FlowLayout) panelCuerpo.getLayout();
 		fl_panelCuerpo.setAlignment(FlowLayout.LEFT);
-		panelCuerpo.setBackground(new Color(240, 230, 140));
-		panel_1.add(panelCuerpo, BorderLayout.NORTH);
-
+		panel.add(panelCuerpo);
+		
 		JLabel lblCuerpo = new JLabel("Cuerpo:");
-		lblCuerpo.setFont(new Font("Tahoma", Font.BOLD, 13));
 		panelCuerpo.add(lblCuerpo);
+		lblCuerpo.setFont(new Font("Tahoma", Font.BOLD, 13));
+		
+		JPanel panelHora = new JPanel();
+		panelHora.setBackground(new Color(240, 230, 140));
+		FlowLayout fl_panelHora = (FlowLayout) panelHora.getLayout();
+		fl_panelHora.setAlignment(FlowLayout.RIGHT);
+		panel.add(panelHora);
+		
+		JLabel lblHora = new JLabel("Hora:"+hora);
+		lblHora.setFont(new Font("Tahoma", Font.BOLD, 13));
+		panelHora.add(lblHora);
+		lblHora.setHorizontalAlignment(SwingConstants.RIGHT);
 
 		JPanel panelTextArea = new JPanel();
 		panelTextArea.setBorder(null);

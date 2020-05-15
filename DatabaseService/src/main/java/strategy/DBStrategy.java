@@ -20,7 +20,7 @@ public class DBStrategy implements IPersistenciaStrategy {
 		boolean rpta = false;
 		try {
 			if (mensaje != null) {
-				String sql = "INSERT INTO mensajes (nombreEmisor,nombreReceptor,ipDestino,asunto,cuerpo,tipo) VALUES (?,?,?,?,?,?);";
+				String sql = "INSERT INTO mensajes (nombreEmisor,nombreReceptor,ipDestino,asunto,cuerpo,tipo,hora) VALUES (?,?,?,?,?,?,?);";
 				ps = c.conectar().prepareStatement(sql);
 				ps.setString(1, mensaje.getEmisor());
 				ps.setString(2, mensaje.getReceptor());
@@ -28,6 +28,7 @@ public class DBStrategy implements IPersistenciaStrategy {
 				ps.setString(4, mensaje.getAsunto());
 				ps.setString(5, mensaje.getCuerpo());
 				ps.setString(6, mensaje.getTipo().toString());
+				ps.setString(7, mensaje.getHora());
 				rpta = ps.execute();
 				if (rpta) {
 					System.out.println("Se persistio mensaje.");
@@ -54,7 +55,7 @@ public class DBStrategy implements IPersistenciaStrategy {
 		boolean rpta = false;
 		try {
 			if (nombreReceptor != null) {
-				String sql = "SELECT nombreEmisor,ipDestino,asunto,cuerpo,tipo FROM mensajes WHERE nombreReceptor=?;";
+				String sql = "SELECT nombreEmisor,ipDestino,asunto,cuerpo,tipo,hora FROM mensajes WHERE nombreReceptor=?;";
 				ps = c.conectar().prepareStatement(sql);
 				ps.setString(1, nombreReceptor);
 				rpta = ps.execute();
@@ -79,6 +80,7 @@ public class DBStrategy implements IPersistenciaStrategy {
 						mensaje.setCuerpo(rs.getString("cuerpo"));
 						mensaje.setEmisor(rs.getString("nombreEmisor"));
 						mensaje.setIpDestino(rs.getString("ipDestino"));
+						mensaje.setHora(rs.getString("hora"));
 						listaMensajes.add(mensaje);
 					}
 				}

@@ -11,6 +11,7 @@ public class Mensaje implements Serializable {
 	private String asunto;
 	private String cuerpo;
 	private String receptor;
+	private String hora;
 
 	public Mensaje() {
 		super();
@@ -59,5 +60,12 @@ public class Mensaje implements Serializable {
 	public void setReceptor(String receptor) {
 		this.receptor = receptor;
 	}
+	
+	public String getHora() {
+		return hora;
+	}
 
+	public void setHora(String hora) {
+		this.hora = hora;
+	}
 }

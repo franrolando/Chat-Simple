@@ -47,6 +47,7 @@ public class ViewDirectorio {
 	 */
 	private void initialize() {
 		JFrame frmDirectorio = new JFrame();
+		frmDirectorio.setResizable(false);
 		frmDirectorio.setTitle("Directorio");
 		frmDirectorio.getContentPane().setBackground(new Color(240, 230, 140));
 		frmDirectorio.setBounds(100, 100, 450, 300);

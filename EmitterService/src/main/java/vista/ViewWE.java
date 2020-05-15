@@ -50,11 +50,12 @@ public class ViewWE {
 	 */
 	private void initialize() {
 		JFrame frmInicioEmisor = new JFrame();
+		frmInicioEmisor.setResizable(false);
 		frmInicioEmisor.getContentPane().setBackground(new Color(240, 230, 140));
 		frmInicioEmisor.setTitle("Inicio SM");
 		frmInicioEmisor.setBounds(100, 100, 450, 300);
 		frmInicioEmisor.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmInicioEmisor.setSize(500, 250);
+		frmInicioEmisor.setSize(500, 200);
 		frmInicioEmisor.setLocationRelativeTo(null);
 		frmInicioEmisor.setVisible(true);
 
@@ -83,7 +84,7 @@ public class ViewWE {
 		panelDatos.add(panel);
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
-		JLabel lblNombre = new JLabel("        Nombre:");
+		JLabel lblNombre = new JLabel("Nombre:");
 		panel.add(lblNombre);
 		lblNombre.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNombre.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -92,21 +93,6 @@ public class ViewWE {
 		panel.add(txtNombre);
 		txtNombre.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		txtNombre.setColumns(10);
-
-		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(new Color(240, 230, 140));
-		panelDatos.add(panel_1);
-		panel_1.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-
-		JLabel lblDirectorio = new JLabel("IP Directorio:");
-		lblDirectorio.setHorizontalAlignment(SwingConstants.RIGHT);
-		panel_1.add(lblDirectorio);
-		lblDirectorio.setFont(new Font("Tahoma", Font.BOLD, 14));
-
-		JTextField txtDirectorio = new JTextField();
-		panel_1.add(txtDirectorio);
-		txtDirectorio.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		txtDirectorio.setColumns(10);
 
 		JPanel panel_2 = new JPanel();
 		panel_2.setBackground(new Color(240, 230, 140));
@@ -124,7 +110,7 @@ public class ViewWE {
 		btnSalir.addActionListener(e -> System.exit(0));
 
 		btnIngresar.addActionListener(e -> {
-			if (!txtNombre.getText().isEmpty() && !txtDirectorio.getText().isEmpty()) {
+			if (!txtNombre.getText().isEmpty()) {
 				Emisor emisor = new Emisor();
 				emisor.setNombreUsuario(txtNombre.getText());
 				try {

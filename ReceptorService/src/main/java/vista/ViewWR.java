@@ -49,13 +49,14 @@ public class ViewWR {
 	 */
 	private void initialize() {
 		JFrame frmInicioReceptor = new JFrame();
+		frmInicioReceptor.setResizable(false);
 		frmInicioReceptor.getContentPane().setBackground(new Color(240, 230, 140));
 		frmInicioReceptor.getContentPane().setLayout(new BorderLayout(0, 0));
 		frmInicioReceptor.setBackground(new Color(240, 230, 140));
 		frmInicioReceptor.setTitle("Inicio SM");
 		frmInicioReceptor.setBounds(100, 100, 450, 300);
 		frmInicioReceptor.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmInicioReceptor.setSize(500, 250);
+		frmInicioReceptor.setSize(500, 200);
 		frmInicioReceptor.setLocationRelativeTo(null);
 		frmInicioReceptor.setVisible(true);
 
@@ -81,7 +82,7 @@ public class ViewWR {
 		panel_1.setBackground(new Color(240, 230, 140));
 		panelDatos.add(panel_1);
 
-		JLabel lblNombre = new JLabel("        Nombre:");
+		JLabel lblNombre = new JLabel("Nombre:");
 		panel_1.add(lblNombre);
 		lblNombre.setFont(new Font("Tahoma", Font.BOLD, 14));
 
@@ -90,19 +91,6 @@ public class ViewWR {
 		textFieldNombre.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		textFieldNombre.setHorizontalAlignment(SwingConstants.LEFT);
 		textFieldNombre.setColumns(10);
-
-		JPanel panel_3 = new JPanel();
-		panel_3.setBackground(new Color(240, 230, 140));
-		panelDatos.add(panel_3);
-
-		JLabel lblDirectorio = new JLabel("IP Directorio:");
-		lblDirectorio.setFont(new Font("Tahoma", Font.BOLD, 14));
-		panel_3.add(lblDirectorio);
-
-		JTextField txtDirectorio = new JTextField();
-		txtDirectorio.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		panel_3.add(txtDirectorio);
-		txtDirectorio.setColumns(10);
 
 		JPanel panel_4 = new JPanel();
 		panel_4.setBackground(new Color(240, 230, 140));
@@ -118,8 +106,7 @@ public class ViewWR {
 		btnSalir.addActionListener(e -> System.exit(0));
 
 		btnIngresar.addActionListener(e -> {
-			if (!textFieldNombre.getText().isEmpty() && !txtDirectorio.getText().isEmpty()) {
-				ControladorReceptor.getInstance().setIpDirectorio(txtDirectorio.getText());
+			if (!textFieldNombre.getText().isEmpty()) {
 				Receptor receptor = new Receptor();
 				receptor.setNombreUsuario(textFieldNombre.getText());
 				receptor.setConectado(true);

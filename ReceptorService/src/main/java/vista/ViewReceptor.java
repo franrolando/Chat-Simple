@@ -43,7 +43,7 @@ public class ViewReceptor {
 		List<Mensaje> mensajesOffline = ControladorReceptor.getInstance().getMensajesOffline(receptor.getNombreUsuario());
 		mensajesOffline.stream().forEach(mensaje -> {
 			creaNuevoMensaje(panelMensajes, mensaje.getEmisor(), mensaje.getAsunto(),
-					mensaje.getCuerpo(), mensaje.getTipo());
+					mensaje.getCuerpo(), mensaje.getTipo(),mensaje.getHora());
 			panelMensajes.validate();
 			panelMensajes.repaint();
 		});
@@ -60,7 +60,7 @@ public class ViewReceptor {
 		frmInterfazReceptor.getContentPane().setBackground(new Color(240, 230, 140));
 		frmInterfazReceptor.setTitle("Interfaz Receptor");
 		frmInterfazReceptor.setBounds(100, 100, 704, 474);
-		frmInterfazReceptor.setSize(700, 200);
+		frmInterfazReceptor.setSize(700, 500);
 		frmInterfazReceptor.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmInterfazReceptor.setLocationRelativeTo(null);
 		frmInterfazReceptor.setVisible(true);
@@ -104,7 +104,7 @@ public class ViewReceptor {
 	}
 
 	private void creaNuevoMensaje(JPanel panel, String emisor, String asunto, String mensaje,
-			ETipoMensaje tipoMensaje) {
+			ETipoMensaje tipoMensaje, String hora) {
 
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(new Color(169, 169, 169));
@@ -131,9 +131,7 @@ public class ViewReceptor {
 		chckbxLeido.setBackground(new Color(169, 169, 169));
 		panel_1.add(chckbxLeido, BorderLayout.EAST);
 
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
-		LocalDateTime now = LocalDateTime.now();
-		JLabel labelHora = new JLabel("Hora: " + dtf.format(now));
+		JLabel labelHora = new JLabel("Hora: "+hora);
 		labelHora.setFont(new Font("Tahoma", Font.BOLD, 13));
 		labelHora.setHorizontalAlignment(SwingConstants.LEFT);
 		panel_1.add(labelHora, BorderLayout.WEST);
@@ -161,7 +159,7 @@ public class ViewReceptor {
 		btnVerMensaje.setFont(new Font("Tahoma", Font.BOLD, 13));
 		panel_2.add(btnVerMensaje);
 		btnVerMensaje.addActionListener(e -> {
-			ViewMensajeFactory.getViewMensaje(emisor, asunto, mensaje, tipoMensaje);
+			ViewMensajeFactory.getViewMensaje(emisor, asunto, mensaje, tipoMensaje, hora);
 		});
 
 		JButton btnEliminar = new JButton("Eliminar", new ImageIcon("./src/main/img/cruz-eliminar.png"));
@@ -196,7 +194,7 @@ public class ViewReceptor {
 				while (true) {
 					Mensaje mensaje = ControladorReceptor.getInstance().leerMensaje();
 					creaNuevoMensaje(panelMensajes, mensaje.getEmisor(), mensaje.getAsunto(),
-							mensaje.getCuerpo(), mensaje.getTipo());
+							mensaje.getCuerpo(), mensaje.getTipo(), mensaje.getHora());
 					panelMensajes.validate();
 					panelMensajes.repaint();
 				}

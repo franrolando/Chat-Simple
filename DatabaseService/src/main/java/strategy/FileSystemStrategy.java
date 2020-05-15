@@ -31,7 +31,8 @@ public class FileSystemStrategy implements IPersistenciaStrategy {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(mensajes, true));
 			PrintWriter wr = new PrintWriter(bw);
 			wr.append(mensaje.getIpDestino() + SEPARADOR + mensaje.getEmisor() + SEPARADOR + mensaje.getAsunto()
-					+ SEPARADOR + mensaje.getCuerpo() + SEPARADOR + mensaje.getTipo() + SEPARADOR + "\n");
+					+ SEPARADOR + mensaje.getCuerpo() + SEPARADOR + mensaje.getTipo() + SEPARADOR + mensaje.getHora()
+					+ SEPARADOR + "\n");
 			wr.close();
 			bw.close();
 		} catch (IOException e) {
@@ -66,6 +67,7 @@ public class FileSystemStrategy implements IPersistenciaStrategy {
 				mensaje.setEmisor(lineaSplit[1]);
 				mensaje.setAsunto(lineaSplit[2]);
 				mensaje.setCuerpo(lineaSplit[3]);
+				mensaje.setHora(lineaSplit[5]);
 				mensajesPendientes.add(mensaje);
 			}
 		} catch (Exception e) {
@@ -82,10 +84,10 @@ public class FileSystemStrategy implements IPersistenciaStrategy {
 		}
 		return mensajesPendientes;
 	}
-	
+
 	@Override
 	public void eliminaMensajes(String nombreReceptor) {
-		
+
 	}
 
 }
