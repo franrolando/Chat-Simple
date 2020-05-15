@@ -12,7 +12,8 @@ public class Conexion {
 		Connection conexion = null;
 		try {
 			Class.forName(Config.getInstance().getControlador());
-			conexion = DriverManager.getConnection(Config.getInstance().getURL(), Config.getInstance().getUsuario(),
+			conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/db-ayd2?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC"
+					, Config.getInstance().getUsuario(),
 					Config.getInstance().getClave());
 		} catch (ClassNotFoundException e) {
 			System.out.println("Error al cargar el controlador");

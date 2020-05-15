@@ -93,7 +93,7 @@ public class DBStrategy implements IPersistenciaStrategy {
 				e.printStackTrace();
 			}
 		}
-		return null;
+		return listaMensajes;
 	}
 
 	@Override

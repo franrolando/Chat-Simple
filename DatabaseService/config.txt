@@ -1,6 +1,6 @@
 STRATEGY = database
 CONTROLADOR = com.mysql.jdbc.Driver
-URL = jdbc:mysql://152.171.112.235:3306/db-ayd2
+URL = jdbc:mysql://localhost:3306/db-ayd2?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
 USUARIO = root
 CLAVE = Lauti6981.
 PUERTORECEPTORES = 9090
