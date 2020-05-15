@@ -1,4 +1,4 @@
-STRATEGY = database
+STRATEGY = filesystem
 CONTROLADOR = com.mysql.jdbc.Driver
 URL = jdbc:mysql://localhost:3306/db-ayd2?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
 USUARIO = root
