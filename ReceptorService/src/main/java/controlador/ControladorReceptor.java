@@ -64,10 +64,6 @@ public class ControladorReceptor {
 		}
 	}
 
-	public void setIpDirectorio(String ipDirectorio) {
-		this.ipDirectorio = ipDirectorio;
-	}
-
 	public void sendStatus(Receptor receptor) {
 		try {
 			Socket socket = new Socket(Config.getInstance().getIpDirectorio(), Config.getInstance().getPuertoEstado());
