@@ -35,13 +35,11 @@ public class DBStrategy implements IPersistenciaStrategy {
 				}
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
 		} finally {
 			try {
 				ps.close();
 				c.conectar().close();
 			} catch (Exception e) {
-				e.printStackTrace();
 			}
 		}
 	}
@@ -87,13 +85,13 @@ public class DBStrategy implements IPersistenciaStrategy {
 				}
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			
 		} finally {
 			try {
 				ps.close();
 				c.conectar().close();
 			} catch (Exception e) {
-				e.printStackTrace();
+				
 			}
 		}
 		return listaMensajes;
@@ -114,13 +112,13 @@ public class DBStrategy implements IPersistenciaStrategy {
 				}
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			
 		} finally {
 			try {
 				ps.close();
 				c.conectar().close();
 			} catch (Exception e) {
-				e.printStackTrace();
+				
 			}
 		}
 	}

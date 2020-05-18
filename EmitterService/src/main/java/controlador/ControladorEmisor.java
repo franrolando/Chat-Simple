@@ -36,7 +36,7 @@ public class ControladorEmisor {
 			try {
 				sendMessage(mensaje);
 			} catch (IOException e) {
-				e.printStackTrace();
+
 			}
 		});
 	}
@@ -51,7 +51,7 @@ public class ControladorEmisor {
 				mensajesRecibidos.put(destino.getNombreUsuario(), true);
 			} catch (Exception e) {
 				mensajesRecibidos.put(destino.getNombreUsuario(), false);
-				e.printStackTrace();
+
 			}
 		});
 		return mensajesRecibidos;
@@ -67,7 +67,7 @@ public class ControladorEmisor {
 		try {
 			resp = (Boolean) in.readObject();
 		} catch (ClassNotFoundException | IOException e) {
-			e.printStackTrace();
+
 		}
 		out.close();
 		socket.close();
@@ -88,7 +88,7 @@ public class ControladorEmisor {
 				is.close();
 				echoSocket.close();
 			} catch (IOException | ClassNotFoundException e) {
-				e.printStackTrace();
+
 			}
 		}
 		return contactList;

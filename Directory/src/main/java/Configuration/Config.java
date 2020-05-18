@@ -42,14 +42,14 @@ public class Config {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			
 		} finally {
 			try {
 				if (null != fr) {
 					fr.close();
 				}
 			} catch (Exception e2) {
-				e2.printStackTrace();
+				
 			}
 		}
 		return value;

@@ -36,7 +36,7 @@ public class FileSystemStrategy implements IPersistenciaStrategy {
 			wr.close();
 			bw.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+
 		}
 	}
 
@@ -71,7 +71,7 @@ public class FileSystemStrategy implements IPersistenciaStrategy {
 				mensajesPendientes.add(mensaje);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			
 		} finally {
 			try {
 				if (null != fr) {
@@ -79,7 +79,7 @@ public class FileSystemStrategy implements IPersistenciaStrategy {
 					mensajes.delete();
 				}
 			} catch (Exception e2) {
-				e2.printStackTrace();
+
 			}
 		}
 		return mensajesPendientes;

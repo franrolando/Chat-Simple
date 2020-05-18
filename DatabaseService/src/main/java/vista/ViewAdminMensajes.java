@@ -35,7 +35,7 @@ public class ViewAdminMensajes {
 					ViewAdminMensajes window = new ViewAdminMensajes();
 					window.frmDatabase.setVisible(true);
 				} catch (Exception e) {
-					e.printStackTrace();
+					
 				}
 			}
 		});
@@ -82,23 +82,6 @@ public class ViewAdminMensajes {
 		lblAviso.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblAviso.setHorizontalAlignment(SwingConstants.CENTER);
 		panel.add(lblAviso);
-		
-		// Mensaje de prueba
-		
-		/*
-		Mensaje a = new Mensaje();
-		a.setReceptor("ASD");
-		a.setAsunto("Asunto");
-		a.setCuerpo("Cuerpo");
-		a.setIpDestino("Ip destino");
-		a.setEmisor("Emisor");
-		MensajesDAO.getInstance().insertarMensaje(a);
-		a.setCuerpo("AAAAAAAAAAAAA");
-		MensajesDAO.getInstance().insertarMensaje(a);
-		MensajesDAO.getInstance().eliminarMensajes("Franco Receptor").forEach(e ->  {
-			System.out.println(e.getIpDestino());
-		});
-		*/
 		
 	}
 

@@ -34,7 +34,7 @@ public class ControladorMensajes {
 			serverEmisores = new ServerSocket(Integer.parseInt(Config.getInstance().getPuertoEmisores()));
 			serverReceptores = new ServerSocket(Integer.parseInt(Config.getInstance().getPuertoMsjOffline()));
 		} catch (IOException e) {
-			e.printStackTrace();
+			
 		}
 	}
 
@@ -55,10 +55,9 @@ public class ControladorMensajes {
 				out = new ObjectOutputStream(socketRecibeMsj.getOutputStream());
 				out.writeObject(true);
 			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
+				
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
 			try {
 				out = new ObjectOutputStream(socketRecibeMsj.getOutputStream());
 				out.writeObject(false);
@@ -67,7 +66,7 @@ public class ControladorMensajes {
 					MensajesDAO.getInstance().insertarMensaje(mensaje);
 				}
 			} catch (IOException e1) {
-				e1.printStackTrace();
+				
 			}
 		}
 	}
@@ -81,7 +80,7 @@ public class ControladorMensajes {
 			out.writeObject(MensajesDAO.getInstance().getMensajes(nombreReceptor));
 			socket.close();
 		} catch (IOException | ClassNotFoundException e) {
-			e.printStackTrace();
+
 		}
 	}
 

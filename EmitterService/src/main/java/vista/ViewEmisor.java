@@ -158,7 +158,6 @@ public class ViewEmisor {
 					textFieldDestinatarios.setText("");
 					destinos.clear();
 				} catch (IOException e1) {
-					e1.printStackTrace();
 					JOptionPane.showMessageDialog(frmInterfazEmisor,
 							"Ocurrieron problemas al conectarse con el servicio del directorio.", "SERVER ERROR",
 							JOptionPane.ERROR_MESSAGE);

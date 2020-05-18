@@ -49,7 +49,7 @@ public class ViewMensajeAlerta extends ViewMensaje {
 				}
 			});
 		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e1) {
-			e1.printStackTrace();
+
 		}
 		super.botonesFooter(panel_2);
 	}

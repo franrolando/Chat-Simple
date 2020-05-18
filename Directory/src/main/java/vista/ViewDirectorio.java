@@ -27,7 +27,7 @@ public class ViewDirectorio {
 			try {
 				new ViewDirectorio();
 			} catch (Exception e) {
-				e.printStackTrace();
+
 			}
 		});
 	}

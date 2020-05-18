@@ -41,7 +41,7 @@ public class ControladorDirectorio {
 			serverEmisores = new ServerSocket(Config.getInstance().getPuertoEmisores());
 			serverReceptores = new ServerSocket(Config.getInstance().getPuertoReceptores());
 		} catch (IOException e) {
-			e.printStackTrace();
+			
 		}
 	}
 
@@ -50,7 +50,7 @@ public class ControladorDirectorio {
 			new ObjectOutputStream(serverEmisores.accept().getOutputStream())
 					.writeObject(receptores.values().stream().collect(Collectors.toList()));
 		} catch (IOException e) {
-			e.printStackTrace();
+			
 		}
 	}
 
@@ -61,7 +61,7 @@ public class ControladorDirectorio {
 			recep.setIp(socket.getInetAddress().getHostAddress());
 			receptores.put(recep.getNombreUsuario().toLowerCase(), recep);
 		} catch (IOException | ClassNotFoundException e) {
-			e.printStackTrace();
+
 		}
 	}
 

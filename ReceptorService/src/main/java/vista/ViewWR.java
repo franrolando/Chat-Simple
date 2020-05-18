@@ -30,7 +30,7 @@ public class ViewWR {
 			try {
 				new ViewWR();
 			} catch (Exception e) {
-				e.printStackTrace();
+
 			}
 		});
 	}
@@ -125,7 +125,6 @@ public class ViewWR {
 								JOptionPane.ERROR_MESSAGE);
 					}
 				} catch (IOException e1) {
-					e1.printStackTrace();
 					JOptionPane.showMessageDialog(frmInicioReceptor,
 							"Ocurrieron problemas al conectarse con el servicio del directorio.", "SERVER ERROR",
 							JOptionPane.ERROR_MESSAGE);

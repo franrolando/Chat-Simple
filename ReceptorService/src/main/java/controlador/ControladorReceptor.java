@@ -34,7 +34,7 @@ public class ControladorReceptor {
 		try {
 			mensaje = (Mensaje) new ObjectInputStream(socket.accept().getInputStream()).readObject();
 		} catch (Exception e) {
-			e.printStackTrace();
+
 		}
 		return mensaje;
 	}
@@ -52,7 +52,7 @@ public class ControladorReceptor {
 			mensajesOffline = (List<Mensaje>) in.readObject();
 			socket.close();
 		} catch (IOException | ClassNotFoundException e) {
-			e.printStackTrace();
+
 		}
 		return mensajesOffline;
 	}
@@ -61,7 +61,7 @@ public class ControladorReceptor {
 		try {
 			socket = new ServerSocket(Config.getInstance().getPuertoMensajes());
 		} catch (IOException e) {
-			e.printStackTrace();
+
 		}
 	}
 
@@ -73,7 +73,7 @@ public class ControladorReceptor {
 			os.close();
 			socket.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+
 		}
 	}
 
@@ -92,7 +92,6 @@ public class ControladorReceptor {
 				is.close();
 				echoSocket.close();
 			} catch (IOException | ClassNotFoundException e) {
-				e.printStackTrace();
 				valido = false;
 			}
 		}

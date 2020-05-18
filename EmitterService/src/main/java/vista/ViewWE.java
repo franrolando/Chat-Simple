@@ -31,7 +31,7 @@ public class ViewWE {
 			try {
 				new ViewWE();
 			} catch (Exception e) {
-				e.printStackTrace();
+
 			}
 		});
 	}
@@ -118,7 +118,6 @@ public class ViewWE {
 					new ViewEmisor(emisor);
 					frmInicioEmisor.dispose();
 				} catch (IOException e1) {
-					e1.printStackTrace();
 					UIManager.put("OptionPane.background", new Color(205, 122, 122));
 					UIManager.put("OptionPane.messageFont", new Font("Tahoma", Font.BOLD, 13));
 					UIManager.put("Panel.background", new Color(205, 122, 122));
