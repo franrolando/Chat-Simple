@@ -5,7 +5,7 @@ import java.util.List;
 import Configuration.Config;
 import modelo.Mensaje;
 
-public class PersistidorMensajes implements IPersistenciaStrategy {
+public class PersistidorMensajes {
 
 	private IPersistenciaStrategy persistidor;
 	
@@ -13,14 +13,8 @@ public class PersistidorMensajes implements IPersistenciaStrategy {
 		persistidor.persistirMensaje(mensaje);
 	}
 	
-	@Override
 	public List<Mensaje> getMensajes(String nombreReceptor) {
 		return persistidor.getMensajes(nombreReceptor);
-	}
-	
-	@Override
-	public void eliminaMensajes(String nombreReceptor) {
-		persistidor.eliminaMensajes(nombreReceptor);
 	}
 	
 	public void establecerDBStrategy() {

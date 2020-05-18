@@ -267,19 +267,25 @@ public class ViewEmisor {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Mensaje mensaje;
-				if (rdbtnAvisoDeRecepcion.isSelected()) {
-					mensaje = new MensajeAvisoRecep();
-					completeDTO(mensaje);
-					Map<String, Boolean> resp = ControladorEmisor.getInstance().enviarMensajeAvisoRecepcion(mensaje,
-							destinos);
-					resp.forEach((emisor, recibido) -> {
-						creaNuevoMensajeAviso(frmInterfazEmisor, panelMensajesConAviso, mensaje.getAsunto(), emisor,
-								recibido);
-					});
+				if (ControladorEmisor.getInstance().servicioEnvioDisponible()) {
+					if (rdbtnAvisoDeRecepcion.isSelected()) {
+						mensaje = new MensajeAvisoRecep();
+						completeDTO(mensaje);
+						Map<String, Boolean> resp = ControladorEmisor.getInstance().enviarMensajeAvisoRecepcion(mensaje,
+								destinos);
+						resp.forEach((emisor, recibido) -> {
+							creaNuevoMensajeAviso(frmInterfazEmisor, panelMensajesConAviso, mensaje.getAsunto(), emisor,
+									recibido);
+						});
+					} else {
+						mensaje = rdbtnAlerta.isSelected() ? new MensajeAlerta() : new Mensaje();
+						completeDTO(mensaje);
+						ControladorEmisor.getInstance().enviarMensaje(mensaje, destinos);
+					}
 				} else {
-					mensaje = rdbtnAlerta.isSelected() ? new MensajeAlerta() : new Mensaje();
-					completeDTO(mensaje);
-					ControladorEmisor.getInstance().enviarMensaje(mensaje, destinos);
+					JOptionPane.showMessageDialog(frmInterfazEmisor,
+							"Ocurrieron problemas al conectarse con el servicio de base de datos.", "SERVER ERROR",
+							JOptionPane.ERROR_MESSAGE);
 				}
 				btnEnviar.setEnabled(false);
 				textArea.setText("");

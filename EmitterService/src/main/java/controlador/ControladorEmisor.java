@@ -93,5 +93,17 @@ public class ControladorEmisor {
 		}
 		return contactList;
 	}
+	
+	public Boolean servicioEnvioDisponible() {
+		Boolean disponible = true;
+		try {
+			Socket socket = new Socket(Config.getInstance().getIpServicioComunicacion(),
+					Config.getInstance().getPuertoDestino());
+			socket.close();
+		} catch (IOException e) {
+			disponible = false;
+		}
+		return disponible;
+	}
 
 }

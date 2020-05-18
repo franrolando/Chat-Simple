@@ -8,5 +8,5 @@ public interface IPersistenciaStrategy {
 	
 	void persistirMensaje(Mensaje mensaje);
 	List<Mensaje> getMensajes(String nombreReceptor);
-	void eliminaMensajes(String nombreReceptor);
+	
 }

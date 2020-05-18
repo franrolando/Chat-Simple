@@ -85,9 +85,4 @@ public class FileSystemStrategy implements IPersistenciaStrategy {
 		return mensajesPendientes;
 	}
 
-	@Override
-	public void eliminaMensajes(String nombreReceptor) {
-
-	}
-
 }

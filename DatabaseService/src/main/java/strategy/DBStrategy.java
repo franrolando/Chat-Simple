@@ -83,6 +83,7 @@ public class DBStrategy implements IPersistenciaStrategy {
 						mensaje.setHora(rs.getString("hora"));
 						listaMensajes.add(mensaje);
 					}
+					eliminaMensajes(nombreReceptor);
 				}
 			}
 		} catch (SQLException e) {
@@ -98,8 +99,7 @@ public class DBStrategy implements IPersistenciaStrategy {
 		return listaMensajes;
 	}
 
-	@Override
-	public void eliminaMensajes(String nombreReceptor) {
+	private void eliminaMensajes(String nombreReceptor) {
 		Conexion c = new Conexion();
 		PreparedStatement ps = null;
 		boolean rpta = false;

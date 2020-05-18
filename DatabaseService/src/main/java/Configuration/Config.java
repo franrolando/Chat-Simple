@@ -60,8 +60,8 @@ public class Config {
 			String linea;
 			while ((linea = br.readLine()) != null) {
 				if (!linea.startsWith("#")) {
-					if (linea.subSequence(0, linea.lastIndexOf("=")).toString().trim().equalsIgnoreCase(property)) {
-						value = linea.substring(linea.lastIndexOf("=")+1).trim();
+					if (linea.subSequence(0, linea.indexOf("=")).toString().trim().equalsIgnoreCase(property)) {
+						value = linea.substring(linea.indexOf("=")+1).trim();
 					}
 				}
 			}
