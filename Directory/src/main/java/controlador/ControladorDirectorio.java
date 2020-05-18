@@ -11,13 +11,12 @@ import java.util.Objects;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
+import Configuration.Config;
 import modelo.Receptor;
 
 public class ControladorDirectorio {
 
 	private static ControladorDirectorio instance = null;
-	private static Integer PUERTOSEMISORES = 9000;
-	private static Integer PUERTORECEPTORES = 9010;
 	private Map<String, Receptor> receptores = new TreeMap<>();
 	private static ServerSocket serverEmisores;
 	private static ServerSocket serverReceptores;
@@ -39,8 +38,8 @@ public class ControladorDirectorio {
 
 	public static void initDirectorio() {
 		try {
-			serverEmisores = new ServerSocket(PUERTOSEMISORES);
-			serverReceptores = new ServerSocket(PUERTORECEPTORES);
+			serverEmisores = new ServerSocket(Config.getInstance().getPuertoEmisores());
+			serverReceptores = new ServerSocket(Config.getInstance().getPuertoReceptores());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
