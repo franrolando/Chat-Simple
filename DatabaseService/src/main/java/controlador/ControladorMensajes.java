@@ -6,7 +6,6 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import Configuration.Config;
 import DAO.MensajesDAO;
@@ -19,9 +18,13 @@ public class ControladorMensajes {
 	private static ServerSocket serverEmisores;
 	private static ServerSocket serverReceptores;
 
-	public static synchronized ControladorMensajes getInstance() {
+	public static ControladorMensajes getInstance() {
 		if (Objects.isNull(instance)) {
-			instance = new ControladorMensajes();
+			synchronized (ControladorMensajes.class) {
+				if (Objects.isNull(instance)) {
+					instance = new ControladorMensajes();
+				}
+			}
 		}
 		return instance;
 	}
@@ -44,7 +47,8 @@ public class ControladorMensajes {
 			ObjectInputStream is = new ObjectInputStream(socketRecibeMsj.getInputStream());
 			try {
 				mensaje = (Mensaje) is.readObject();
-				Socket socketEnvioMsj = new Socket(mensaje.getIpDestino(), Integer.parseInt(Config.getInstance().getPuertoReceptores()));
+				Socket socketEnvioMsj = new Socket(mensaje.getIpDestino(),
+						Integer.parseInt(Config.getInstance().getPuertoReceptores()));
 				out = new ObjectOutputStream(socketEnvioMsj.getOutputStream());
 				out.writeObject(mensaje);
 				socketEnvioMsj.close();

@@ -24,7 +24,7 @@ import javax.swing.UIManager;
 
 import Enum.ETipoMensaje;
 import controlador.ControladorReceptor;
-import factory.ViewMensajeFactory;
+import creator.ViewMensajeCreator;
 import modelo.Mensaje;
 import modelo.Receptor;
 
@@ -159,7 +159,7 @@ public class ViewReceptor {
 		btnVerMensaje.setFont(new Font("Tahoma", Font.BOLD, 13));
 		panel_2.add(btnVerMensaje);
 		btnVerMensaje.addActionListener(e -> {
-			ViewMensajeFactory.getViewMensaje(emisor, asunto, mensaje, tipoMensaje, hora);
+			ViewMensajeCreator.getViewMensaje(emisor, asunto, mensaje, tipoMensaje, hora);
 		});
 
 		JButton btnEliminar = new JButton("Eliminar", new ImageIcon("./src/main/img/cruz-eliminar.png"));

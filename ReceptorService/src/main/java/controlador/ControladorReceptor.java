@@ -38,13 +38,14 @@ public class ControladorReceptor {
 		}
 		return mensaje;
 	}
-	
-	public List<Mensaje> getMensajesOffline(String nombreReceptor){
+
+	public List<Mensaje> getMensajesOffline(String nombreReceptor) {
 		List<Mensaje> mensajesOffline = new ArrayList<>();
 		ObjectOutputStream out;
 		ObjectInputStream in;
 		try {
-			Socket socket = new Socket(Config.getInstance().getIpServicioComunicacion(), Config.getInstance().getPuertoMsjOffline());
+			Socket socket = new Socket(Config.getInstance().getIpServicioComunicacion(),
+					Config.getInstance().getPuertoMsjOffline());
 			out = new ObjectOutputStream(socket.getOutputStream());
 			out.writeObject(nombreReceptor);
 			in = new ObjectInputStream(socket.getInputStream());

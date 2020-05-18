@@ -26,9 +26,13 @@ public class ControladorDirectorio {
 		super();
 	}
 
-	public static synchronized ControladorDirectorio getInstance() {
+	public static ControladorDirectorio getInstance() {
 		if (Objects.isNull(instance)) {
-			instance = new ControladorDirectorio();
+			synchronized (ControladorDirectorio.class) {
+				if (Objects.isNull(instance)) {
+					instance = new ControladorDirectorio();
+				}
+			}
 		}
 		return instance;
 	}

@@ -1,4 +1,4 @@
-package factory;
+package creator;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,7 +7,7 @@ import Enum.ETipoMensaje;
 import vista.ViewMensaje;
 import vista.ViewMensajeAlerta;
 
-public class ViewMensajeFactory {
+public class ViewMensajeCreator {
 	
 	@FunctionalInterface 
 	private interface IViewMensajeFactory {
