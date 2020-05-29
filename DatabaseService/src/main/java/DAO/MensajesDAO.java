@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import Configuration.Config;
 import modelo.Mensaje;
 import strategy.PersistidorMensajes;
 
@@ -13,7 +14,19 @@ public class MensajesDAO {
 	
 	private static MensajesDAO instance = null;
 
-	public synchronized MensajesDAO getInstance() {
+	private MensajesDAO() {
+		switch (Config.getInstance().getStrategy().toLowerCase()) {
+		case "filesystem":
+			persistidor.establecerFSStrategy();
+			break;
+		case "database":
+			persistidor.establecerDBStrategy();
+			break;
+		default:
+		}
+	}
+	
+	public static synchronized MensajesDAO getInstance() {
 		if (Objects.isNull(instance)) {
 			instance = new MensajesDAO();
 		}
@@ -24,9 +37,9 @@ public class MensajesDAO {
 		persistidor.persistirMensaje(mensaje);
 	}
 
-	public synchronized List<Mensaje> eliminarMensajes(String nombreReceptor) {
+	public synchronized List<Mensaje> getMensajes(String nombreReceptor) {
 		List<Mensaje> mensajesPendientes = new ArrayList<>();
-		mensajesPendientes = persistidor.eliminarMensajes(nombreReceptor);
+		mensajesPendientes = persistidor.getMensajes(nombreReceptor);
 		return mensajesPendientes;
 	}
 

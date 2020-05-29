@@ -4,27 +4,23 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import Configuration.Config;
+
 public class Conexion {
 
-    private static final String CONTROLADOR = "com.mysql.jdbc.Driver";
-    private static final String URL = "jdbc:mysql://localhost:3306/bd_ejemplo";
-    private static final String USUARIO = "root";
-    private static final String CLAVE = "mysql";
-
-    public Connection conectar() {
-        Connection conexion = null;
-        try {
-            Class.forName(CONTROLADOR);
-            conexion = DriverManager.getConnection(URL, USUARIO, CLAVE);
-        } catch (ClassNotFoundException e) {
-            System.out.println("Error al cargar el controlador");
-            e.printStackTrace();
-        } catch (SQLException e) {
-            System.out.println("Error en la conexion");
-            e.printStackTrace();
-        }
-        return conexion;
-    }
+	public Connection conectar() {
+		Connection conexion = null;
+		try {
+			Class.forName(Config.getInstance().getControlador());
+			conexion = DriverManager.getConnection(Config.getInstance().getURL()
+					, Config.getInstance().getUsuario(),
+					Config.getInstance().getClave());
+		} catch (ClassNotFoundException e) {
+			System.out.println("Error al cargar el controlador");
+		} catch (SQLException e) {
+			System.out.println("Error en la conexion");
+		}
+		return conexion;
+	}
 
 }
-

@@ -1,4 +1,4 @@
-package factory;
+package creator;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,17 +7,17 @@ import Enum.ETipoMensaje;
 import vista.ViewMensaje;
 import vista.ViewMensajeAlerta;
 
-public class ViewMensajeFactory {
+public class ViewMensajeCreator {
 	
 	@FunctionalInterface 
 	private interface IViewMensajeFactory {
-		ViewMensaje create(String emisor, String asunto, String mensaje);
+		ViewMensaje create(String emisor, String asunto, String mensaje, String hora);
 	}
 	
 	private static Map<ETipoMensaje, IViewMensajeFactory> factoryMap = new HashMap<>();
 	
-	public static ViewMensaje getViewMensaje(String emisor, String asunto, String mensaje, ETipoMensaje tipoMensaje) {
-		return factoryMap.get(tipoMensaje).create(emisor, asunto, mensaje);
+	public static ViewMensaje getViewMensaje(String emisor, String asunto, String mensaje, ETipoMensaje tipoMensaje,String hora) {
+		return factoryMap.get(tipoMensaje).create(emisor, asunto, mensaje, hora);
 	}
 	
 	static {

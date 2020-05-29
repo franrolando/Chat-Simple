@@ -6,6 +6,7 @@ import modelo.Mensaje;
 
 public interface IPersistenciaStrategy {
 	
-	Mensaje persistirMensaje(Mensaje mensaje);
-	List<Mensaje> eliminarMensajes(String nombreReceptor);
+	void persistirMensaje(Mensaje mensaje);
+	List<Mensaje> getMensajes(String nombreReceptor);
+	
 }

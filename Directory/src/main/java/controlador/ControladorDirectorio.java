@@ -11,13 +11,12 @@ import java.util.Objects;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
+import Configuration.Config;
 import modelo.Receptor;
 
 public class ControladorDirectorio {
 
 	private static ControladorDirectorio instance = null;
-	private static Integer PUERTOSEMISORES = 9000;
-	private static Integer PUERTORECEPTORES = 9010;
 	private Map<String, Receptor> receptores = new TreeMap<>();
 	private static ServerSocket serverEmisores;
 	private static ServerSocket serverReceptores;
@@ -26,19 +25,23 @@ public class ControladorDirectorio {
 		super();
 	}
 
-	public static synchronized ControladorDirectorio getInstance() {
+	public static ControladorDirectorio getInstance() {
 		if (Objects.isNull(instance)) {
-			instance = new ControladorDirectorio();
+			synchronized (ControladorDirectorio.class) {
+				if (Objects.isNull(instance)) {
+					instance = new ControladorDirectorio();
+				}
+			}
 		}
 		return instance;
 	}
 
 	public static void initDirectorio() {
 		try {
-			serverEmisores = new ServerSocket(PUERTOSEMISORES);
-			serverReceptores = new ServerSocket(PUERTORECEPTORES);
+			serverEmisores = new ServerSocket(Config.getInstance().getPuertoEmisores());
+			serverReceptores = new ServerSocket(Config.getInstance().getPuertoReceptores());
 		} catch (IOException e) {
-			e.printStackTrace();
+			
 		}
 	}
 
@@ -47,7 +50,7 @@ public class ControladorDirectorio {
 			new ObjectOutputStream(serverEmisores.accept().getOutputStream())
 					.writeObject(receptores.values().stream().collect(Collectors.toList()));
 		} catch (IOException e) {
-			e.printStackTrace();
+			
 		}
 	}
 
@@ -58,7 +61,7 @@ public class ControladorDirectorio {
 			recep.setIp(socket.getInetAddress().getHostAddress());
 			receptores.put(recep.getNombreUsuario().toLowerCase(), recep);
 		} catch (IOException | ClassNotFoundException e) {
-			e.printStackTrace();
+
 		}
 	}
 
