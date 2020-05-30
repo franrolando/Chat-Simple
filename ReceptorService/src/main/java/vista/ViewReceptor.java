@@ -24,7 +24,7 @@ import javax.swing.UIManager;
 
 import Enum.ETipoMensaje;
 import controlador.ControladorReceptor;
-import factory.ViewMensajeFactory;
+import creator.ViewMensajeCreator;
 import modelo.Mensaje;
 import modelo.Receptor;
 
@@ -40,6 +40,13 @@ public class ViewReceptor {
 		initialize(receptor);
 		listSeleccionados = new ArrayList<>();
 		ControladorReceptor.instanciarSocketServer();
+		List<Mensaje> mensajesOffline = ControladorReceptor.getInstance().getMensajesOffline(receptor.getNombreUsuario());
+		mensajesOffline.stream().forEach(mensaje -> {
+			creaNuevoMensaje(panelMensajes, mensaje.getEmisor(), mensaje.getAsunto(),
+					mensaje.getCuerpo(), mensaje.getTipo(),mensaje.getHora());
+			panelMensajes.validate();
+			panelMensajes.repaint();
+		});
 		escuchaMensaje();
 	}
 
@@ -97,7 +104,7 @@ public class ViewReceptor {
 	}
 
 	private void creaNuevoMensaje(JPanel panel, String emisor, String asunto, String mensaje,
-			ETipoMensaje tipoMensaje) {
+			ETipoMensaje tipoMensaje, String hora) {
 
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(new Color(169, 169, 169));
@@ -124,9 +131,7 @@ public class ViewReceptor {
 		chckbxLeido.setBackground(new Color(169, 169, 169));
 		panel_1.add(chckbxLeido, BorderLayout.EAST);
 
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
-		LocalDateTime now = LocalDateTime.now();
-		JLabel labelHora = new JLabel("Hora: " + dtf.format(now));
+		JLabel labelHora = new JLabel("Hora: "+hora);
 		labelHora.setFont(new Font("Tahoma", Font.BOLD, 13));
 		labelHora.setHorizontalAlignment(SwingConstants.LEFT);
 		panel_1.add(labelHora, BorderLayout.WEST);
@@ -154,7 +159,7 @@ public class ViewReceptor {
 		btnVerMensaje.setFont(new Font("Tahoma", Font.BOLD, 13));
 		panel_2.add(btnVerMensaje);
 		btnVerMensaje.addActionListener(e -> {
-			ViewMensajeFactory.getViewMensaje(emisor, asunto, mensaje, tipoMensaje);
+			ViewMensajeCreator.getViewMensaje(emisor, asunto, mensaje, tipoMensaje, hora);
 		});
 
 		JButton btnEliminar = new JButton("Eliminar", new ImageIcon("./src/main/img/cruz-eliminar.png"));
@@ -182,20 +187,20 @@ public class ViewReceptor {
 	}
 
 	private void escuchaMensaje() {
-		Thread thread = new Thread() {
+		Thread tMensajes = new Thread() {
 
 			@Override
 			public void run() {
 				while (true) {
 					Mensaje mensaje = ControladorReceptor.getInstance().leerMensaje();
 					creaNuevoMensaje(panelMensajes, mensaje.getEmisor(), mensaje.getAsunto(),
-							mensaje.getCuerpo(), mensaje.getTipo());
+							mensaje.getCuerpo(), mensaje.getTipo(), mensaje.getHora());
 					panelMensajes.validate();
 					panelMensajes.repaint();
 				}
 			}
 		};
-		thread.start();
+		tMensajes.start();
 	}
 
 }

@@ -9,16 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import config.Config;
 import modelo.Mensaje;
 import modelo.Receptor;
 
 public class ControladorReceptor {
 
 	private static ControladorReceptor instance;
-	private String ipDirectorio;
-	private static final Integer PUERTO = 8090;
-	private static final Integer PUERTORECEPTORES = 9000;
-	private static final Integer PUERTOESTADO = 9010;
 	private static ServerSocket socket = null;
 
 	private ControladorReceptor() {
@@ -37,32 +34,46 @@ public class ControladorReceptor {
 		try {
 			mensaje = (Mensaje) new ObjectInputStream(socket.accept().getInputStream()).readObject();
 		} catch (Exception e) {
-			e.printStackTrace();
+
 		}
 		return mensaje;
 	}
 
-	public static void instanciarSocketServer() {
+	public List<Mensaje> getMensajesOffline(String nombreReceptor) {
+		List<Mensaje> mensajesOffline = new ArrayList<>();
+		ObjectOutputStream out;
+		ObjectInputStream in;
 		try {
-			socket = new ServerSocket(PUERTO);
-		} catch (IOException e) {
-			e.printStackTrace();
+			Socket socket = new Socket(Config.getInstance().getIpServicioComunicacion(),
+					Config.getInstance().getPuertoMsjOffline());
+			out = new ObjectOutputStream(socket.getOutputStream());
+			out.writeObject(nombreReceptor);
+			in = new ObjectInputStream(socket.getInputStream());
+			mensajesOffline = (List<Mensaje>) in.readObject();
+			socket.close();
+		} catch (IOException | ClassNotFoundException e) {
+
 		}
+		return mensajesOffline;
 	}
 
-	public void setIpDirectorio(String ipDirectorio) {
-		this.ipDirectorio = ipDirectorio;
+	public static void instanciarSocketServer() {
+		try {
+			socket = new ServerSocket(Config.getInstance().getPuertoMensajes());
+		} catch (IOException e) {
+
+		}
 	}
 
 	public void sendStatus(Receptor receptor) {
 		try {
-			Socket socket = new Socket(ipDirectorio, PUERTOESTADO);
+			Socket socket = new Socket(Config.getInstance().getIpDirectorio(), Config.getInstance().getPuertoEstado());
 			ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
 			os.writeObject(receptor);
 			os.close();
 			socket.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+
 		}
 	}
 
@@ -71,7 +82,7 @@ public class ControladorReceptor {
 		List<Receptor> contactList = new ArrayList<>();
 		Socket echoSocket = null;
 		ObjectInputStream is = null;
-		echoSocket = new Socket(ipDirectorio, PUERTORECEPTORES);
+		echoSocket = new Socket(Config.getInstance().getIpDirectorio(), Config.getInstance().getPuertoNombreValido());
 		is = new ObjectInputStream(echoSocket.getInputStream());
 		if (echoSocket != null && is != null) {
 			try {
@@ -81,7 +92,6 @@ public class ControladorReceptor {
 				is.close();
 				echoSocket.close();
 			} catch (IOException | ClassNotFoundException e) {
-				e.printStackTrace();
 				valido = false;
 			}
 		}

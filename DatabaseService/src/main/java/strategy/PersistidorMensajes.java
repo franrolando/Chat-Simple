@@ -13,8 +13,8 @@ public class PersistidorMensajes {
 		persistidor.persistirMensaje(mensaje);
 	}
 	
-	public List<Mensaje> eliminarMensajes(String nombreReceptor){
-		return persistidor.eliminarMensajes(nombreReceptor);
+	public List<Mensaje> getMensajes(String nombreReceptor) {
+		return persistidor.getMensajes(nombreReceptor);
 	}
 	
 	public void establecerDBStrategy() {
@@ -24,5 +24,5 @@ public class PersistidorMensajes {
 	public void establecerFSStrategy() {
 		this.persistidor = new FileSystemStrategy();
 	}
-	
+
 }

@@ -31,16 +31,17 @@ public class FileSystemStrategy implements IPersistenciaStrategy {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(mensajes, true));
 			PrintWriter wr = new PrintWriter(bw);
 			wr.append(mensaje.getIpDestino() + SEPARADOR + mensaje.getEmisor() + SEPARADOR + mensaje.getAsunto()
-					+ SEPARADOR + mensaje.getCuerpo() + SEPARADOR + mensaje.getTipo() + SEPARADOR + "\n");
+					+ SEPARADOR + mensaje.getCuerpo() + SEPARADOR + mensaje.getTipo() + SEPARADOR + mensaje.getHora()
+					+ SEPARADOR + "\n");
 			wr.close();
 			bw.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+
 		}
 	}
 
 	@Override
-	public List<Mensaje> eliminarMensajes(String nombreReceptor) {
+	public List<Mensaje> getMensajes(String nombreReceptor) {
 		List<Mensaje> mensajesPendientes = new ArrayList<>();
 		File mensajes = new File("mensajes//".concat(nombreReceptor).concat(".txt"));
 		FileReader fr = null;
@@ -66,10 +67,11 @@ public class FileSystemStrategy implements IPersistenciaStrategy {
 				mensaje.setEmisor(lineaSplit[1]);
 				mensaje.setAsunto(lineaSplit[2]);
 				mensaje.setCuerpo(lineaSplit[3]);
+				mensaje.setHora(lineaSplit[5]);
 				mensajesPendientes.add(mensaje);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			
 		} finally {
 			try {
 				if (null != fr) {
@@ -77,7 +79,7 @@ public class FileSystemStrategy implements IPersistenciaStrategy {
 					mensajes.delete();
 				}
 			} catch (Exception e2) {
-				e2.printStackTrace();
+
 			}
 		}
 		return mensajesPendientes;
