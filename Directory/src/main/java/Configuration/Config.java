@@ -30,7 +30,7 @@ public class Config {
 		FileReader fr = null;
 		BufferedReader br = null;
 		try {
-			archivo = new File("config.txt");
+			archivo = new File("src/main/resources/config.txt");
 			fr = new FileReader(archivo);
 			br = new BufferedReader(fr);
 			String linea;
@@ -42,7 +42,7 @@ public class Config {
 				}
 			}
 		} catch (Exception e) {
-			
+			e.printStackTrace();
 		} finally {
 			try {
 				if (null != fr) {
