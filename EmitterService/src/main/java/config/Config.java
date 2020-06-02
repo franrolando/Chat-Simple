@@ -21,7 +21,7 @@ public class Config {
 		return instance;
 	}
 	
-	public String getProperty(String parametro) {
+	private String getProperty(String parametro) {
 		File archivo = new File ("src/main/resources/config.txt");
 		String leido;
 		String value = null;
@@ -44,19 +44,19 @@ public class Config {
 		
 		
 	public String getIpServicioComunicacion () {
-		return getProperty("ipBaseDatos");
+		return getProperty("IP.SERVICIO.MENSAJES");
 	}
 	
 	public Integer getPuertoDestino () {
-		return Integer.parseInt(getProperty("PUERTO"));
-	}
-	
-	public Integer getPuertoContacto () {
-		return Integer.parseInt(getProperty("PUERTOCONTACTOSENVIA"));
+		return Integer.parseInt(getProperty("PUERTO.SERVICIO.MENSAJES"));
 	}
 	
 	public String getIpDirectorio () {
- 		return getProperty("IPDIRECTORIO");
+		return getProperty("IP.DIRECTORIO");
+	}
+	
+	public Integer getPuertoContacto () {
+		return Integer.parseInt(getProperty("PUERTO.DIRECTORIO"));
 	}
 	
 }

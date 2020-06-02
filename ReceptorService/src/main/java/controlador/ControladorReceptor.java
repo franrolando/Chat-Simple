@@ -16,7 +16,7 @@ import modelo.Receptor;
 public class ControladorReceptor {
 
 	private static ControladorReceptor instance;
-	private static ServerSocket socket = null;
+	private static ServerSocket serverSocketMensajes = null;
 
 	private ControladorReceptor() {
 		super();
@@ -32,7 +32,7 @@ public class ControladorReceptor {
 	public Mensaje leerMensaje() {
 		Mensaje mensaje = null;
 		try {
-			mensaje = (Mensaje) new ObjectInputStream(socket.accept().getInputStream()).readObject();
+			mensaje = (Mensaje) new ObjectInputStream(serverSocketMensajes.accept().getInputStream()).readObject();
 		} catch (Exception e) {
 
 		}
@@ -59,7 +59,7 @@ public class ControladorReceptor {
 
 	public static void instanciarSocketServer() {
 		try {
-			socket = new ServerSocket(Config.getInstance().getPuertoMensajes());
+			serverSocketMensajes = new ServerSocket(Config.getInstance().getPuertoMensajes());
 		} catch (IOException e) {
 
 		}
@@ -69,6 +69,7 @@ public class ControladorReceptor {
 		try {
 			Socket socket = new Socket(Config.getInstance().getIpDirectorio(), Config.getInstance().getPuertoEstado());
 			ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
+			os.writeObject("estado");
 			os.writeObject(receptor);
 			os.close();
 			socket.close();
@@ -80,17 +81,18 @@ public class ControladorReceptor {
 	public Boolean nombreValido(String nombre) throws IOException {
 		Boolean valido = true;
 		List<Receptor> contactList = new ArrayList<>();
-		Socket echoSocket = null;
+		Socket socket = null;
 		ObjectInputStream is = null;
-		echoSocket = new Socket(Config.getInstance().getIpDirectorio(), Config.getInstance().getPuertoNombreValido());
-		is = new ObjectInputStream(echoSocket.getInputStream());
-		if (echoSocket != null && is != null) {
+		socket = new Socket(Config.getInstance().getIpDirectorio(), Config.getInstance().getPuertoEstado());
+		new ObjectOutputStream(socket.getOutputStream()).writeObject("nombreValido");
+		is = new ObjectInputStream(socket.getInputStream());
+		if (socket != null && is != null) {
 			try {
 				contactList = (List<Receptor>) is.readObject();
 				valido = !contactList.stream()
 						.anyMatch(receptor -> receptor.getNombreUsuario().equals(nombre) && receptor.getConectado());
 				is.close();
-				echoSocket.close();
+				socket.close();
 			} catch (IOException | ClassNotFoundException e) {
 				valido = false;
 			}
