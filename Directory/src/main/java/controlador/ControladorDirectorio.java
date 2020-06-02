@@ -6,23 +6,23 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import Configuration.Config;
 import modelo.Receptor;
+import observable.ReceptoresMap;
 
 public class ControladorDirectorio {
 
 	private static ControladorDirectorio instance = null;
-	private Map<String, Receptor> receptores = new TreeMap<>();
+	private ReceptoresMap receptores;
 	private static ServerSocket serverEmisores;
 	private static ServerSocket serverReceptores;
 
 	private ControladorDirectorio() {
 		super();
+		this.receptores = new ReceptoresMap();
 	}
 
 	public static ControladorDirectorio getInstance() {
@@ -41,31 +41,48 @@ public class ControladorDirectorio {
 			serverEmisores = new ServerSocket(Config.getInstance().getPuertoEmisores());
 			serverReceptores = new ServerSocket(Config.getInstance().getPuertoReceptores());
 		} catch (IOException e) {
-			
+
 		}
 	}
 
-	public void getReceptores() {
+	public void listenEmisores() {
 		try {
-			new ObjectOutputStream(serverEmisores.accept().getOutputStream())
-					.writeObject(receptores.values().stream().collect(Collectors.toList()));
+			new ObjectOutputStream(serverEmisores.accept().getOutputStream()).writeObject(listaReceptores());
 		} catch (IOException e) {
-			
+
 		}
 	}
 
-	public void actualizarEstado() {
+	public void listenReceptores() {
 		try {
 			Socket socket = serverReceptores.accept();
-			Receptor recep = (Receptor) new ObjectInputStream(socket.getInputStream()).readObject();
-			recep.setIp(socket.getInetAddress().getHostAddress());
-			receptores.put(recep.getNombreUsuario().toLowerCase(), recep);
+			ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
+			String action = (String) inputStream.readObject();
+			switch (action) {
+			case "estado":
+				Receptor recep = (Receptor) inputStream.readObject();
+				recep.setIp(socket.getInetAddress().getHostAddress());
+				receptores.addReceptor(recep);
+				break;
+			case "nombreValido":
+				new ObjectOutputStream(socket.getOutputStream()).writeObject(listaReceptores());
+				break;
+			}
 		} catch (IOException | ClassNotFoundException e) {
 
 		}
 	}
 
 	public List<Receptor> listaReceptores() {
-		return receptores.values().stream().collect(Collectors.toList());
+		return receptores.getReceptores().values().stream().collect(Collectors.toList());
 	}
+
+	public ReceptoresMap getReceptores() {
+		return receptores;
+	}
+
+	public void setReceptores(ReceptoresMap receptores) {
+		this.receptores = receptores;
+	}
+	
 }

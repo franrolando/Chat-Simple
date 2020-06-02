@@ -6,6 +6,8 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -17,8 +19,10 @@ import javax.swing.JPanel;
 import controlador.ControladorDirectorio;
 import modelo.Receptor;
 
-public class ViewDirectorio {
+public class ViewDirectorio implements Observer {
 
+	private JComboBox<Receptor> comboBox;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -40,6 +44,7 @@ public class ViewDirectorio {
 	public ViewDirectorio() {
 		iniciaServidor();
 		initialize();
+		ControladorDirectorio.getInstance().getReceptores().addObserver(this);
 	}
 
 	/**
@@ -77,22 +82,8 @@ public class ViewDirectorio {
 		lblContactos.setFont(new Font("Tahoma", Font.BOLD, 14));
 		panelContactos.add(lblContactos);
 
-		JComboBox<Receptor> comboBox = new JComboBox<>();
+		comboBox = new JComboBox<>();
 		panelContactos.add(comboBox);
-
-		JButton btnActualizarContactos = new JButton("Actualizar Contactos",
-				new ImageIcon("./src/main/img/Refresh.png"));
-		panelActualizar.add(btnActualizarContactos);
-		btnActualizarContactos.setFont(new Font("Tahoma", Font.BOLD, 14));
-		btnActualizarContactos.addActionListener(e -> {
-			comboBox.removeAllItems();
-			List<Receptor> listaReceptores = ControladorDirectorio.getInstance().listaReceptores();
-			RenderCombo rc = new RenderCombo(listaReceptores);
-			listaReceptores.forEach(receptor -> {
-				comboBox.addItem(receptor);
-			});
-			comboBox.setRenderer(rc);
-		});
 
 		JPanel panelExit = new JPanel();
 		panelExit.setBackground(new Color(240, 230, 140));
@@ -113,7 +104,7 @@ public class ViewDirectorio {
 			@Override
 			public void run() {
 				while (true) {
-					ControladorDirectorio.getInstance().actualizarEstado();
+					ControladorDirectorio.getInstance().listenReceptores();
 				}
 			}
 
@@ -123,12 +114,24 @@ public class ViewDirectorio {
 			@Override
 			public void run() {
 				while (true) {
-					ControladorDirectorio.getInstance().getReceptores();
+					ControladorDirectorio.getInstance().listenEmisores();
 				}
 			}
 
 		};
 		tReceptores.start();
 		tEmisores.start();
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		comboBox.removeAllItems();
+		List<Receptor> listaReceptores = ControladorDirectorio.getInstance().listaReceptores();
+		RenderCombo rc = new RenderCombo(listaReceptores);
+		listaReceptores.forEach(receptor -> {
+			comboBox.addItem(receptor);
+		});
+		comboBox.setRenderer(rc);
+	
 	}
 }

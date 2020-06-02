@@ -5,6 +5,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketAddress;
 import java.util.Objects;
 
 import Configuration.Config;
@@ -34,7 +35,7 @@ public class ControladorMensajes {
 			serverEmisores = new ServerSocket(Integer.parseInt(Config.getInstance().getPuertoEmisores()));
 			serverReceptores = new ServerSocket(Integer.parseInt(Config.getInstance().getPuertoMsjOffline()));
 		} catch (IOException e) {
-			
+
 		}
 	}
 
@@ -46,18 +47,27 @@ public class ControladorMensajes {
 			socketRecibeMsj = serverEmisores.accept();
 			ObjectInputStream is = new ObjectInputStream(socketRecibeMsj.getInputStream());
 			try {
-				mensaje = (Mensaje) is.readObject();
-				Socket socketEnvioMsj = new Socket(mensaje.getIpDestino(),
-						Integer.parseInt(Config.getInstance().getPuertoReceptores()));
-				out = new ObjectOutputStream(socketEnvioMsj.getOutputStream());
-				out.writeObject(mensaje);
-				socketEnvioMsj.close();
-				out = new ObjectOutputStream(socketRecibeMsj.getOutputStream());
-				out.writeObject(true);
+				String action = (String) is.readObject();
+				switch (action) {
+				case ("disponible"):
+					socketRecibeMsj.close();
+					break;
+				case ("envioMensaje"):
+					mensaje = (Mensaje) is.readObject();
+					Socket socketEnvioMsj = new Socket(mensaje.getIpDestino(),
+							Integer.parseInt(Config.getInstance().getPuertoReceptores()));
+					out = new ObjectOutputStream(socketEnvioMsj.getOutputStream());
+					out.writeObject(mensaje);
+					socketEnvioMsj.close();
+					out = new ObjectOutputStream(socketRecibeMsj.getOutputStream());
+					out.writeObject(true);
+					break;
+				}
 			} catch (ClassNotFoundException e) {
-				
+				e.printStackTrace();
 			}
 		} catch (IOException e) {
+			e.printStackTrace();
 			try {
 				out = new ObjectOutputStream(socketRecibeMsj.getOutputStream());
 				out.writeObject(false);
@@ -66,7 +76,7 @@ public class ControladorMensajes {
 					MensajesDAO.getInstance().insertarMensaje(mensaje);
 				}
 			} catch (IOException e1) {
-				
+				e1.printStackTrace();
 			}
 		}
 	}

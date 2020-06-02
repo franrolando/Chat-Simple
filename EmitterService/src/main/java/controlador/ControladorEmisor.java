@@ -36,7 +36,7 @@ public class ControladorEmisor {
 			try {
 				sendMessage(mensaje);
 			} catch (IOException e) {
-
+				e.printStackTrace();
 			}
 		});
 	}
@@ -51,7 +51,7 @@ public class ControladorEmisor {
 				mensajesRecibidos.put(destino.getNombreUsuario(), true);
 			} catch (Exception e) {
 				mensajesRecibidos.put(destino.getNombreUsuario(), false);
-
+				e.printStackTrace();
 			}
 		});
 		return mensajesRecibidos;
@@ -61,6 +61,7 @@ public class ControladorEmisor {
 		Socket socket = new Socket(Config.getInstance().getIpServicioComunicacion(),
 				Config.getInstance().getPuertoDestino());
 		ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+		out.writeObject("envioMensaje");
 		out.writeObject(mensaje);
 		ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
 		Boolean resp = null;
@@ -99,6 +100,7 @@ public class ControladorEmisor {
 		try {
 			Socket socket = new Socket(Config.getInstance().getIpServicioComunicacion(),
 					Config.getInstance().getPuertoDestino());
+			new ObjectOutputStream(socket.getOutputStream()).writeObject("disponible");
 			socket.close();
 		} catch (IOException e) {
 			disponible = false;
