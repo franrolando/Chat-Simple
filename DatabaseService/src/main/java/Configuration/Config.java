@@ -54,7 +54,7 @@ public class Config {
 		FileReader fr = null;
 		BufferedReader br = null;
 		try {
-			archivo = new File("src/main/resources/config.txt");
+			archivo = new File("src/main/resources/configDB.txt");
 			fr = new FileReader(archivo);
 			br = new BufferedReader(fr);
 			String linea;

@@ -35,7 +35,7 @@ public class ControladorMensajes {
 			serverEmisores = new ServerSocket(Integer.parseInt(Config.getInstance().getPuertoEmisores()));
 			serverReceptores = new ServerSocket(Integer.parseInt(Config.getInstance().getPuertoMsjOffline()));
 		} catch (IOException e) {
-
+			e.printStackTrace();
 		}
 	}
 
@@ -90,7 +90,7 @@ public class ControladorMensajes {
 			out.writeObject(MensajesDAO.getInstance().getMensajes(nombreReceptor));
 			socket.close();
 		} catch (IOException | ClassNotFoundException e) {
-
+			e.printStackTrace();
 		}
 	}
 

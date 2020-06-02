@@ -22,7 +22,7 @@ public class Config {
 	}
 	
 	private String getProperty(String parametro) {
-		File archivo = new File ("src/main/resources/config.txt");
+		File archivo = new File ("src/main/resources/configEmitter.txt");
 		String leido;
 		String value = null;
 		try {
@@ -44,19 +44,19 @@ public class Config {
 		
 		
 	public String getIpServicioComunicacion () {
-		return getProperty("IP.SERVICIO.MENSAJES");
+		return getProperty("IPSERVICIOMENSAJES");
 	}
 	
 	public Integer getPuertoDestino () {
-		return Integer.parseInt(getProperty("PUERTO.SERVICIO.MENSAJES"));
+		return Integer.parseInt(getProperty("PUERTOSERVICIOMENSAJES"));
 	}
 	
 	public String getIpDirectorio () {
-		return getProperty("IP.DIRECTORIO");
+		return getProperty("IPDIRECTORIO");
 	}
 	
 	public Integer getPuertoContacto () {
-		return Integer.parseInt(getProperty("PUERTO.DIRECTORIO"));
+		return Integer.parseInt(getProperty("PUERTODIRECTORIO"));
 	}
 	
 }
