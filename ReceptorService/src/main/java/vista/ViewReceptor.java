@@ -6,8 +6,6 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +23,7 @@ import javax.swing.UIManager;
 import Enum.ETipoMensaje;
 import controlador.ControladorReceptor;
 import creator.ViewMensajeCreator;
+import modelo.Cifrador;
 import modelo.Mensaje;
 import modelo.Receptor;
 
@@ -40,8 +39,10 @@ public class ViewReceptor {
 		initialize(receptor);
 		listSeleccionados = new ArrayList<>();
 		ControladorReceptor.instanciarSocketServer();
+		Cifrador cf = new Cifrador();
 		List<Mensaje> mensajesOffline = ControladorReceptor.getInstance().getMensajesOffline(receptor.getNombreUsuario());
 		mensajesOffline.stream().forEach(mensaje -> {
+			cf.descifrarMensaje(mensaje);
 			creaNuevoMensaje(panelMensajes, mensaje.getEmisor(), mensaje.getAsunto(),
 					mensaje.getCuerpo(), mensaje.getTipo(),mensaje.getHora());
 			panelMensajes.validate();

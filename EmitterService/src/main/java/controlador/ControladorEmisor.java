@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import config.Config;
+import modelo.Cifrador;
 import modelo.Mensaje;
 import modelo.Receptor;
 
@@ -30,9 +31,11 @@ public class ControladorEmisor {
 	}
 
 	public void enviarMensaje(Mensaje mensaje, List<Receptor> destinos) {
+		Cifrador cf = new Cifrador();
 		destinos.stream().forEach(destino -> {
 			mensaje.setIpDestino(destino.getIp());
 			mensaje.setReceptor(destino.getNombreUsuario());
+			cf.cifrarMensaje(mensaje);
 			try {
 				sendMessage(mensaje);
 			} catch (IOException e) {

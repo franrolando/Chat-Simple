@@ -34,6 +34,7 @@ import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 
 import controlador.ControladorEmisor;
+import modelo.Cifrador;
 import modelo.Emisor;
 import modelo.Mensaje;
 import modelo.MensajeAlerta;
@@ -270,10 +271,11 @@ public class ViewEmisor {
 					if (rdbtnAvisoDeRecepcion.isSelected()) {
 						mensaje = new MensajeAvisoRecep();
 						completeDTO(mensaje);
+						String asuntoMensaje = mensaje.getAsunto();
 						Map<String, Boolean> resp = ControladorEmisor.getInstance().enviarMensajeAvisoRecepcion(mensaje,
 								destinos);
 						resp.forEach((emisor, recibido) -> {
-							creaNuevoMensajeAviso(frmInterfazEmisor, panelMensajesConAviso, mensaje.getAsunto(), emisor,
+							creaNuevoMensajeAviso(frmInterfazEmisor, panelMensajesConAviso, asuntoMensaje, emisor,
 									recibido);
 						});
 					} else {
