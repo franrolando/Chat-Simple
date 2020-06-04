@@ -48,6 +48,10 @@ public class Config {
 		return getProperty("IPSERVICIOMENSAJES");
 	}
 
+	public String getIpDirectorioAux () {
+		return getProperty("IPDIRECTORIOAUX");
+	}
+	
 	public String getIpDirectorio() {
 		return getProperty("IPDIRECTORIO");
 	}

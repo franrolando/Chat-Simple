@@ -33,6 +33,7 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 
+import Enum.ETipoMensaje;
 import controlador.ControladorEmisor;
 import modelo.Emisor;
 import modelo.Mensaje;
@@ -44,19 +45,21 @@ public class ViewEmisor {
 
 	private List<Receptor> destinos = new ArrayList<>();
 	private ActionListener alComboBox;
-
+	private JFrame frmInterfazEmisor;
+	private JPanel panelMensajesConAviso;
 	/**
 	 * Create the application.
 	 */
 	public ViewEmisor(Emisor emisor) {
 		initialize(emisor);
+		threadMensajesPendientes();
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize(Emisor emisor) {
-		JFrame frmInterfazEmisor = new JFrame();
+		frmInterfazEmisor = new JFrame();
 		frmInterfazEmisor.setResizable(false);
 		frmInterfazEmisor.setBackground(new Color(0, 0, 0));
 		frmInterfazEmisor.setTitle("Interfaz Emisor");
@@ -81,7 +84,7 @@ public class ViewEmisor {
 		lblMensajesConAviso.setFont(new Font("Tahoma", Font.BOLD, 13));
 		panelM.add(lblMensajesConAviso);
 
-		JPanel panelMensajesConAviso = new JPanel();
+		panelMensajesConAviso = new JPanel();
 		panelMensajesConAviso.setBackground(new Color(240, 230, 140));
 		scrollPane1.setViewportView(panelMensajesConAviso);
 		panelMensajesConAviso.setLayout(new GridLayout(0, 1, 0, 0));
@@ -266,24 +269,31 @@ public class ViewEmisor {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Mensaje mensaje;
+				boolean mensajeAviso = rdbtnAvisoDeRecepcion.isSelected();
+				if (mensajeAviso) {
+					mensaje = new MensajeAvisoRecep();
+				} else {
+					mensaje = rdbtnAlerta.isSelected() ? new MensajeAlerta() : new Mensaje();
+				}
+				completeDTO(mensaje);
 				if (ControladorEmisor.getInstance().servicioEnvioDisponible()) {
-					if (rdbtnAvisoDeRecepcion.isSelected()) {
-						mensaje = new MensajeAvisoRecep();
-						completeDTO(mensaje);
-						Map<String, Boolean> resp = ControladorEmisor.getInstance().enviarMensajeAvisoRecepcion(mensaje,
-								destinos);
+					Map<String, Boolean> resp = ControladorEmisor.getInstance().enviarMensaje(mensaje, destinos);
+					if (mensajeAviso) {
 						resp.forEach((emisor, recibido) -> {
 							creaNuevoMensajeAviso(frmInterfazEmisor, panelMensajesConAviso, mensaje.getAsunto(), emisor,
 									recibido);
 						});
 					} else {
-						mensaje = rdbtnAlerta.isSelected() ? new MensajeAlerta() : new Mensaje();
-						completeDTO(mensaje);
-						ControladorEmisor.getInstance().enviarMensaje(mensaje, destinos);
+						if (resp.values().stream().anyMatch(enviado -> enviado.equals(false))) {
+							JOptionPane.showMessageDialog(frmInterfazEmisor,
+									"Algunos receptores estan fuera de linea. Los mensajes fueron almacenados en el servidor", "SERVER ERROR",
+									JOptionPane.ERROR_MESSAGE);
+						}
 					}
 				} else {
+					ControladorEmisor.getInstance().addMensajesPendientes(mensaje, destinos);
 					JOptionPane.showMessageDialog(frmInterfazEmisor,
-							"Ocurrieron problemas al conectarse con el servicio de base de datos.", "SERVER ERROR",
+							"Ocurrieron problemas al conectarse con el servicio de base de datos. Los mensajes fueron colocados en la cola de pendientes", "SERVER ERROR",
 							JOptionPane.ERROR_MESSAGE);
 				}
 				btnEnviar.setEnabled(false);
@@ -391,6 +401,32 @@ public class ViewEmisor {
 		});
 		frmMensajeEmisor.validate();
 		frmMensajeEmisor.repaint();
+	}
+
+	public void threadMensajesPendientes() {
+		Thread t = new Thread() {
+
+			@Override
+			public void run() {
+				while (true) {
+					try {
+						sleep(1000 * 20);
+						List<Mensaje> mensajesEnviados = ControladorEmisor.getInstance().enviarMensajesPendientes();
+						mensajesEnviados.stream().forEach(mensaje -> {
+							if (mensaje.getTipo().equals(ETipoMensaje.CONAVISORECEPCION)) {
+								creaNuevoMensajeAviso(frmInterfazEmisor, panelMensajesConAviso, mensaje.getAsunto(), mensaje.getEmisor(),
+										true);
+							}
+						});
+						System.out.println("Mensajes enviados");
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+			
+		};
+		t.start();
 	}
 
 }
