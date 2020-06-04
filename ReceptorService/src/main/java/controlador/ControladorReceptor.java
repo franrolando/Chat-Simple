@@ -39,7 +39,7 @@ public class ControladorReceptor {
 		return mensaje;
 	}
 
-	public List<Mensaje> getMensajesOffline(String nombreReceptor) {
+	public List<Mensaje> getMensajesOffline(String nombreReceptor) throws IOException {
 		List<Mensaje> mensajesOffline = new ArrayList<>();
 		ObjectOutputStream out;
 		ObjectInputStream in;
@@ -51,7 +51,7 @@ public class ControladorReceptor {
 			in = new ObjectInputStream(socket.getInputStream());
 			mensajesOffline = (List<Mensaje>) in.readObject();
 			socket.close();
-		} catch (IOException | ClassNotFoundException e) {
+		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 		return mensajesOffline;

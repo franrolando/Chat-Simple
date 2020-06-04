@@ -50,6 +50,10 @@ public class Config {
 	public Integer getPuertoDestino () {
 		return Integer.parseInt(getProperty("PUERTOSERVICIOMENSAJES"));
 	}
+
+	public String getIpDirectorioAux () {
+		return getProperty("IPDIRECTORIOAUX");
+	}
 	
 	public String getIpDirectorio () {
 		return getProperty("IPDIRECTORIO");

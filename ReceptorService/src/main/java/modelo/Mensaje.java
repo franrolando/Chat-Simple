@@ -1,10 +1,12 @@
 package modelo;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import Enum.ETipoMensaje;
 
-public class Mensaje implements Serializable {
+public class Mensaje implements Serializable, Cloneable {
 
 	private String emisor;
 	private String ipDestino;
@@ -64,8 +66,14 @@ public class Mensaje implements Serializable {
 	public String getHora() {
 		return hora;
 	}
-
+	
 	public void setHora(String hora) {
 		this.hora = hora;
 	}
+
+	@Override
+	public Mensaje clone() throws CloneNotSupportedException {
+		return (Mensaje) super.clone();
+	}
+	
 }

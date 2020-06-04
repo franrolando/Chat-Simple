@@ -17,6 +17,7 @@ import modelo.Receptor;
 public class ControladorEmisor {
 
 	private static ControladorEmisor instance;
+	private List<Mensaje> colaMensajes = new ArrayList<>();
 
 	private ControladorEmisor() {
 		super();
@@ -29,19 +30,7 @@ public class ControladorEmisor {
 		return instance;
 	}
 
-	public void enviarMensaje(Mensaje mensaje, List<Receptor> destinos) {
-		destinos.stream().forEach(destino -> {
-			mensaje.setIpDestino(destino.getIp());
-			mensaje.setReceptor(destino.getNombreUsuario());
-			try {
-				sendMessage(mensaje);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		});
-	}
-
-	public Map<String, Boolean> enviarMensajeAvisoRecepcion(Mensaje mensaje, List<Receptor> destinos) {
+	public Map<String, Boolean> enviarMensaje(Mensaje mensaje, List<Receptor> destinos) {
 		Map<String, Boolean> mensajesRecibidos = new HashMap<>();
 		destinos.stream().forEach(destino -> {
 			mensaje.setIpDestino(destino.getIp());
@@ -51,6 +40,7 @@ public class ControladorEmisor {
 				mensajesRecibidos.put(destino.getNombreUsuario(), true);
 			} catch (Exception e) {
 				mensajesRecibidos.put(destino.getNombreUsuario(), false);
+				System.out.println("No se pudo mandar el mensaje");
 				e.printStackTrace();
 			}
 		});
@@ -58,20 +48,36 @@ public class ControladorEmisor {
 	}
 
 	private void sendMessage(Mensaje mensaje) throws IOException {
-		Socket socket = new Socket(Config.getInstance().getIpServicioComunicacion(),
-				Config.getInstance().getPuertoDestino());
-		ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-		out.writeObject("envioMensaje");
-		out.writeObject(mensaje);
-		ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-		Boolean resp = null;
+		Socket socket = null;
+		Boolean resp = false;
 		try {
-			resp = (Boolean) in.readObject();
-		} catch (ClassNotFoundException | IOException e) {
-
+			socket = new Socket(Config.getInstance().getIpServicioComunicacion(),
+					Config.getInstance().getPuertoDestino());
+		} catch (IOException e) {
+			System.out.println("No se pudo establecer conexion al directorio original");
+			e.printStackTrace();
+			try {
+				socket = new Socket(Config.getInstance().getIpDirectorioAux(),
+						Config.getInstance().getPuertoDestino());
+			} catch (IOException e2) {
+				System.out.println("No se pudo establecer conexion al directorio alternativo");
+				e2.printStackTrace();
+			}
 		}
-		out.close();
-		socket.close();
+		if (socket != null) {
+			ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+			out.writeObject("envioMensaje");
+			out.writeObject(mensaje);
+			ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+			try {
+				resp = (Boolean) in.readObject();
+			} catch (ClassNotFoundException | IOException e) {
+				System.out.println("Error al leer desde el servicio de mensajes");
+				e.printStackTrace();
+			}
+			out.close();
+			socket.close();
+		}
 		if (!resp) {
 			throw new IOException();
 		}
@@ -89,12 +95,13 @@ public class ControladorEmisor {
 				is.close();
 				echoSocket.close();
 			} catch (IOException | ClassNotFoundException e) {
-
+				System.out.println("Error al obtener lista de contactos");
+				e.printStackTrace();
 			}
 		}
 		return contactList;
 	}
-	
+
 	public Boolean servicioEnvioDisponible() {
 		Boolean disponible = true;
 		try {
@@ -103,9 +110,56 @@ public class ControladorEmisor {
 			new ObjectOutputStream(socket.getOutputStream()).writeObject("disponible");
 			socket.close();
 		} catch (IOException e) {
+			System.out.println("Servicio mensajes no disponible");
+			e.printStackTrace();
 			disponible = false;
 		}
 		return disponible;
+	}
+
+	public List<Mensaje> getColaMensajes() {
+		return colaMensajes;
+	}
+
+	public void setColaMensajes(List<Mensaje> colaMensajes) {
+		this.colaMensajes = colaMensajes;
+	}
+	
+	public void addMensajesPendientes(Mensaje mensaje, List<Receptor> destinos) {
+		List<Mensaje> mensajes = new ArrayList<>();
+		destinos.stream().forEach(destino -> {
+			Mensaje mensajeClon;
+			try {
+				mensajeClon = mensaje.clone();
+				mensajeClon.setIpDestino(destino.getIp());
+				mensajeClon.setReceptor(destino.getNombreUsuario());
+				mensajes.add(mensajeClon);
+			} catch (CloneNotSupportedException e) {
+				e.printStackTrace();
+			}
+		});
+		synchronized (colaMensajes) {
+			this.colaMensajes.addAll(mensajes);
+		}
+	}
+	
+	public List<Mensaje> enviarMensajesPendientes() {
+		List<Mensaje> mensajesRecibidos = new ArrayList<>();
+		synchronized (colaMensajes) {
+			colaMensajes.forEach(mensaje -> {
+				try {
+					sendMessage(mensaje);
+					mensajesRecibidos.add(mensaje);
+				} catch (Exception e) {
+					System.out.println("Error al enviar mensajes en cola");
+					e.printStackTrace();
+				}
+			});
+			mensajesRecibidos.stream().forEach(mensaje -> {
+				colaMensajes.remove(mensaje);
+			});
+		}
+		return mensajesRecibidos;
 	}
 
 }

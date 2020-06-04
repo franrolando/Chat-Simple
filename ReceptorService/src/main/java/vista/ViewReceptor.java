@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
@@ -32,6 +34,7 @@ public class ViewReceptor {
 
 	private JPanel panelMensajes;
 	private List<JPanel> listSeleccionados = null;
+	private JFrame frmInterfazReceptor;
 
 	/**
 	 * Create the application.
@@ -40,13 +43,21 @@ public class ViewReceptor {
 		initialize(receptor);
 		listSeleccionados = new ArrayList<>();
 		ControladorReceptor.instanciarSocketServer();
-		List<Mensaje> mensajesOffline = ControladorReceptor.getInstance().getMensajesOffline(receptor.getNombreUsuario());
-		mensajesOffline.stream().forEach(mensaje -> {
-			creaNuevoMensaje(panelMensajes, mensaje.getEmisor(), mensaje.getAsunto(),
-					mensaje.getCuerpo(), mensaje.getTipo(),mensaje.getHora());
-			panelMensajes.validate();
-			panelMensajes.repaint();
-		});
+		List<Mensaje> mensajesOffline;
+		try {
+			mensajesOffline = ControladorReceptor.getInstance().getMensajesOffline(receptor.getNombreUsuario());
+			mensajesOffline.stream().forEach(mensaje -> {
+				creaNuevoMensaje(panelMensajes, mensaje.getEmisor(), mensaje.getAsunto(),
+						mensaje.getCuerpo(), mensaje.getTipo(),mensaje.getHora());
+				panelMensajes.validate();
+				panelMensajes.repaint();
+			});
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(frmInterfazReceptor,
+					"No se pudo establecer conexion con el servidor de mensajes ", "SERVER ERROR",
+					JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+		}
 		escuchaMensaje();
 	}
 
@@ -54,7 +65,7 @@ public class ViewReceptor {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize(Receptor receptor) {
-		JFrame frmInterfazReceptor = new JFrame();
+		frmInterfazReceptor = new JFrame();
 		frmInterfazReceptor.setResizable(false);
 		frmInterfazReceptor.setBackground(new Color(240, 230, 140));
 		frmInterfazReceptor.getContentPane().setBackground(new Color(240, 230, 140));
