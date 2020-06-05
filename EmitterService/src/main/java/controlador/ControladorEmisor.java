@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import config.Config;
+import modelo.Cifrador;
 import modelo.Mensaje;
 import modelo.Receptor;
 
@@ -31,6 +32,8 @@ public class ControladorEmisor {
 	}
 
 	public Map<String, Boolean> enviarMensaje(Mensaje mensaje, List<Receptor> destinos) {
+		Cifrador cf = new Cifrador();
+		cf.cifrarMensaje(mensaje);
 		Map<String, Boolean> mensajesRecibidos = new HashMap<>();
 		destinos.stream().forEach(destino -> {
 			mensaje.setIpDestino(destino.getIp());
@@ -57,8 +60,7 @@ public class ControladorEmisor {
 			System.out.println("No se pudo establecer conexion al directorio original");
 			e.printStackTrace();
 			try {
-				socket = new Socket(Config.getInstance().getIpDirectorioAux(),
-						Config.getInstance().getPuertoDestino());
+				socket = new Socket(Config.getInstance().getIpDirectorioAux(), Config.getInstance().getPuertoDestino());
 			} catch (IOException e2) {
 				System.out.println("No se pudo establecer conexion al directorio alternativo");
 				e2.printStackTrace();
@@ -124,7 +126,7 @@ public class ControladorEmisor {
 	public void setColaMensajes(List<Mensaje> colaMensajes) {
 		this.colaMensajes = colaMensajes;
 	}
-	
+
 	public void addMensajesPendientes(Mensaje mensaje, List<Receptor> destinos) {
 		List<Mensaje> mensajes = new ArrayList<>();
 		destinos.stream().forEach(destino -> {
@@ -142,7 +144,7 @@ public class ControladorEmisor {
 			this.colaMensajes.addAll(mensajes);
 		}
 	}
-	
+
 	public List<Mensaje> enviarMensajesPendientes() {
 		List<Mensaje> mensajesRecibidos = new ArrayList<>();
 		synchronized (colaMensajes) {
