@@ -7,8 +7,6 @@ import java.awt.GridLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,8 +44,8 @@ public class ViewReceptor {
 		try {
 			mensajesOffline = ControladorReceptor.getInstance().getMensajesOffline(receptor.getNombreUsuario());
 			mensajesOffline.stream().forEach(mensaje -> {
-				creaNuevoMensaje(panelMensajes, mensaje.getEmisor(), mensaje.getAsunto(),
-						mensaje.getCuerpo(), mensaje.getTipo(),mensaje.getHora());
+				creaNuevoMensaje(panelMensajes, mensaje.getEmisor(), mensaje.getAsunto(), mensaje.getCuerpo(),
+						mensaje.getTipo(), mensaje.getHora());
 				panelMensajes.validate();
 				panelMensajes.repaint();
 			});
@@ -113,8 +111,8 @@ public class ViewReceptor {
 
 	}
 
-	private void creaNuevoMensaje(JPanel panel, String emisor, String asunto, String mensaje,
-			ETipoMensaje tipoMensaje, String hora) {
+	private void creaNuevoMensaje(JPanel panel, String emisor, String asunto, String mensaje, ETipoMensaje tipoMensaje,
+			String hora) {
 
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(new Color(169, 169, 169));
@@ -141,7 +139,7 @@ public class ViewReceptor {
 		chckbxLeido.setBackground(new Color(169, 169, 169));
 		panel_1.add(chckbxLeido, BorderLayout.EAST);
 
-		JLabel labelHora = new JLabel("Hora: "+hora);
+		JLabel labelHora = new JLabel("Hora: " + hora);
 		labelHora.setFont(new Font("Tahoma", Font.BOLD, 13));
 		labelHora.setHorizontalAlignment(SwingConstants.LEFT);
 		panel_1.add(labelHora, BorderLayout.WEST);
@@ -203,8 +201,8 @@ public class ViewReceptor {
 			public void run() {
 				while (true) {
 					Mensaje mensaje = ControladorReceptor.getInstance().leerMensaje();
-					creaNuevoMensaje(panelMensajes, mensaje.getEmisor(), mensaje.getAsunto(),
-							mensaje.getCuerpo(), mensaje.getTipo(), mensaje.getHora());
+					creaNuevoMensaje(panelMensajes, mensaje.getEmisor(), mensaje.getAsunto(), mensaje.getCuerpo(),
+							mensaje.getTipo(), mensaje.getHora());
 					panelMensajes.validate();
 					panelMensajes.repaint();
 				}

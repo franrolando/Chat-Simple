@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Objects;
 
 import config.Config;
+import modelo.Cifrador;
 import modelo.Mensaje;
 import modelo.Receptor;
 
@@ -32,6 +33,8 @@ public class ControladorReceptor {
 		Mensaje mensaje = null;
 		try {
 			mensaje = (Mensaje) new ObjectInputStream(new ServerSocket(Config.getInstance().getPuertoMensajes()).accept().getInputStream()).readObject();
+			Cifrador cf = new Cifrador();
+			cf.descifrarMensaje(mensaje);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

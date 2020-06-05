@@ -47,6 +47,7 @@ public class ViewEmisor {
 	private ActionListener alComboBox;
 	private JFrame frmInterfazEmisor;
 	private JPanel panelMensajesConAviso;
+
 	/**
 	 * Create the application.
 	 */
@@ -136,7 +137,7 @@ public class ViewEmisor {
 		panelComboBox.add(comboBoxContactos);
 		completeComboBox(emisor, comboBoxContactos);
 
-		alComboBox = e -> actionListenerComboBox(textFieldDestinatarios, comboBoxContactos, frmInterfazEmisor);
+		alComboBox = e -> actionListenerComboBox(textFieldDestinatarios, comboBoxContactos);
 		comboBoxContactos.addActionListener(alComboBox);
 
 		JPanel panelRefresh = new JPanel();
@@ -286,15 +287,15 @@ public class ViewEmisor {
 					} else {
 						if (resp.values().stream().anyMatch(enviado -> enviado.equals(false))) {
 							JOptionPane.showMessageDialog(frmInterfazEmisor,
-									"Algunos receptores estan fuera de linea. Los mensajes fueron almacenados en el servidor", "SERVER ERROR",
-									JOptionPane.ERROR_MESSAGE);
+									"Algunos receptores estan fuera de linea. Los mensajes fueron almacenados en el servidor",
+									"SERVER ERROR", JOptionPane.ERROR_MESSAGE);
 						}
 					}
 				} else {
 					ControladorEmisor.getInstance().addMensajesPendientes(mensaje, destinos);
 					JOptionPane.showMessageDialog(frmInterfazEmisor,
-							"Ocurrieron problemas al conectarse con el servicio de base de datos. Los mensajes fueron colocados en la cola de pendientes", "SERVER ERROR",
-							JOptionPane.ERROR_MESSAGE);
+							"Ocurrieron problemas al conectarse con el servicio de base de datos. Los mensajes fueron colocados en la cola de pendientes",
+							"SERVER ERROR", JOptionPane.ERROR_MESSAGE);
 				}
 				btnEnviar.setEnabled(false);
 				textArea.setText("");
@@ -315,8 +316,7 @@ public class ViewEmisor {
 		panel_3.add(btnEnviar);
 	}
 
-	private void actionListenerComboBox(JTextField textFieldDestinatarios, JComboBox<Receptor> comboBoxContactos,
-			JFrame frmMensajeEmisor) {
+	private void actionListenerComboBox(JTextField textFieldDestinatarios, JComboBox<Receptor> comboBoxContactos) {
 		Receptor receptor = (Receptor) comboBoxContactos.getSelectedItem();
 		if (!Objects.isNull(receptor)) {
 			if (!textFieldDestinatarios.getText().contains(receptor.getNombreUsuario())) {
@@ -414,8 +414,8 @@ public class ViewEmisor {
 						List<Mensaje> mensajesEnviados = ControladorEmisor.getInstance().enviarMensajesPendientes();
 						mensajesEnviados.stream().forEach(mensaje -> {
 							if (mensaje.getTipo().equals(ETipoMensaje.CONAVISORECEPCION)) {
-								creaNuevoMensajeAviso(frmInterfazEmisor, panelMensajesConAviso, mensaje.getAsunto(), mensaje.getEmisor(),
-										true);
+								creaNuevoMensajeAviso(frmInterfazEmisor, panelMensajesConAviso, mensaje.getAsunto(),
+										mensaje.getEmisor(), true);
 							}
 						});
 						System.out.println("Mensajes enviados");
@@ -424,7 +424,7 @@ public class ViewEmisor {
 					}
 				}
 			}
-			
+
 		};
 		t.start();
 	}
