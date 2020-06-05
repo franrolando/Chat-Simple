@@ -16,7 +16,6 @@ import modelo.Receptor;
 public class ControladorReceptor {
 
 	private static ControladorReceptor instance;
-	private static ServerSocket serverSocketMensajes = null;
 
 	private ControladorReceptor() {
 		super();
@@ -32,7 +31,7 @@ public class ControladorReceptor {
 	public Mensaje leerMensaje() {
 		Mensaje mensaje = null;
 		try {
-			mensaje = (Mensaje) new ObjectInputStream(serverSocketMensajes.accept().getInputStream()).readObject();
+			mensaje = (Mensaje) new ObjectInputStream(new ServerSocket(Config.getInstance().getPuertoMensajes()).accept().getInputStream()).readObject();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -55,14 +54,6 @@ public class ControladorReceptor {
 			e.printStackTrace();
 		}
 		return mensajesOffline;
-	}
-
-	public static void instanciarSocketServer() {
-		try {
-			serverSocketMensajes = new ServerSocket(Config.getInstance().getPuertoMensajes());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 	public void sendStatus(Receptor receptor) {

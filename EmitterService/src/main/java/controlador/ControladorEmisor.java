@@ -50,20 +50,7 @@ public class ControladorEmisor {
 	private void sendMessage(Mensaje mensaje) throws IOException {
 		Socket socket = null;
 		Boolean resp = false;
-		try {
-			socket = new Socket(Config.getInstance().getIpServicioComunicacion(),
-					Config.getInstance().getPuertoDestino());
-		} catch (IOException e) {
-			System.out.println("No se pudo establecer conexion al directorio original");
-			e.printStackTrace();
-			try {
-				socket = new Socket(Config.getInstance().getIpDirectorioAux(),
-						Config.getInstance().getPuertoDestino());
-			} catch (IOException e2) {
-				System.out.println("No se pudo establecer conexion al directorio alternativo");
-				e2.printStackTrace();
-			}
-		}
+		socket = new Socket(Config.getInstance().getIpServicioComunicacion(), Config.getInstance().getPuertoDestino());
 		if (socket != null) {
 			ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
 			out.writeObject("envioMensaje");
@@ -87,7 +74,12 @@ public class ControladorEmisor {
 		List<Receptor> contactList = new ArrayList<>();
 		Socket echoSocket = null;
 		ObjectInputStream is = null;
-		echoSocket = new Socket(Config.getInstance().getIpDirectorio(), Config.getInstance().getPuertoContacto());
+		try {
+			
+			echoSocket = new Socket(Config.getInstance().getIpDirectorio(), Config.getInstance().getPuertoContacto());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		is = new ObjectInputStream(echoSocket.getInputStream());
 		if (echoSocket != null && is != null) {
 			try {
