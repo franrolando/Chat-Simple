@@ -1,5 +1,6 @@
 package observable;
 
+import java.io.Serializable;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
@@ -7,7 +8,7 @@ import java.util.TreeMap;
 
 import modelo.Receptor;
 
-public class ReceptoresMap extends Observable {
+public class ReceptoresMap extends Observable implements Serializable {
 
 	private Map<String, Receptor> receptores = new TreeMap<>();
 
@@ -21,6 +22,8 @@ public class ReceptoresMap extends Observable {
 
 	public void setReceptores(Map<String, Receptor> receptores) {
 		this.receptores = receptores;
+		setChanged();
+		notifyObservers();
 	}
 
 	public void addReceptor(Receptor receptor) {

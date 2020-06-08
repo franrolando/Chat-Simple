@@ -5,6 +5,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -17,7 +18,6 @@ import modelo.Receptor;
 public class ControladorReceptor {
 
 	private static ControladorReceptor instance;
-	private static ServerSocket serverSocketMensajes = null;
 
 	private ControladorReceptor() {
 		super();
@@ -33,9 +33,11 @@ public class ControladorReceptor {
 	public Mensaje leerMensaje() {
 		Mensaje mensaje = null;
 		try {
-			mensaje = (Mensaje) new ObjectInputStream(serverSocketMensajes.accept().getInputStream()).readObject();
+			ServerSocket serverSocket = new ServerSocket(Config.getInstance().getPuertoMensajes());
+			mensaje = (Mensaje) new ObjectInputStream(serverSocket.accept().getInputStream()).readObject();
 			Cifrador cf = new Cifrador();
 			cf.descifrarMensaje(mensaje);
+			serverSocket.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -60,18 +62,21 @@ public class ControladorReceptor {
 		return mensajesOffline;
 	}
 
-	public static void instanciarSocketServer() {
+	public void sendStatus(Receptor receptor) {
+		Socket socket = null;
 		try {
-			serverSocketMensajes = new ServerSocket(Config.getInstance().getPuertoMensajes());
+			socket = new Socket(Config.getInstance().getIpDirectorio(), Config.getInstance().getPuertoEstado());
 		} catch (IOException e) {
 			e.printStackTrace();
+			try {
+				socket = new Socket(Config.getInstance().getIpDirectorioAux(), Config.getInstance().getPuertoEstado());
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		}
-	}
-
-	public void sendStatus(Receptor receptor) {
+		ObjectOutputStream os;
 		try {
-			Socket socket = new Socket(Config.getInstance().getIpDirectorio(), Config.getInstance().getPuertoEstado());
-			ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
+			os = new ObjectOutputStream(socket.getOutputStream());
 			os.writeObject("estado");
 			os.writeObject(receptor);
 			os.close();

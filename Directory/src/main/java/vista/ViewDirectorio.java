@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.net.ServerSocket;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -16,13 +17,14 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import Configuration.Config;
 import controlador.ControladorDirectorio;
 import modelo.Receptor;
 
 public class ViewDirectorio implements Observer {
 
 	private JComboBox<Receptor> comboBox;
-	
+
 	/**
 	 * Launch the application.
 	 */
@@ -98,29 +100,7 @@ public class ViewDirectorio implements Observer {
 	}
 
 	private void iniciaServidor() {
-		ControladorDirectorio.initDirectorio();
-		Thread tReceptores = new Thread() {
-
-			@Override
-			public void run() {
-				while (true) {
-					ControladorDirectorio.getInstance().listenReceptores();
-				}
-			}
-
-		};
-		Thread tEmisores = new Thread() {
-
-			@Override
-			public void run() {
-				while (true) {
-					ControladorDirectorio.getInstance().listenEmisores();
-				}
-			}
-
-		};
-		tReceptores.start();
-		tEmisores.start();
+		ControladorDirectorio.getInstance().iniciaDirectorio();
 	}
 
 	@Override
@@ -132,6 +112,6 @@ public class ViewDirectorio implements Observer {
 			comboBox.addItem(receptor);
 		});
 		comboBox.setRenderer(rc);
-	
+
 	}
 }

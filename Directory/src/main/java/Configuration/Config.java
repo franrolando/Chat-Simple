@@ -24,6 +24,19 @@ public class Config {
 		return Integer.parseInt(getProperty("PUERTORECEPTORES"));
 	}
 	
+	public Boolean isDirectorioReplica() {
+		return Boolean.parseBoolean(getProperty("DirectorioReplica"));
+	}
+	
+	public String getIpDirectorioReplica() {
+		return getProperty("IPDIRECTORIOREPLICA");
+	}
+	
+	public Integer getPuertoDirectorioReplica() {
+		return Integer.parseInt(getProperty("PuertoDirectorioReplica"));
+	}
+	
+	
 	private String getProperty(String property) {
 		File archivo = null;
 		String value = null;

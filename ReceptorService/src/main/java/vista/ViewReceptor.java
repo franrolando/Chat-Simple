@@ -40,7 +40,6 @@ public class ViewReceptor {
 	public ViewReceptor(Receptor receptor) {
 		initialize(receptor);
 		listSeleccionados = new ArrayList<>();
-		ControladorReceptor.instanciarSocketServer();
 		List<Mensaje> mensajesOffline;
 		try {
 			mensajesOffline = ControladorReceptor.getInstance().getMensajesOffline(receptor.getNombreUsuario());
