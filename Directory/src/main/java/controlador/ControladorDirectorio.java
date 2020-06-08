@@ -13,7 +13,7 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.stream.Collectors;
 
-import Configuration.Config;
+import Configuration.ConfigDirectorio;
 import modelo.Receptor;
 import observable.ReceptoresMap;
 
@@ -42,7 +42,7 @@ public class ControladorDirectorio implements Observer {
 
 	public void listenEmisores() {
 		try {
-			ServerSocket serverSocket = new ServerSocket(Config.getInstance().getPuertoEmisores());
+			ServerSocket serverSocket = new ServerSocket(ConfigDirectorio.getInstance().getPuertoEmisores());
 			new ObjectOutputStream(
 					serverSocket.accept().getOutputStream())
 							.writeObject(listaReceptores());
@@ -54,7 +54,7 @@ public class ControladorDirectorio implements Observer {
 
 	public void listenReceptores() {
 		try {
-			ServerSocket serverSocket = new ServerSocket(Config.getInstance().getPuertoReceptores());
+			ServerSocket serverSocket = new ServerSocket(ConfigDirectorio.getInstance().getPuertoReceptores());
 			Socket socket = serverSocket.accept();
 			ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
 			String action = (String) inputStream.readObject();
@@ -76,14 +76,14 @@ public class ControladorDirectorio implements Observer {
 
 	public void listenDirectorioReplica() {
 		try {
-			serverSocket = new ServerSocket(Config.getInstance().getPuertoDirectorioReplica());
+			serverSocket = new ServerSocket(ConfigDirectorio.getInstance().getPuertoDirectorioReplica());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
 	public void iniciaDirectorio() {
-		if (!Config.getInstance().isDirectorioReplica().equals(true)) {
+		if (!ConfigDirectorio.getInstance().isDirectorioReplica().equals(true)) {
 			Thread tReceptores = threadReceptores();
 			Thread tEmisores = threadEmisores();
 			Thread tReplica = threadConexionReplica();
@@ -155,8 +155,8 @@ public class ControladorDirectorio implements Observer {
 	}
 
 	private void tDirectorioOrig() throws IOException {
-		Socket socket = new Socket(Config.getInstance().getIpDirectorioReplica(),
-				Config.getInstance().getPuertoDirectorioReplica());
+		Socket socket = new Socket(ConfigDirectorio.getInstance().getIpDirectorioReplica(),
+				ConfigDirectorio.getInstance().getPuertoDirectorioReplica());
 		try {
 			ReceptoresMap receptoresAux = (ReceptoresMap) new ObjectInputStream(socket.getInputStream()).readObject();
 			receptores.setReceptores(receptoresAux.getReceptores());
@@ -180,7 +180,7 @@ public class ControladorDirectorio implements Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		if (!Config.getInstance().isDirectorioReplica()) {
+		if (!ConfigDirectorio.getInstance().isDirectorioReplica()) {
 			try {
 //				Socket socket = new Socket(Config.getInstance().getIpDirectorioReplica(),
 //						Config.getInstance().getPuertoDirectorioReplica());

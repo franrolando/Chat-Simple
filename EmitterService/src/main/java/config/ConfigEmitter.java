@@ -6,17 +6,17 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Objects;
 
-public class Config {
+public class ConfigEmitter {
 
-	private static Config instance = null;
+	private static ConfigEmitter instance = null;
 	
-	private Config() {
+	private ConfigEmitter() {
 		super();
 	}
 	
-	public static Config getInstance() {
+	public static ConfigEmitter getInstance() {
 		if (Objects.isNull(instance)) {
-			instance = new Config();
+			instance = new ConfigEmitter();
 		}
 		return instance;
 	}

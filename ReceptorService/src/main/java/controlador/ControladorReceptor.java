@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import config.Config;
+import config.ConfigReceptor;
 import modelo.Cifrador;
 import modelo.Mensaje;
 import modelo.Receptor;
@@ -33,7 +33,7 @@ public class ControladorReceptor {
 	public Mensaje leerMensaje() {
 		Mensaje mensaje = null;
 		try {
-			ServerSocket serverSocket = new ServerSocket(Config.getInstance().getPuertoMensajes());
+			ServerSocket serverSocket = new ServerSocket(ConfigReceptor.getInstance().getPuertoMensajes());
 			mensaje = (Mensaje) new ObjectInputStream(serverSocket.accept().getInputStream()).readObject();
 			Cifrador cf = new Cifrador();
 			cf.descifrarMensaje(mensaje);
@@ -49,8 +49,8 @@ public class ControladorReceptor {
 		ObjectOutputStream out;
 		ObjectInputStream in;
 		try {
-			Socket socket = new Socket(Config.getInstance().getIpServicioComunicacion(),
-					Config.getInstance().getPuertoMsjOffline());
+			Socket socket = new Socket(ConfigReceptor.getInstance().getIpServicioComunicacion(),
+					ConfigReceptor.getInstance().getPuertoMsjOffline());
 			out = new ObjectOutputStream(socket.getOutputStream());
 			out.writeObject(nombreReceptor);
 			in = new ObjectInputStream(socket.getInputStream());
@@ -65,11 +65,11 @@ public class ControladorReceptor {
 	public void sendStatus(Receptor receptor) {
 		Socket socket = null;
 		try {
-			socket = new Socket(Config.getInstance().getIpDirectorio(), Config.getInstance().getPuertoEstado());
+			socket = new Socket(ConfigReceptor.getInstance().getIpDirectorio(), ConfigReceptor.getInstance().getPuertoEstado());
 		} catch (IOException e) {
 			e.printStackTrace();
 			try {
-				socket = new Socket(Config.getInstance().getIpDirectorioAux(), Config.getInstance().getPuertoEstado());
+				socket = new Socket(ConfigReceptor.getInstance().getIpDirectorioAux(), ConfigReceptor.getInstance().getPuertoEstado());
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
@@ -91,7 +91,7 @@ public class ControladorReceptor {
 		List<Receptor> contactList = new ArrayList<>();
 		Socket socket = null;
 		ObjectInputStream is = null;
-		socket = new Socket(Config.getInstance().getIpDirectorio(), Config.getInstance().getPuertoEstado());
+		socket = new Socket(ConfigReceptor.getInstance().getIpDirectorio(), ConfigReceptor.getInstance().getPuertoEstado());
 		new ObjectOutputStream(socket.getOutputStream()).writeObject("nombreValido");
 		is = new ObjectInputStream(socket.getInputStream());
 		if (socket != null && is != null) {

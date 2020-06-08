@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import Configuration.Config;
+import Configuration.ConfigDatabase;
 import modelo.Mensaje;
 import strategy.PersistidorMensajes;
 
@@ -15,7 +15,7 @@ public class MensajesDAO {
 	private static MensajesDAO instance = null;
 
 	private MensajesDAO() {
-		switch (Config.getInstance().getStrategy().toLowerCase()) {
+		switch (ConfigDatabase.getInstance().getStrategy().toLowerCase()) {
 		case "filesystem":
 			persistidor.establecerFSStrategy();
 			break;

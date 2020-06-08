@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.net.ServerSocket;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -17,9 +16,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import Configuration.Config;
+import Configuration.ConfigDirectorio;
 import controlador.ControladorDirectorio;
 import modelo.Receptor;
+import javax.swing.SwingConstants;
 
 public class ViewDirectorio implements Observer {
 
@@ -72,9 +72,21 @@ public class ViewDirectorio implements Observer {
 		frmDirectorio.getContentPane().add(panelBtn, BorderLayout.SOUTH);
 		panelBtn.setLayout(new GridLayout(0, 1, 0, 0));
 
-		JPanel panelActualizar = new JPanel();
-		panelActualizar.setBackground(new Color(240, 230, 140));
-		panelBtn.add(panelActualizar);
+		JPanel panelNombreDirectorio = new JPanel();
+		panelNombreDirectorio.setBackground(new Color(240, 230, 140));
+		panelBtn.add(panelNombreDirectorio);
+		
+		JLabel lblNombreDirectorio = new JLabel();
+		lblNombreDirectorio.setForeground(Color.RED);
+		lblNombreDirectorio.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNombreDirectorio.setFont(new Font("Tahoma", Font.BOLD, 16));
+		panelNombreDirectorio.add(lblNombreDirectorio);
+		if(!ConfigDirectorio.getInstance().isDirectorioReplica()) {
+			lblNombreDirectorio.setText("Directorio ORIGINAL");
+		} else {
+			lblNombreDirectorio.setText("Directorio REPLICA");
+
+		}
 
 		JPanel panelContactos = new JPanel();
 		frmDirectorio.getContentPane().add(panelContactos, BorderLayout.CENTER);

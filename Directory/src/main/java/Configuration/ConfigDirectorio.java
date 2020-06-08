@@ -5,13 +5,13 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.Objects;
 
-public class Config {
+public class ConfigDirectorio {
 	
-	private static Config instance = null;
+	private static ConfigDirectorio instance = null;
 	
-	public synchronized static Config getInstance() {
+	public synchronized static ConfigDirectorio getInstance() {
 		if (Objects.isNull(instance)) {
-			instance = new Config();
+			instance = new ConfigDirectorio();
 		}
 		return instance;
 	}

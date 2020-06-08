@@ -8,7 +8,7 @@ import java.net.Socket;
 import java.net.SocketAddress;
 import java.util.Objects;
 
-import Configuration.Config;
+import Configuration.ConfigDatabase;
 import DAO.MensajesDAO;
 import modelo.Mensaje;
 
@@ -32,8 +32,8 @@ public class ControladorMensajes {
 
 	public static void iniciaServidor() {
 		try {
-			serverEmisores = new ServerSocket(Integer.parseInt(Config.getInstance().getPuertoEmisores()));
-			serverReceptores = new ServerSocket(Integer.parseInt(Config.getInstance().getPuertoMsjOffline()));
+			serverEmisores = new ServerSocket(Integer.parseInt(ConfigDatabase.getInstance().getPuertoEmisores()));
+			serverReceptores = new ServerSocket(Integer.parseInt(ConfigDatabase.getInstance().getPuertoMsjOffline()));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -55,7 +55,7 @@ public class ControladorMensajes {
 				case ("envioMensaje"):
 					mensaje = (Mensaje) is.readObject();
 					Socket socketEnvioMsj = new Socket(mensaje.getIpDestino(),
-							Integer.parseInt(Config.getInstance().getPuertoReceptores()));
+							Integer.parseInt(ConfigDatabase.getInstance().getPuertoReceptores()));
 					out = new ObjectOutputStream(socketEnvioMsj.getOutputStream());
 					out.writeObject(mensaje);
 					socketEnvioMsj.close();

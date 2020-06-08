@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import config.Config;
+import config.ConfigEmitter;
 import modelo.Cifrador;
 import modelo.Mensaje;
 import modelo.Receptor;
@@ -53,7 +53,7 @@ public class ControladorEmisor {
 	private void sendMessage(Mensaje mensaje) throws IOException {
 		Socket socket = null;
 		Boolean resp = false;
-		socket = new Socket(Config.getInstance().getIpServicioComunicacion(), Config.getInstance().getPuertoDestino());
+		socket = new Socket(ConfigEmitter.getInstance().getIpServicioComunicacion(), ConfigEmitter.getInstance().getPuertoDestino());
 		if (socket != null) {
 			ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
 			out.writeObject("envioMensaje");
@@ -79,7 +79,7 @@ public class ControladorEmisor {
 		ObjectInputStream is = null;
 		try {
 			
-			echoSocket = new Socket(Config.getInstance().getIpDirectorio(), Config.getInstance().getPuertoContacto());
+			echoSocket = new Socket(ConfigEmitter.getInstance().getIpDirectorio(), ConfigEmitter.getInstance().getPuertoContacto());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -100,8 +100,8 @@ public class ControladorEmisor {
 	public Boolean servicioEnvioDisponible() {
 		Boolean disponible = true;
 		try {
-			Socket socket = new Socket(Config.getInstance().getIpServicioComunicacion(),
-					Config.getInstance().getPuertoDestino());
+			Socket socket = new Socket(ConfigEmitter.getInstance().getIpServicioComunicacion(),
+					ConfigEmitter.getInstance().getPuertoDestino());
 			new ObjectOutputStream(socket.getOutputStream()).writeObject("disponible");
 			socket.close();
 		} catch (IOException e) {

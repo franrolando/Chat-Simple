@@ -17,7 +17,7 @@ import java.awt.GridLayout;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import Configuration.Config;
+import Configuration.ConfigDatabase;
 
 import java.awt.Font;
 
