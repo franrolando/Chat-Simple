@@ -5,6 +5,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -32,9 +33,11 @@ public class ControladorReceptor {
 	public Mensaje leerMensaje() {
 		Mensaje mensaje = null;
 		try {
-			mensaje = (Mensaje) new ObjectInputStream(new ServerSocket(Config.getInstance().getPuertoMensajes()).accept().getInputStream()).readObject();
+			ServerSocket serverSocket = new ServerSocket(Config.getInstance().getPuertoMensajes());
+			mensaje = (Mensaje) new ObjectInputStream(serverSocket.accept().getInputStream()).readObject();
 			Cifrador cf = new Cifrador();
 			cf.descifrarMensaje(mensaje);
+			serverSocket.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -60,9 +63,20 @@ public class ControladorReceptor {
 	}
 
 	public void sendStatus(Receptor receptor) {
+		Socket socket = null;
 		try {
-			Socket socket = new Socket(Config.getInstance().getIpDirectorio(), Config.getInstance().getPuertoEstado());
-			ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
+			socket = new Socket(Config.getInstance().getIpDirectorio(), Config.getInstance().getPuertoEstado());
+		} catch (IOException e) {
+			e.printStackTrace();
+			try {
+				socket = new Socket(Config.getInstance().getIpDirectorioAux(), Config.getInstance().getPuertoEstado());
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		}
+		ObjectOutputStream os;
+		try {
+			os = new ObjectOutputStream(socket.getOutputStream());
 			os.writeObject("estado");
 			os.writeObject(receptor);
 			os.close();

@@ -16,8 +16,10 @@ public class Conexion {
 					, Config.getInstance().getUsuario(),
 					Config.getInstance().getClave());
 		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
 			System.out.println("Error al cargar el controlador");
 		} catch (SQLException e) {
+			e.printStackTrace();
 			System.out.println("Error en la conexion");
 		}
 		return conexion;
