@@ -277,11 +277,13 @@ public class ViewEmisor {
 					mensaje = rdbtnAlerta.isSelected() ? new MensajeAlerta() : new Mensaje();
 				}
 				completeDTO(mensaje);
+				String asuntoMensajeDCF;
 				if (ControladorEmisor.getInstance().servicioEnvioDisponible()) {
+					asuntoMensajeDCF = mensaje.getAsunto();
 					Map<String, Boolean> resp = ControladorEmisor.getInstance().enviarMensaje(mensaje, destinos);
 					if (mensajeAviso) {
 						resp.forEach((emisor, recibido) -> {
-							creaNuevoMensajeAviso(frmInterfazEmisor, panelMensajesConAviso, mensaje.getAsunto(), emisor,
+							creaNuevoMensajeAviso(frmInterfazEmisor, panelMensajesConAviso, asuntoMensajeDCF, emisor,
 									recibido);
 						});
 					} else {
