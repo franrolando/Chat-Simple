@@ -2,7 +2,7 @@ package strategy;
 
 import java.util.List;
 
-import modelo.Mensaje;
+import modelo.mensajes.Mensaje;
 
 public interface IPersistenciaStrategy {
 	

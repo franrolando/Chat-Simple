@@ -181,13 +181,18 @@ public class ControladorDirectorio implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		if (!ConfigDirectorio.getInstance().isDirectorioReplica()) {
-			try {
-//				Socket socket = new Socket(Config.getInstance().getIpDirectorioReplica(),
-//						Config.getInstance().getPuertoDirectorioReplica());
-				new ObjectOutputStream(serverSocket.accept().getOutputStream()).writeObject(receptores);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			Thread thread = new Thread() {
+
+				@Override
+				public void run() {
+					try {
+						new ObjectOutputStream(serverSocket.accept().getOutputStream()).writeObject(receptores);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			};
+			thread.start();
 		}
 	}
 

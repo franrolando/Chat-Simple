@@ -36,10 +36,10 @@ import javax.swing.border.LineBorder;
 import Enum.ETipoMensaje;
 import controlador.ControladorEmisor;
 import modelo.Emisor;
-import modelo.Mensaje;
-import modelo.MensajeAlerta;
-import modelo.MensajeAvisoRecep;
 import modelo.Receptor;
+import modelo.mensajes.Mensaje;
+import modelo.mensajes.MensajeAlerta;
+import modelo.mensajes.MensajeAvisoRecep;
 
 public class ViewEmisor {
 
@@ -420,7 +420,6 @@ public class ViewEmisor {
 										mensaje.getEmisor(), true);
 							}
 						});
-						System.out.println("Mensajes enviados");
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}

@@ -11,9 +11,11 @@ import java.util.Map;
 import java.util.Objects;
 
 import config.ConfigEmitter;
+import controlador.directorio.DirectorioImpl;
+import controlador.servicioMensajes.ServicioMensajesImpl;
 import modelo.Cifrador;
-import modelo.Mensaje;
 import modelo.Receptor;
+import modelo.mensajes.Mensaje;
 
 public class ControladorEmisor {
 
@@ -39,7 +41,7 @@ public class ControladorEmisor {
 			mensaje.setIpDestino(destino.getIp());
 			mensaje.setReceptor(destino.getNombreUsuario());
 			try {
-				sendMessage(mensaje);
+				ServicioMensajesImpl.getInstance().sendMessage(mensaje);
 				mensajesRecibidos.put(destino.getNombreUsuario(), true);
 			} catch (Exception e) {
 				mensajesRecibidos.put(destino.getNombreUsuario(), false);
@@ -50,66 +52,12 @@ public class ControladorEmisor {
 		return mensajesRecibidos;
 	}
 
-	private void sendMessage(Mensaje mensaje) throws IOException {
-		Socket socket = null;
-		Boolean resp = false;
-		socket = new Socket(ConfigEmitter.getInstance().getIpServicioComunicacion(), ConfigEmitter.getInstance().getPuertoDestino());
-		if (socket != null) {
-			ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-			out.writeObject("envioMensaje");
-			out.writeObject(mensaje);
-			ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-			try {
-				resp = (Boolean) in.readObject();
-			} catch (ClassNotFoundException | IOException e) {
-				System.out.println("Error al leer desde el servicio de mensajes");
-				e.printStackTrace();
-			}
-			out.close();
-			socket.close();
-		}
-		if (!resp) {
-			throw new IOException();
-		}
-	}
-
 	public List<Receptor> getContactList() throws IOException {
-		List<Receptor> contactList = new ArrayList<>();
-		Socket echoSocket = null;
-		ObjectInputStream is = null;
-		try {
-			
-			echoSocket = new Socket(ConfigEmitter.getInstance().getIpDirectorio(), ConfigEmitter.getInstance().getPuertoContacto());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		is = new ObjectInputStream(echoSocket.getInputStream());
-		if (echoSocket != null && is != null) {
-			try {
-				contactList = (List<Receptor>) is.readObject();
-				is.close();
-				echoSocket.close();
-			} catch (IOException | ClassNotFoundException e) {
-				System.out.println("Error al obtener lista de contactos");
-				e.printStackTrace();
-			}
-		}
-		return contactList;
+		return DirectorioImpl.getInstance().getContactList();
 	}
 
 	public Boolean servicioEnvioDisponible() {
-		Boolean disponible = true;
-		try {
-			Socket socket = new Socket(ConfigEmitter.getInstance().getIpServicioComunicacion(),
-					ConfigEmitter.getInstance().getPuertoDestino());
-			new ObjectOutputStream(socket.getOutputStream()).writeObject("disponible");
-			socket.close();
-		} catch (IOException e) {
-			System.out.println("Servicio mensajes no disponible");
-			e.printStackTrace();
-			disponible = false;
-		}
-		return disponible;
+		return ServicioMensajesImpl.getInstance().servicioEnvioDisponible();
 	}
 
 	public List<Mensaje> getColaMensajes() {
@@ -143,7 +91,7 @@ public class ControladorEmisor {
 		synchronized (colaMensajes) {
 			colaMensajes.forEach(mensaje -> {
 				try {
-					sendMessage(mensaje);
+					ServicioMensajesImpl.getInstance().sendMessage(mensaje);
 					mensajesRecibidos.add(mensaje);
 				} catch (Exception e) {
 					System.out.println("Error al enviar mensajes en cola");

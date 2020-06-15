@@ -1,25 +1,18 @@
 package vista;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.GridLayout;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-
-import DAO.MensajesDAO;
-import controlador.ControladorMensajes;
-import modelo.Mensaje;
-import strategy.FileSystemStrategy;
-
-import java.awt.Color;
-import javax.swing.JPanel;
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import Configuration.ConfigDatabase;
-
-import java.awt.Font;
+import controlador.ControladorMensajes;
 
 public class ViewAdminMensajes {
 

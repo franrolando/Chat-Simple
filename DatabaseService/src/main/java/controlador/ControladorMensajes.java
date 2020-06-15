@@ -5,12 +5,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketAddress;
 import java.util.Objects;
 
 import Configuration.ConfigDatabase;
 import DAO.MensajesDAO;
-import modelo.Mensaje;
+import modelo.mensajes.Mensaje;
 
 public class ControladorMensajes {
 

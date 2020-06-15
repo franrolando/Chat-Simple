@@ -25,8 +25,8 @@ import javax.swing.UIManager;
 import Enum.ETipoMensaje;
 import controlador.ControladorReceptor;
 import creator.ViewMensajeCreator;
-import modelo.Mensaje;
 import modelo.Receptor;
+import modelo.mensajes.Mensaje;
 
 public class ViewReceptor {
 

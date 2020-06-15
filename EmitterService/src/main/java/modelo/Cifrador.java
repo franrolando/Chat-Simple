@@ -1,5 +1,7 @@
 package modelo;
 
+import modelo.mensajes.Mensaje;
+
 public class Cifrador {
 
 	private int KEY=7;

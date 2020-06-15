@@ -10,10 +10,9 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import Enum.ETipoMensaje;
-import modelo.Mensaje;
-import modelo.MensajeAlerta;
-import modelo.MensajeAvisoRecep;
+import modelo.mensajes.Mensaje;
+import modelo.mensajes.MensajeAlerta;
+import modelo.mensajes.MensajeAvisoRecep;
 
 public class FileSystemStrategy implements IPersistenciaStrategy {
 

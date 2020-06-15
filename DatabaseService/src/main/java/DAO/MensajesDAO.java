@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 import Configuration.ConfigDatabase;
-import modelo.Mensaje;
+import modelo.mensajes.Mensaje;
 import strategy.PersistidorMensajes;
 
 public class MensajesDAO {

@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import DAO.Conexion;
-import modelo.Mensaje;
-import modelo.MensajeAlerta;
-import modelo.MensajeAvisoRecep;
+import modelo.mensajes.Mensaje;
+import modelo.mensajes.MensajeAlerta;
+import modelo.mensajes.MensajeAvisoRecep;
 
 public class DBStrategy implements IPersistenciaStrategy {
 
