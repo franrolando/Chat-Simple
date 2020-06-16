@@ -32,6 +32,10 @@ public class ConfigDirectorio {
 		return getProperty("IPDIRECTORIOREPLICA");
 	}
 	
+	public String getIpDirectorioOriginal() {
+		return getProperty("IPDIRECTORIOORIGINAL");
+	}
+	
 	public Integer getPuertoDirectorioReplica() {
 		return Integer.parseInt(getProperty("PuertoDirectorioReplica"));
 	}
