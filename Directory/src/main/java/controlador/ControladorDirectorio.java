@@ -77,7 +77,12 @@ public class ControladorDirectorio implements Observer {
 	public void listenDirectorioReplica() {
 		try {
 			serverSocket = new ServerSocket(ConfigDirectorio.getInstance().getPuertoDirectorioReplica());
-		} catch (IOException e) {
+			Socket socket = serverSocket.accept();
+			ReceptoresMap receptoresAux = (ReceptoresMap) new ObjectInputStream(socket.getInputStream()).readObject();
+			receptoresAux.getReceptores().values().forEach(receptor -> {
+				this.receptores.addReceptor(receptor);
+			});
+		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
@@ -143,13 +148,16 @@ public class ControladorDirectorio implements Observer {
 					try {
 						tDirectorioOrig();
 					} catch (IOException e) {
+						new Thread() {
+							
+						};
 						ControladorDirectorio.getInstance().listenEmisores();
 						ControladorDirectorio.getInstance().listenReceptores();
 						e.printStackTrace();
 					}
 				}
 			}
-
+			
 		};
 		tReplica.start();
 	}
@@ -158,6 +166,7 @@ public class ControladorDirectorio implements Observer {
 		Socket socket = new Socket(ConfigDirectorio.getInstance().getIpDirectorioReplica(),
 				ConfigDirectorio.getInstance().getPuertoDirectorioReplica());
 		try {
+			new ObjectOutputStream(socket.getOutputStream()).writeObject(receptores);
 			ReceptoresMap receptoresAux = (ReceptoresMap) new ObjectInputStream(socket.getInputStream()).readObject();
 			receptores.setReceptores(receptoresAux.getReceptores());
 			socket.close();

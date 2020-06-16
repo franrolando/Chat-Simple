@@ -59,8 +59,18 @@ public class DirectorioImpl implements IDirectorio {
 		List<Receptor> contactList = new ArrayList<>();
 		Socket socket = null;
 		ObjectInputStream is = null;
-		socket = new Socket(ConfigReceptor.getInstance().getIpDirectorio(),
-				ConfigReceptor.getInstance().getPuertoEstado());
+		try {
+			socket = new Socket(ConfigReceptor.getInstance().getIpDirectorio(),
+					ConfigReceptor.getInstance().getPuertoEstado());
+		} catch (IOException e) {
+			e.printStackTrace();
+			try {
+				socket = new Socket(ConfigReceptor.getInstance().getIpDirectorioAux(),
+						ConfigReceptor.getInstance().getPuertoEstado());
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		}
 		new ObjectOutputStream(socket.getOutputStream()).writeObject("nombreValido");
 		is = new ObjectInputStream(socket.getInputStream());
 		if (socket != null && is != null) {
